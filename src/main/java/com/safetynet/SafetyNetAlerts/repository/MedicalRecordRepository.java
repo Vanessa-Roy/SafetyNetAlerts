@@ -6,21 +6,15 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class MedicalRecordRepository {
+public class MedicalRecordRepository extends BaseRepository {
 
     public List<MedicalRecord> findAll() throws IOException {
 
-        final String MyJSON = "C:/Users/indov/git/SafetyNetAlerts/SafetyNetAlerts/src/main/resources/data.json";
-        Path filePath = Path.of(MyJSON);
-        String jsonString = Files.readString(filePath);
-        JSONObject json = new JSONObject(jsonString);
-        JSONArray jsonMedicalRecordsArray = json.getJSONArray("medicalrecords");
+        JSONArray jsonMedicalRecordsArray = readFiletoGetJsonArray("medicalrecords");
         List<MedicalRecord> medicalRecords = new ArrayList<>();
 
         for(int y=0; y<jsonMedicalRecordsArray.length(); y++) {

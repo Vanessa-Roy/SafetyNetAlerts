@@ -6,21 +6,14 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class FireStationRepository {
+public class FireStationRepository extends BaseRepository {
 
     public List<FireStation> findAll() throws IOException {
-
-        final String MyJSON = "C:/Users/indov/git/SafetyNetAlerts/SafetyNetAlerts/src/main/resources/data.json";
-        Path filePath = Path.of(MyJSON);
-        String jsonString = Files.readString(filePath);
-        JSONObject json = new JSONObject(jsonString);
-        JSONArray jsonFireStationsArray = json.getJSONArray("firestations");
+        JSONArray jsonFireStationsArray = readFiletoGetJsonArray("firestations");
         List<FireStation> fireStations = new ArrayList<>();
 
         for(int y=0; y<jsonFireStationsArray.length(); y++) {

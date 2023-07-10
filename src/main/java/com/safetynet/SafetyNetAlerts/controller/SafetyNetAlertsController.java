@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-public class PersonController {
+public class SafetyNetAlertsController {
 
     @Autowired
     PersonService personService;
@@ -16,6 +16,6 @@ public class PersonController {
     @GetMapping("/communityEmail")
     @ResponseBody
     public List<String> getCommunityEmails(@RequestParam String city) throws IOException {
-        return personService.getCommunityEmailCity(city);
+        return personService.getEmailsFromCity(city);
     }
 }
