@@ -10,7 +10,7 @@ import java.nio.file.Path;
 
 public abstract class BaseRepository {
 
-    final String PATH_NAME = "SafetyNetAlerts/src/main/resources/data.json";
+    final String PATH_NAME = "src/main/resources/data.json";
     public JSONArray readFiletoGetJsonArray(String key) throws IOException {
         File data = new File(PATH_NAME);
         Path filePath = Path.of(data.getAbsolutePath());

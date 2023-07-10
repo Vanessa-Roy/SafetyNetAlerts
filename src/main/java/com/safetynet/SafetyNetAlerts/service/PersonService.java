@@ -15,11 +15,11 @@ public class PersonService {
     @Autowired
     private PersonRepository personRepository;
 
-    public List<String> getEmailsFromCity(final String city) throws IOException {
+    public List<String> getEmailsFromCity(final String CITY) throws IOException {
         List<Person> persons = personRepository.findAll();
         List<String> communityEmailFromCity = new ArrayList<>();
         for (Person person : persons) {
-            if (person.getCity().equalsIgnoreCase(city)) {
+            if (person.getCity().equalsIgnoreCase(CITY)) {
                 if (!communityEmailFromCity.contains(person.getEmail())) {
                     communityEmailFromCity.add(person.getEmail());
                 }

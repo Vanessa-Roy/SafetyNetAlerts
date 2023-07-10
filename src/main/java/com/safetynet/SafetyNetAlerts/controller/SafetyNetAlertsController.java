@@ -15,7 +15,7 @@ public class SafetyNetAlertsController {
 
     @GetMapping("/communityEmail")
     @ResponseBody
-    public List<String> getCommunityEmails(@RequestParam String city) throws IOException {
+    public List<String> getEmailsFromCity(@RequestParam String city) throws IOException {
         return personService.getEmailsFromCity(city);
     }
 }

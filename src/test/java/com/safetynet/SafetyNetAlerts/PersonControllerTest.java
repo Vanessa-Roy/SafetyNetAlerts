@@ -20,13 +20,13 @@ public class PersonControllerTest {
     private PersonService personService;
 
     @Test
-    public void testGetCommunityEmailsShouldFail() throws Exception {
+    public void testGetEmailsFromCityShouldFail() throws Exception {
         mockMvc.perform(get("/communityEmail"))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testGetCommunityEmailsShouldPass() throws Exception {
+    public void testGetEmailsFromCityShouldPass() throws Exception {
         mockMvc.perform(get("/communityEmail?city=culver"))
                 .andExpectAll(
                         status().isOk(),
