@@ -3,6 +3,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import com.safetynet.SafetyNetAlerts.controller.SafetyNetAlertsController;
+import com.safetynet.SafetyNetAlerts.service.FireStationService;
 import com.safetynet.SafetyNetAlerts.service.PersonService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class PersonControllerTest {
 
     @MockBean
     private PersonService personService;
+
+    @MockBean
+    private FireStationService fireStationService;
 
     @Test
     public void testGetEmailsFromCityShouldFail() throws Exception {

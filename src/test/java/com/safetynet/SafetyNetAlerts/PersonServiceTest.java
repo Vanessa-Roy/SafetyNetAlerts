@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,7 +48,7 @@ public class PersonServiceTest {
 
 
     @Test
-    public void testGetEmailsFromCity() throws IOException {
+    public void testGetEmailsFromCityLowercase() throws IOException {
 
         when(personRepository.findAll()).thenReturn(persons);
 
@@ -58,4 +58,44 @@ public class PersonServiceTest {
         assertTrue(result.toString().contains("jaboyd@email.com"));
 
     }
+
+    @Test
+    public void testGetEmailsFromCityUppercase() throws IOException {
+
+        when(personRepository.findAll()).thenReturn(persons);
+
+        List<String> result = testingPersonService.getEmailsFromCity("CULVER");
+
+        verify(personRepository, Mockito.times(1)).findAll();
+        assertTrue(result.toString().contains("jaboyd@email.com"));
+
+    }
+
+    @Test
+    public void testGetEmailsFromCityWithDuplicate() throws IOException {
+        Person person = new Person();
+        person.setCity("Culver");
+        person.setEmail("jaboyd@email.com");
+        persons.add(person);
+        when(personRepository.findAll()).thenReturn(persons);
+
+        List<String> result = testingPersonService.getEmailsFromCity("CULVER");
+
+        verify(personRepository, Mockito.times(1)).findAll();
+        assertNotEquals(2,result.size());
+
+    }
+
+    @Test
+    public void testGetEmailsFromCityUnknown() throws IOException {
+
+        when(personRepository.findAll()).thenReturn(persons);
+
+        List<String> result = testingPersonService.getEmailsFromCity("cityUnknown");
+
+        verify(personRepository, Mockito.times(1)).findAll();
+        assertEquals(0,result.size());
+
+    }
+
 }
