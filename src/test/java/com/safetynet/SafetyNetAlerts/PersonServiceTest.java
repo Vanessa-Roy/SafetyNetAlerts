@@ -50,11 +50,11 @@ public class PersonServiceTest {
     @Test
     public void testGetEmailsFromCityLowercase() throws IOException {
 
-        when(personRepository.findAll()).thenReturn(persons);
+        when(personRepository.getPersonList()).thenReturn(persons);
 
         List<String> result = testingPersonService.getEmailsFromCity("culver");
 
-        verify(personRepository, Mockito.times(1)).findAll();
+        verify(personRepository, Mockito.times(1)).getPersonList();
         assertTrue(result.toString().contains("jaboyd@email.com"));
 
     }
@@ -62,11 +62,11 @@ public class PersonServiceTest {
     @Test
     public void testGetEmailsFromCityUppercase() throws IOException {
 
-        when(personRepository.findAll()).thenReturn(persons);
+        when(personRepository.getPersonList()).thenReturn(persons);
 
         List<String> result = testingPersonService.getEmailsFromCity("CULVER");
 
-        verify(personRepository, Mockito.times(1)).findAll();
+        verify(personRepository, Mockito.times(1)).getPersonList();
         assertTrue(result.toString().contains("jaboyd@email.com"));
 
     }
@@ -77,11 +77,11 @@ public class PersonServiceTest {
         person.setCity("Culver");
         person.setEmail("jaboyd@email.com");
         persons.add(person);
-        when(personRepository.findAll()).thenReturn(persons);
+        when(personRepository.getPersonList()).thenReturn(persons);
 
         List<String> result = testingPersonService.getEmailsFromCity("CULVER");
 
-        verify(personRepository, Mockito.times(1)).findAll();
+        verify(personRepository, Mockito.times(1)).getPersonList();
         assertNotEquals(2,result.size());
 
     }
@@ -89,11 +89,11 @@ public class PersonServiceTest {
     @Test
     public void testGetEmailsFromCityUnknown() throws IOException {
 
-        when(personRepository.findAll()).thenReturn(persons);
+        when(personRepository.getPersonList()).thenReturn(persons);
 
         List<String> result = testingPersonService.getEmailsFromCity("cityUnknown");
 
-        verify(personRepository, Mockito.times(1)).findAll();
+        verify(personRepository, Mockito.times(1)).getPersonList();
         assertEquals(0,result.size());
 
     }
