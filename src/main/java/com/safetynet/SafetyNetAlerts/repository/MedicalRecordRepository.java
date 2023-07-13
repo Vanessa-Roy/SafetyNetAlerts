@@ -10,6 +10,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Load and save data relatives to the medical records from SafetynetAlertsCatalog.
+ *
+ */
 @Repository
 public class MedicalRecordRepository {
 
@@ -18,6 +22,11 @@ public class MedicalRecordRepository {
     @Autowired
     SafetyNetAlertsCatalog data;
 
+    /**
+     * Get all the medical records from the JSON source.
+     *
+     * @return a list of all medical records, obtained from JSON source, duplicates are possible
+     */
     public List<MedicalRecord> getMedicalRecordList() {
         logger.debug("get the list of medical records");
         return data.getMedicalRecords();

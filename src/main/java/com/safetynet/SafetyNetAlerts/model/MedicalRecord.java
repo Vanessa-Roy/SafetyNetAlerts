@@ -5,6 +5,10 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represent a medical record
+ *
+ */
 @Data
 public class MedicalRecord {
 

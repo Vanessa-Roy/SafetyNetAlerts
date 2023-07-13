@@ -10,6 +10,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Load and save data relatives to the fire stations from SafetynetAlertsCatalog.
+ *
+ */
 @Repository
 public class FireStationRepository {
 
@@ -18,6 +22,11 @@ public class FireStationRepository {
     @Autowired
     SafetyNetAlertsCatalog data;
 
+    /**
+     * Get all the fire stations from the JSON source.
+     *
+     * @return a list of all fire stations, obtained from JSON source, duplicates are possible
+     */
     public List<FireStation> getFireStationList() {
         logger.debug("get the list of fireStations");
         return data.getFireStations();

@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Centralize every methods relatives to the firestations.
+ *
+ */
 @Service
 public class FireStationService {
 
@@ -22,6 +26,13 @@ public class FireStationService {
     @Autowired
     private PersonRepository personRepository;
 
+
+    /**
+     * Get all the addresses from a firestation.
+     *
+     * @param station a String represents the firestation to search for
+     * @return a list of all addresses from the station, obtained from fireStationRepository, duplicates are not allowed
+     */
     public List<String> getAddressFromStation(String station) {
         List<FireStation> fireStations = fireStationRepository.getFireStationList();
         List<String> addressFromStation = fireStations.stream()
@@ -32,15 +43,28 @@ public class FireStationService {
         return addressFromStation;
     }
 
+    /**
+     * Get the number of firestation from an address.
+     *
+     * @param address a String represents the address to search for
+     * @return the number of firestation from the address, obtained from fireStationRepository
+     */
     public String getStationsFromAddress(String address) {
         List<FireStation> fireStations = fireStationRepository.getFireStationList();
         String stationFromAddress = fireStations.stream()
                                                 .filter(f -> f.getAddress().equalsIgnoreCase(address))
+                                                .map(FireStation::getStation)
                                                 .toString();
         logger.debug("get the fireStation number that covers {}", address);
         return stationFromAddress;
     }
 
+    /**
+     * Get all the phones from a firestation.
+     *
+     * @param firestation a String represents the firestation to search for
+     * @return a list of all phones from the persons living nearby the firestation, obtained from personRepository, duplicates are not allowed
+     */
     public List<String> getPhonesFromStation(String firestation) {
         List<String> addressFromStation = getAddressFromStation(firestation);
         List<Person> persons = personRepository.getPersonList();

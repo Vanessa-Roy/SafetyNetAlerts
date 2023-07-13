@@ -2,6 +2,10 @@ package com.safetynet.SafetyNetAlerts.model;
 
 import lombok.Data;
 
+/**
+ * Represent a person
+ *
+ */
 @Data
 public class Person {
 
