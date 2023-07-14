@@ -77,11 +77,20 @@ public class MedicalRecordServiceTest {
     }
 
     @Test
-    public void testGetAgeFromNameUnknown() throws IOException {
+    public void testGetAgeFromBothFirstNameLastNameUnknown() throws IOException {
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
         assertThrows(NoSuchElementException.class, () -> {
             testingMedicalRecordService.getAgeFromName("unknowFirstName","unknowLastName");
+        });
+    }
+
+    @Test
+    public void testGetAgeFromLastNameUnknown() throws IOException {
+        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
+
+        assertThrows(NoSuchElementException.class, () -> {
+            testingMedicalRecordService.getAgeFromName("john","unknowLastName");
         });
     }
 }

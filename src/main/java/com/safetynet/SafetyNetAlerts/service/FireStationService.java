@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
@@ -38,7 +39,8 @@ public class FireStationService {
         List<String> addressFromStation = fireStations.stream()
                                                         .filter(f -> f.getStation().equals(station))
                                                         .map(FireStation::getAddress)
-                .collect(Collectors.toList());
+                                                        .distinct()
+                                                        .collect(Collectors.toList());
         logger.debug("get the list of addresses that are covered by the fireStation number {}", station);
         return addressFromStation;
     }
@@ -49,11 +51,13 @@ public class FireStationService {
      * @param address a String represents the address to search for
      * @return the number of firestation from the address, obtained from fireStationRepository
      */
-    public String getStationsFromAddress(String address) {
+    public String getStationsFromAddress(String address) throws NoSuchElementException {
         List<FireStation> fireStations = fireStationRepository.getFireStationList();
         String stationFromAddress = fireStations.stream()
                                                 .filter(f -> f.getAddress().equalsIgnoreCase(address))
                                                 .map(FireStation::getStation)
+                                                .findAny()
+                                                .get()
                                                 .toString();
         logger.debug("get the fireStation number that covers {}", address);
         return stationFromAddress;

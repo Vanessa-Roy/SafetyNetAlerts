@@ -12,7 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = SafetyNetAlertsController.class)
-public class PersonControllerTest {
+public class SafetyNetAlertsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -32,6 +32,36 @@ public class PersonControllerTest {
     @Test
     public void testGetEmailsFromCityShouldPass() throws Exception {
         mockMvc.perform(get("/communityEmail?city=culver"))
+                .andExpectAll(
+                        status().isOk(),
+                        content().contentType("application/json")
+                );
+    }
+
+    @Test
+    public void testGetPhonesFromStationShouldFail() throws Exception {
+        mockMvc.perform(get("/phoneAlert"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetPhonesFromStationShouldPass() throws Exception {
+        mockMvc.perform(get("/phoneAlert?firestation=3"))
+                .andExpectAll(
+                        status().isOk(),
+                        content().contentType("application/json")
+                );
+    }
+
+    @Test
+    public void testGetChildrenFromAddressShouldFail() throws Exception {
+        mockMvc.perform(get("/childAlert"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetChildrenFromAddressShouldPass() throws Exception {
+        mockMvc.perform(get("/childAlert?address=1509 Culver St"))
                 .andExpectAll(
                         status().isOk(),
                         content().contentType("application/json")
