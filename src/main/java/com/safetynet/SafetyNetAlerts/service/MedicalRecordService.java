@@ -51,4 +51,40 @@ public class MedicalRecordService {
         return age;
     }
 
+    /**
+     * Get the medications from a person.
+     *
+     * @param firstName a String represents the firstname to search for
+     * @param lastName  a String represents the lastname to search for
+     * @return the person's medications, obtained from medicalRepository
+     */
+    public List<String> getMedicationsFromName(String firstName, String lastName) throws NoSuchElementException  {
+        List<MedicalRecord> medicalRecords = medicalRecordRepository.getMedicalRecordList();
+        List<String> medications = medicalRecords.stream()
+                .filter(m -> m.getFirstName().equalsIgnoreCase(firstName) && m.getLastName().equalsIgnoreCase(lastName))
+                .map(MedicalRecord::getMedications)
+                .findAny()
+                .get();
+        logger.debug("response with the medications of the person named {}", firstName + lastName);
+        return medications;
+    }
+
+    /**
+     * Get the allergies from a person.
+     *
+     * @param firstName a String represents the firstname to search for
+     * @param lastName  a String represents the lastname to search for
+     * @return the person's medications, obtained from medicalRepository
+     */
+    public List<String> getAllergiesFromName(String firstName, String lastName) throws NoSuchElementException  {
+        List<MedicalRecord> medicalRecords = medicalRecordRepository.getMedicalRecordList();
+        List<String> allergies = medicalRecords.stream()
+                .filter(m -> m.getFirstName().equalsIgnoreCase(firstName) && m.getLastName().equalsIgnoreCase(lastName))
+                .map(MedicalRecord::getAllergies)
+                .findAny()
+                .get();
+        logger.debug("response with the allergies of the person named {}", firstName + lastName);
+        return allergies;
+    }
+
 }

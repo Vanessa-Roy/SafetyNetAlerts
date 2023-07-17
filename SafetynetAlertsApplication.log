@@ -1,116 +1,59 @@
-2023-07-14T10:22:58.392+02:00  INFO 17796 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Starting SafetyNetAlertsApplicationTests using Java 17.0.6 with PID 17796 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T10:22:58.400+02:00 DEBUG 17796 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T10:22:58.401+02:00  INFO 17796 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T10:22:59.444+02:00 DEBUG 17796 --- [main] c.s.S.SafetyNetAlertsApplication         : copy the data file
-2023-07-14T10:22:59.463+02:00 DEBUG 17796 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of persons
-2023-07-14T10:22:59.511+02:00 DEBUG 17796 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of fire stations
-2023-07-14T10:22:59.515+02:00 DEBUG 17796 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of medical records
-2023-07-14T10:22:59.524+02:00 DEBUG 17796 --- [main] c.s.S.SafetyNetAlertsApplication         : the constructor SafetyNetAlertsCatalog succeeded
-2023-07-14T10:23:00.175+02:00  INFO 17796 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Started SafetyNetAlertsApplicationTests in 2.536 seconds (process running for 7.091)
-2023-07-14T10:23:00.269+02:00  INFO 17796 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Starting SafetyNetAlertsControllerTest using Java 17.0.6 with PID 17796 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T10:23:00.269+02:00 DEBUG 17796 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T10:23:00.270+02:00  INFO 17796 --- [main] c.s.S.SafetyNetAlertsControllerTest      : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T10:23:00.603+02:00  INFO 17796 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Started SafetyNetAlertsControllerTest in 0.353 seconds (process running for 7.52)
-2023-07-14T10:23:00.802+02:00  INFO 17796 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of emails from persons living in culver
-2023-07-14T10:30:51.318+02:00  INFO 4900 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Starting SafetyNetAlertsApplicationTests using Java 17.0.6 with PID 4900 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T10:30:51.323+02:00 DEBUG 4900 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T10:30:51.325+02:00  INFO 4900 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T10:30:52.530+02:00 DEBUG 4900 --- [main] c.s.S.SafetyNetAlertsApplication         : copy the data file
-2023-07-14T10:30:52.552+02:00 DEBUG 4900 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of persons
-2023-07-14T10:30:52.619+02:00 DEBUG 4900 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of fire stations
-2023-07-14T10:30:52.622+02:00 DEBUG 4900 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of medical records
-2023-07-14T10:30:52.632+02:00 DEBUG 4900 --- [main] c.s.S.SafetyNetAlertsApplication         : the constructor SafetyNetAlertsCatalog succeeded
-2023-07-14T10:30:53.203+02:00  INFO 4900 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Started SafetyNetAlertsApplicationTests in 2.641 seconds (process running for 7.101)
-2023-07-14T10:30:53.286+02:00  INFO 4900 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Starting SafetyNetAlertsControllerTest using Java 17.0.6 with PID 4900 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T10:30:53.286+02:00 DEBUG 4900 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T10:30:53.287+02:00  INFO 4900 --- [main] c.s.S.SafetyNetAlertsControllerTest      : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T10:30:53.583+02:00  INFO 4900 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Started SafetyNetAlertsControllerTest in 0.317 seconds (process running for 7.483)
-2023-07-14T10:30:53.718+02:00  INFO 4900 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of emails from persons living in culver
-2023-07-14T10:53:58.851+02:00  INFO 12528 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Starting SafetyNetAlertsApplicationTests using Java 17.0.6 with PID 12528 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T10:53:58.854+02:00 DEBUG 12528 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T10:53:58.855+02:00  INFO 12528 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T10:53:59.865+02:00 DEBUG 12528 --- [main] c.s.S.SafetyNetAlertsApplication         : copy the data file
-2023-07-14T10:53:59.887+02:00 DEBUG 12528 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of persons
-2023-07-14T10:53:59.941+02:00 DEBUG 12528 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of fire stations
-2023-07-14T10:53:59.943+02:00 DEBUG 12528 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of medical records
-2023-07-14T10:53:59.952+02:00 DEBUG 12528 --- [main] c.s.S.SafetyNetAlertsApplication         : the constructor SafetyNetAlertsCatalog succeeded
-2023-07-14T10:54:00.617+02:00  INFO 12528 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Started SafetyNetAlertsApplicationTests in 2.45 seconds (process running for 7.409)
-2023-07-14T10:54:00.719+02:00  INFO 12528 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Starting SafetyNetAlertsControllerTest using Java 17.0.6 with PID 12528 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T10:54:00.720+02:00 DEBUG 12528 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T10:54:00.720+02:00  INFO 12528 --- [main] c.s.S.SafetyNetAlertsControllerTest      : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T10:54:01.042+02:00  INFO 12528 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Started SafetyNetAlertsControllerTest in 0.346 seconds (process running for 7.833)
-2023-07-14T10:54:01.190+02:00  INFO 12528 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of emails from persons living in culver
-2023-07-14T10:55:53.767+02:00  INFO 3936 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Starting SafetyNetAlertsControllerTest using Java 17.0.6 with PID 3936 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T10:55:53.768+02:00 DEBUG 3936 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T10:55:53.769+02:00  INFO 3936 --- [main] c.s.S.SafetyNetAlertsControllerTest      : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T10:55:55.980+02:00  INFO 3936 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Started SafetyNetAlertsControllerTest in 2.551 seconds (process running for 3.297)
-2023-07-14T10:56:00.727+02:00  INFO 17540 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Starting SafetyNetAlertsControllerTest using Java 17.0.6 with PID 17540 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T10:56:00.728+02:00 DEBUG 17540 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T10:56:00.729+02:00  INFO 17540 --- [main] c.s.S.SafetyNetAlertsControllerTest      : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T10:56:02.995+02:00  INFO 17540 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Started SafetyNetAlertsControllerTest in 2.586 seconds (process running for 3.373)
-2023-07-14T10:56:34.686+02:00  INFO 19280 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Starting SafetyNetAlertsControllerTest using Java 17.0.6 with PID 19280 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T10:56:34.687+02:00 DEBUG 19280 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T10:56:34.688+02:00  INFO 19280 --- [main] c.s.S.SafetyNetAlertsControllerTest      : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T10:56:36.779+02:00  INFO 19280 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Started SafetyNetAlertsControllerTest in 2.418 seconds (process running for 3.164)
-2023-07-14T10:56:53.290+02:00  INFO 9964 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Starting SafetyNetAlertsControllerTest using Java 17.0.6 with PID 9964 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T10:56:53.291+02:00 DEBUG 9964 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T10:56:53.292+02:00  INFO 9964 --- [main] c.s.S.SafetyNetAlertsControllerTest      : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T10:56:55.411+02:00  INFO 9964 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Started SafetyNetAlertsControllerTest in 2.449 seconds (process running for 3.22)
-2023-07-14T10:56:55.514+02:00  INFO 9964 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of phones from persons living near by the firestation number 3
-2023-07-14T10:57:56.309+02:00  INFO 13644 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Starting SafetyNetAlertsControllerTest using Java 17.0.6 with PID 13644 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T10:57:56.310+02:00 DEBUG 13644 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T10:57:56.311+02:00  INFO 13644 --- [main] c.s.S.SafetyNetAlertsControllerTest      : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T10:57:58.464+02:00  INFO 13644 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Started SafetyNetAlertsControllerTest in 2.502 seconds (process running for 3.251)
-2023-07-14T10:58:02.593+02:00  INFO 13744 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Starting SafetyNetAlertsControllerTest using Java 17.0.6 with PID 13744 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T10:58:02.594+02:00 DEBUG 13744 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T10:58:02.595+02:00  INFO 13744 --- [main] c.s.S.SafetyNetAlertsControllerTest      : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T10:58:04.709+02:00  INFO 13744 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Started SafetyNetAlertsControllerTest in 2.44 seconds (process running for 3.209)
-2023-07-14T10:58:04.810+02:00  INFO 13744 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of children living at 1509 Culver St
-2023-07-14T10:58:17.815+02:00  INFO 1988 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Starting SafetyNetAlertsApplicationTests using Java 17.0.6 with PID 1988 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T10:58:17.818+02:00 DEBUG 1988 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T10:58:17.820+02:00  INFO 1988 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T10:58:18.895+02:00 DEBUG 1988 --- [main] c.s.S.SafetyNetAlertsApplication         : copy the data file
-2023-07-14T10:58:18.918+02:00 DEBUG 1988 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of persons
-2023-07-14T10:58:18.983+02:00 DEBUG 1988 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of fire stations
-2023-07-14T10:58:18.987+02:00 DEBUG 1988 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of medical records
-2023-07-14T10:58:19.000+02:00 DEBUG 1988 --- [main] c.s.S.SafetyNetAlertsApplication         : the constructor SafetyNetAlertsCatalog succeeded
-2023-07-14T10:58:19.576+02:00  INFO 1988 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Started SafetyNetAlertsApplicationTests in 2.641 seconds (process running for 7.316)
-2023-07-14T10:58:19.666+02:00  INFO 1988 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Starting SafetyNetAlertsControllerTest using Java 17.0.6 with PID 1988 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T10:58:19.667+02:00 DEBUG 1988 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T10:58:19.667+02:00  INFO 1988 --- [main] c.s.S.SafetyNetAlertsControllerTest      : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T10:58:19.933+02:00  INFO 1988 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Started SafetyNetAlertsControllerTest in 0.286 seconds (process running for 7.674)
-2023-07-14T10:58:20.059+02:00  INFO 1988 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of children living at 1509 Culver St
-2023-07-14T10:58:20.092+02:00  INFO 1988 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of emails from persons living in culver
-2023-07-14T10:58:20.105+02:00  INFO 1988 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of phones from persons living near by the firestation number 3
-2023-07-14T11:06:21.259+02:00  INFO 1484 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Starting SafetyNetAlertsApplicationTests using Java 17.0.6 with PID 1484 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T11:06:21.261+02:00 DEBUG 1484 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T11:06:21.263+02:00  INFO 1484 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T11:06:22.340+02:00 DEBUG 1484 --- [main] c.s.S.SafetyNetAlertsApplication         : copy the data file
-2023-07-14T11:06:22.362+02:00 DEBUG 1484 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of persons
-2023-07-14T11:06:22.418+02:00 DEBUG 1484 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of fire stations
-2023-07-14T11:06:22.420+02:00 DEBUG 1484 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of medical records
-2023-07-14T11:06:22.433+02:00 DEBUG 1484 --- [main] c.s.S.SafetyNetAlertsApplication         : the constructor SafetyNetAlertsCatalog succeeded
-2023-07-14T11:06:23.018+02:00  INFO 1484 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Started SafetyNetAlertsApplicationTests in 2.278 seconds (process running for 6.847)
-2023-07-14T11:06:23.109+02:00  INFO 1484 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Starting SafetyNetAlertsControllerTest using Java 17.0.6 with PID 1484 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T11:06:23.110+02:00 DEBUG 1484 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T11:06:23.110+02:00  INFO 1484 --- [main] c.s.S.SafetyNetAlertsControllerTest      : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T11:06:23.393+02:00  INFO 1484 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Started SafetyNetAlertsControllerTest in 0.302 seconds (process running for 7.221)
-2023-07-14T11:06:23.518+02:00  INFO 1484 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of children living at 1509 Culver St
-2023-07-14T11:06:23.550+02:00  INFO 1484 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of emails from persons living in culver
-2023-07-14T11:06:23.563+02:00  INFO 1484 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of phones from persons living near by the firestation number 3
-2023-07-14T11:08:44.185+02:00  INFO 15504 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Starting SafetyNetAlertsApplicationTests using Java 17.0.6 with PID 15504 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T11:08:44.186+02:00 DEBUG 15504 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T11:08:44.187+02:00  INFO 15504 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T11:08:45.271+02:00 DEBUG 15504 --- [main] c.s.S.SafetyNetAlertsApplication         : copy the data file
-2023-07-14T11:08:45.297+02:00 DEBUG 15504 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of persons
-2023-07-14T11:08:45.375+02:00 DEBUG 15504 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of fire stations
-2023-07-14T11:08:45.380+02:00 DEBUG 15504 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of medical records
-2023-07-14T11:08:45.391+02:00 DEBUG 15504 --- [main] c.s.S.SafetyNetAlertsApplication         : the constructor SafetyNetAlertsCatalog succeeded
-2023-07-14T11:08:45.976+02:00  INFO 15504 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Started SafetyNetAlertsApplicationTests in 2.477 seconds (process running for 7.258)
-2023-07-14T11:08:46.063+02:00  INFO 15504 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Starting SafetyNetAlertsControllerTest using Java 17.0.6 with PID 15504 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
-2023-07-14T11:08:46.064+02:00 DEBUG 15504 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Running with Spring Boot v3.1.1, Spring v6.0.10
-2023-07-14T11:08:46.064+02:00  INFO 15504 --- [main] c.s.S.SafetyNetAlertsControllerTest      : No active profile set, falling back to 1 default profile: "default"
-2023-07-14T11:08:46.335+02:00  INFO 15504 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Started SafetyNetAlertsControllerTest in 0.291 seconds (process running for 7.616)
-2023-07-14T11:08:46.512+02:00  INFO 15504 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of children living at 1509 Culver St
-2023-07-14T11:08:46.546+02:00  INFO 15504 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of emails from persons living in culver
-2023-07-14T11:08:46.558+02:00  INFO 15504 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of phones from persons living near by the firestation number 3
+2023-07-17T08:55:24.973+02:00  INFO 6648 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Starting SafetyNetAlertsApplicationTests using Java 17.0.6 with PID 6648 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
+2023-07-17T08:55:24.989+02:00 DEBUG 6648 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Running with Spring Boot v3.1.1, Spring v6.0.10
+2023-07-17T08:55:24.991+02:00  INFO 6648 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : No active profile set, falling back to 1 default profile: "default"
+2023-07-17T08:55:26.153+02:00 DEBUG 6648 --- [main] c.s.S.SafetyNetAlertsApplication         : copy the data file
+2023-07-17T08:55:26.174+02:00 DEBUG 6648 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of persons
+2023-07-17T08:55:26.226+02:00 DEBUG 6648 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of fire stations
+2023-07-17T08:55:26.229+02:00 DEBUG 6648 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of medical records
+2023-07-17T08:55:26.240+02:00 DEBUG 6648 --- [main] c.s.S.SafetyNetAlertsApplication         : the constructor SafetyNetAlertsCatalog succeeded
+2023-07-17T08:55:26.906+02:00  INFO 6648 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Started SafetyNetAlertsApplicationTests in 2.674 seconds (process running for 7.975)
+2023-07-17T08:55:27.081+02:00  INFO 6648 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Starting SafetyNetAlertsControllerTest using Java 17.0.6 with PID 6648 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
+2023-07-17T08:55:27.082+02:00 DEBUG 6648 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Running with Spring Boot v3.1.1, Spring v6.0.10
+2023-07-17T08:55:27.083+02:00  INFO 6648 --- [main] c.s.S.SafetyNetAlertsControllerTest      : No active profile set, falling back to 1 default profile: "default"
+2023-07-17T08:55:27.993+02:00  INFO 6648 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Started SafetyNetAlertsControllerTest in 0.957 seconds (process running for 9.062)
+2023-07-17T08:55:28.163+02:00  INFO 6648 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of children living at 1509 Culver St
+2023-07-17T08:55:28.245+02:00  INFO 6648 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of emails from persons living in culver
+2023-07-17T08:55:28.276+02:00  INFO 6648 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of phones from persons living near by the firestation number 3
+2023-07-17T12:05:16.317+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Starting SafetyNetAlertsControllerTest using Java 17.0.6 with PID 16520 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
+2023-07-17T12:05:16.317+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Running with Spring Boot v3.1.1, Spring v6.0.10
+2023-07-17T12:05:16.318+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsControllerTest      : No active profile set, falling back to 1 default profile: "default"
+2023-07-17T12:05:18.438+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsControllerTest      : Started SafetyNetAlertsControllerTest in 2.426 seconds (process running for 3.286)
+2023-07-17T12:05:18.649+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of children living at 1509 Culver St
+2023-07-17T12:05:18.775+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of emails from persons living in culver
+2023-07-17T12:05:18.799+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : request the list of phones from persons living near by the firestation number 3
+2023-07-17T12:05:18.916+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : response with the age of the person named johnboyd
+2023-07-17T12:05:18.937+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : response with the age of the person named JOHNBOYD
+2023-07-17T12:05:18.985+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : get the list of persons living at 1509 culver st
+2023-07-17T12:05:18.990+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : response with the list of children from persons living at 1509 culver st
+2023-07-17T12:05:19.010+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : get the list of persons living at unknownAddress
+2023-07-17T12:05:19.011+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : response with the list of children from persons living at unknownAddress
+2023-07-17T12:05:19.017+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : get the list of persons living at 1509 CULVER ST
+2023-07-17T12:05:19.017+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : response with the list of children from persons living at 1509 CULVER ST
+2023-07-17T12:05:19.029+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : response with the list of emails from persons living in cityUnknown
+2023-07-17T12:05:19.037+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : get the list of persons living at unknownAddress
+2023-07-17T12:05:19.037+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : response with the list of children from persons living at unknownAddress
+2023-07-17T12:05:19.042+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : get the list of persons living at 1509 Culver St
+2023-07-17T12:05:19.043+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : response with the list of children from persons living at 1509 Culver St
+2023-07-17T12:05:19.047+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : response with the list of emails from persons living in culver
+2023-07-17T12:05:19.054+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : get the list of persons living at 1509 culver st
+2023-07-17T12:05:19.075+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : response with the list of emails from persons living in CULVER
+2023-07-17T12:05:19.083+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : response with the list of emails from persons living in CULVER
+2023-07-17T12:05:19.088+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : get the list of persons living at 1509 CULVER ST
+2023-07-17T12:05:19.128+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Starting SafetyNetAlertsApplicationTests using Java 17.0.6 with PID 16520 (started by indov in C:\Users\indov\git\SafetyNetAlerts\SafetyNetAlerts)
+2023-07-17T12:05:19.128+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Running with Spring Boot v3.1.1, Spring v6.0.10
+2023-07-17T12:05:19.128+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : No active profile set, falling back to 1 default profile: "default"
+2023-07-17T12:05:19.439+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : copy the data file
+2023-07-17T12:05:19.446+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of persons
+2023-07-17T12:05:19.467+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of fire stations
+2023-07-17T12:05:19.471+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : create a list of medical records
+2023-07-17T12:05:19.476+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : the constructor SafetyNetAlertsCatalog succeeded
+2023-07-17T12:05:19.732+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplicationTests    : Started SafetyNetAlertsApplicationTests in 0.622 seconds (process running for 4.581)
+2023-07-17T12:05:19.768+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : get the fireStation number that covers 1509 culver st
+2023-07-17T12:05:19.786+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : get the list of addresses that are covered by the fireStation number 3
+2023-07-17T12:05:19.792+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : get the list of addresses that are covered by the fireStation number 3
+2023-07-17T12:05:19.797+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : get the fireStation number that covers 1509 CULVER ST
+2023-07-17T12:05:19.806+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : get the list of addresses that are covered by the fireStation number unknownStation
+2023-07-17T12:05:19.808+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : response with the list of phones from persons living near by the firestation number unknownStation
+2023-07-17T12:05:19.816+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : get the list of addresses that are covered by the fireStation number unknownStation
+2023-07-17T12:05:19.823+02:00 DEBUG 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : get the list of addresses that are covered by the fireStation number 3
+2023-07-17T12:05:19.824+02:00  INFO 16520 --- [main] c.s.S.SafetyNetAlertsApplication         : response with the list of phones from persons living near by the firestation number 3

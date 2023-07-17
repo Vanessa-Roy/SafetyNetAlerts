@@ -1,18 +1,8 @@
 package com.safetynet.SafetyNetAlerts.model;
 
-import lombok.Data;
-
-import java.util.ArrayList;
 import java.util.List;
 /**
- * Represent a child
+ * Represent a child with their family
  *
  */
-@Data
-public class Child {
-
-    private String firstName;
-    private String lastName;
-    private int age;
-    private List<Person> family = new ArrayList<>();
-}
+public record Child(String firstName, String lastName, int age, List<Person> family) {}

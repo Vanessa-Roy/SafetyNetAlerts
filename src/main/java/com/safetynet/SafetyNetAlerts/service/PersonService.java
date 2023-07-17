@@ -75,23 +75,21 @@ public class PersonService {
     public List<Child> getChildrenFromAddress(String address) {
         List<Person> personsFromAddress = getPersonsFromAddress(address);
         List<Child> childrenFromAddress = new ArrayList<>();
-
         for (Person person : personsFromAddress) {
             int age = medicalRecordService.getAgeFromName(person.getFirstName(),person.getLastName());
             if(age <= 18) {
-                Child child = new Child();
                 List<Person> family = new ArrayList<>(personsFromAddress);
-                child.setAge(age);
-                child.setFirstName(person.getFirstName());
-                child.setLastName(person.getLastName());
                 family.remove(person);
-                child.setFamily(family);
+                Child child = new Child(
+                        person.getFirstName(),
+                        person.getLastName(),
+                        age,
+                        family
+                );
                 childrenFromAddress.add(child);
             }
         }
-
         logger.info("response with the list of children from persons living at {}", address);
         return childrenFromAddress;
     }
-
 }

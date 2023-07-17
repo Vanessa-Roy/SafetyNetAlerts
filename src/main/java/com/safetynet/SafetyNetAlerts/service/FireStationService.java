@@ -1,8 +1,7 @@
 package com.safetynet.SafetyNetAlerts.service;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
-import com.safetynet.SafetyNetAlerts.model.FireStation;
-import com.safetynet.SafetyNetAlerts.model.Person;
+import com.safetynet.SafetyNetAlerts.model.*;
 import com.safetynet.SafetyNetAlerts.repository.FireStationRepository;
 import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
 import org.apache.logging.log4j.LogManager;
@@ -10,8 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -26,6 +24,10 @@ public class FireStationService {
     private FireStationRepository fireStationRepository;
     @Autowired
     private PersonRepository personRepository;
+    @Autowired
+    private MedicalRecordService medicalRecordService;
+    @Autowired
+    private PersonService personService;
 
 
     /**
@@ -79,5 +81,71 @@ public class FireStationService {
                                                 .collect(Collectors.toList());
         logger.info("response with the list of phones from persons living near by the firestation number {}", firestation);
         return phonesFromStation;
+    }
+
+    /**
+     * Get all the persons from a firestation and a counter of children and adults.
+     *
+     * @param stationNumber a String represents the firestation to search for
+     * @return a list of all the persons living nearby the firestation, obtained from personRepository, duplicates are possible
+     */
+    public PersonWithCounterChildAdult getPersonsFromStationWithCounter(String stationNumber) {
+        int childrenCounter = 0;
+        int adultCounter = 0;
+        List<String> addressFromStation = getAddressFromStation(stationNumber);
+        List<Person> persons = personRepository.getPersonList();
+        List<Person> personsFromStation = persons.stream()
+                .filter(p -> addressFromStation.contains(p.getAddress()))
+                .collect(Collectors.toList());
+        List<PersonWithoutEmail> personsWithoutEmailFromStation = new ArrayList<>();
+        for (Person person : personsFromStation) {
+            PersonWithoutEmail personWithoutEmail = new PersonWithoutEmail(
+                    person.getFirstName(),
+                    person.getLastName(),
+                    person.getAddress(),
+                    person.getZip(),
+                    person.getCity(),
+                    person.getPhone()
+            );
+            personsWithoutEmailFromStation.add(personWithoutEmail);
+        }
+        for (Person person : personsFromStation) {
+            int age = medicalRecordService.getAgeFromName(person.getFirstName(), person.getLastName());
+            if (age <= 18) {
+                childrenCounter++;
+            } else if (age > 18) {
+                adultCounter++;
+            }
+        }
+
+        PersonWithCounterChildAdult personsFromStationWithMedicalRecordAndCounter = new PersonWithCounterChildAdult(
+                adultCounter,
+                childrenCounter,
+                personsWithoutEmailFromStation
+        );
+        logger.info("response with the list of persons living near by the firestation number {} and a counter of children and adults", stationNumber);
+        return personsFromStationWithMedicalRecordAndCounter;
+    }
+
+    public PersonsWithFireStation getPersonsFromAddressWithFireStation(String address) {
+        String fireStation = getStationsFromAddress(address);
+        List<Person> personsFromAddress = personService.getPersonsFromAddress(address);
+        List<PersonWithMedicalRecord> personsFromAddressWithMedicalRecord = new ArrayList<>();
+        for (Person person : personsFromAddress) {
+            PersonWithMedicalRecord personWithMedicalRecord = new PersonWithMedicalRecord(
+                    person.getLastName(),
+                    person.getPhone(),
+                    medicalRecordService.getAgeFromName(person.getFirstName(),person.getLastName()),
+                    medicalRecordService.getMedicationsFromName(person.getFirstName(),person.getLastName()),
+                    medicalRecordService.getAllergiesFromName(person.getFirstName(),person.getLastName())
+            );
+            personsFromAddressWithMedicalRecord.add(personWithMedicalRecord);
+        }
+        PersonsWithFireStation personsFromStationWithMedicalRecord = new PersonsWithFireStation(
+                fireStation,
+                personsFromAddressWithMedicalRecord
+        );
+        logger.info("response with the list of persons living at {} and the number of firestation", address);
+        return personsFromStationWithMedicalRecord;
     }
 }
