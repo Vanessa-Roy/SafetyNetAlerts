@@ -1,9 +1,6 @@
 package com.safetynet.SafetyNetAlerts;
 
-import com.safetynet.SafetyNetAlerts.model.FireStation;
-import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
-import com.safetynet.SafetyNetAlerts.model.Person;
-import com.safetynet.SafetyNetAlerts.model.PersonsWithFireStation;
+import com.safetynet.SafetyNetAlerts.model.*;
 import com.safetynet.SafetyNetAlerts.repository.FireStationRepository;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
 import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
@@ -170,8 +167,65 @@ public class FireStationServiceTest {
         });
     }
 
-    //getPersonsWithCounterFromStation(String stationNumber)
-    //getPersonsWithFireStationFromAddress(String address)
+    @Test
+    public void testGetPersonsWithCounterFromStationWithAdult() {
+        when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
+        when(personRepository.getPersonList()).thenReturn(persons);
+        when(medicalRecordService.getAgeFromName("John","Boyd")).thenReturn(39);
+
+        PersonWithCounterChildAdult result = testingFireStationService.getPersonsWithCounterFromStation("3");
+
+        verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        assertEquals(1,result.persons().size());
+        assertEquals(0,result.childrenCounter());
+        assertEquals(1,result.adultsCounter());
+    }
+
+    @Test
+    public void testGetPersonsWithCounterFromStationWithChild() {
+        when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
+        when(personRepository.getPersonList()).thenReturn(persons);
+        when(medicalRecordService.getAgeFromName("John","Boyd")).thenReturn(6);
+
+        PersonWithCounterChildAdult result = testingFireStationService.getPersonsWithCounterFromStation("3");
+
+        verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        assertEquals(1,result.persons().size());
+        assertEquals(1,result.childrenCounter());
+        assertEquals(0,result.adultsCounter());
+    }
+
+    @Test
+    public void testGetPersonsWithCounterFromStationWithBothAdultChild() {
+        Person person = new Person();
+        person.setFirstName("Tenley");
+        person.setLastName("Boyd");
+        person.setAddress("1509 Culver St");
+        persons.add(person);
+        when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
+        when(personRepository.getPersonList()).thenReturn(persons);
+        when(medicalRecordService.getAgeFromName("Tenley","Boyd")).thenReturn(6);
+        when(medicalRecordService.getAgeFromName("John","Boyd")).thenReturn(39);
+
+        PersonWithCounterChildAdult result = testingFireStationService.getPersonsWithCounterFromStation("3");
+
+        verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        assertEquals(2,result.persons().size());
+        assertEquals(1,result.childrenCounter());
+        assertEquals(1,result.adultsCounter());
+    }
+
+    @Test
+    public void testGetPersonsWithCounterFromStationUnknown() {
+        when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
+
+        PersonWithCounterChildAdult result = testingFireStationService.getPersonsWithCounterFromStation("unknownStation");
+
+        verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        assertEquals(0,result.persons().size());
+        assertEquals(0,result.childrenCounter());
+        assertEquals(0,result.adultsCounter());
+    }
     @Test
     public void testGetPersonsWithFireStationFromAddressLowercase() {
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
