@@ -1,27 +1,22 @@
 package com.safetynet.SafetyNetAlerts;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import com.safetynet.SafetyNetAlerts.controller.SafetyNetAlertsController;
-import com.safetynet.SafetyNetAlerts.service.FireStationService;
-import com.safetynet.SafetyNetAlerts.service.PersonService;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import static org.hamcrest.CoreMatchers.is;
+
+import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers = SafetyNetAlertsController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class SafetyNetAlertsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @MockBean
-    private PersonService personService;
-
-    @MockBean
-    private FireStationService fireStationService;
 
     @Test
     public void testGetEmailsFromCityShouldFail() throws Exception {
@@ -31,10 +26,11 @@ public class SafetyNetAlertsControllerTest {
 
     @Test
     public void testGetEmailsFromCityShouldPass() throws Exception {
-        mockMvc.perform(get("/communityEmail?city=culver"))
+        mockMvc.perform(get("/communityEmail?city=Culver"))
                 .andExpectAll(
                         status().isOk(),
-                        content().contentType("application/json")
+                        content().contentType("application/json"),
+                        jsonPath("$[0]", is("jaboyd@email.com"))
                 );
     }
 
@@ -49,7 +45,8 @@ public class SafetyNetAlertsControllerTest {
         mockMvc.perform(get("/phoneAlert?firestation=3"))
                 .andExpectAll(
                         status().isOk(),
-                        content().contentType("application/json")
+                        content().contentType("application/json"),
+                        jsonPath("$[0]", is("841-874-6512"))
                 );
     }
 
@@ -64,7 +61,46 @@ public class SafetyNetAlertsControllerTest {
         mockMvc.perform(get("/childAlert?address=1509 Culver St"))
                 .andExpectAll(
                         status().isOk(),
-                        content().contentType("application/json")
+                        content().contentType("application/json"),
+                        jsonPath("$[0].firstName", is("Tenley")),
+                        jsonPath("$[0].age", is(11)),
+                        jsonPath("$[0].family[0].firstName", is("John"))
+                );
+    }
+
+    @Test
+    public void testGetPersonsWithCounterFromStationShouldFail() throws Exception {
+        mockMvc.perform(get("/firestation"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetPersonsWithCounterFromStationShouldPass() throws Exception {
+        mockMvc.perform(get("/firestation?stationNumber=3"))
+                .andExpectAll(
+                        status().isOk(),
+                        content().contentType("application/json"),
+                        jsonPath("$[0].adultsCounter", is(8)),
+                        jsonPath("$[0].childrenCounter", is(3)),
+                        jsonPath("$[0].persons[0].firstName", is("John"))
+                );
+    }
+
+    @Test
+    public void testGetPersonsWithFireStationFromAddressShouldFail() throws Exception {
+        mockMvc.perform(get("/fire"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetPersonsWithFireStationFromAddressShouldPass() throws Exception {
+        mockMvc.perform(get("/fire?address=1509 Culver St"))
+                .andExpectAll(
+                        status().isOk(),
+                        content().contentType("application/json"),
+                        jsonPath("$[0].firestation", is("3")),
+                        jsonPath("$[0].personsWithMedicalRecords[0].lastName", is("Boyd")),
+                        jsonPath("$[0].personsWithMedicalRecords[0].medications[0]", is("aznol:350mg"))
                 );
     }
 

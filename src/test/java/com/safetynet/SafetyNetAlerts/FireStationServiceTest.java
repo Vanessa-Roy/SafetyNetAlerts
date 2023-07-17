@@ -173,12 +173,12 @@ public class FireStationServiceTest {
         when(personRepository.getPersonList()).thenReturn(persons);
         when(medicalRecordService.getAgeFromName("John","Boyd")).thenReturn(39);
 
-        PersonWithCounterChildAdult result = testingFireStationService.getPersonsWithCounterFromStation("3");
+        List<PersonWithCounterChildAdult> result = testingFireStationService.getPersonsWithCounterFromStation("3");
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
-        assertEquals(1,result.persons().size());
-        assertEquals(0,result.childrenCounter());
-        assertEquals(1,result.adultsCounter());
+        assertEquals(1,result.size());
+        assertEquals(0,result.get(0).childrenCounter());
+        assertEquals(1,result.get(0).adultsCounter());
     }
 
     @Test
@@ -187,12 +187,12 @@ public class FireStationServiceTest {
         when(personRepository.getPersonList()).thenReturn(persons);
         when(medicalRecordService.getAgeFromName("John","Boyd")).thenReturn(6);
 
-        PersonWithCounterChildAdult result = testingFireStationService.getPersonsWithCounterFromStation("3");
+        List<PersonWithCounterChildAdult> result = testingFireStationService.getPersonsWithCounterFromStation("3");
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
-        assertEquals(1,result.persons().size());
-        assertEquals(1,result.childrenCounter());
-        assertEquals(0,result.adultsCounter());
+        assertEquals(1,result.size());
+        assertEquals(1,result.get(0).childrenCounter());
+        assertEquals(0,result.get(0).adultsCounter());
     }
 
     @Test
@@ -207,24 +207,24 @@ public class FireStationServiceTest {
         when(medicalRecordService.getAgeFromName("Tenley","Boyd")).thenReturn(6);
         when(medicalRecordService.getAgeFromName("John","Boyd")).thenReturn(39);
 
-        PersonWithCounterChildAdult result = testingFireStationService.getPersonsWithCounterFromStation("3");
+        List<PersonWithCounterChildAdult> result = testingFireStationService.getPersonsWithCounterFromStation("3");
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
-        assertEquals(2,result.persons().size());
-        assertEquals(1,result.childrenCounter());
-        assertEquals(1,result.adultsCounter());
+        assertEquals(2,result.get(0).persons().size());
+        assertEquals(1,result.get(0).childrenCounter());
+        assertEquals(1,result.get(0).adultsCounter());
     }
 
     @Test
     public void testGetPersonsWithCounterFromStationUnknown() {
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
 
-        PersonWithCounterChildAdult result = testingFireStationService.getPersonsWithCounterFromStation("unknownStation");
+        List<PersonWithCounterChildAdult> result = testingFireStationService.getPersonsWithCounterFromStation("unknownStation");
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
-        assertEquals(0,result.persons().size());
-        assertEquals(0,result.childrenCounter());
-        assertEquals(0,result.adultsCounter());
+        assertEquals(1,result.size());
+        assertEquals(0,result.get(0).childrenCounter());
+        assertEquals(0,result.get(0).adultsCounter());
     }
     @Test
     public void testGetPersonsWithFireStationFromAddressLowercase() {
@@ -234,12 +234,12 @@ public class FireStationServiceTest {
         when(medicalRecordService.getMedicationsFromName("John","Boyd")).thenReturn(medications);
         when(medicalRecordService.getAllergiesFromName("John","Boyd")).thenReturn(allergies);
 
-        PersonsWithFireStation result = testingFireStationService.getPersonsWithFireStationFromAddress("1509 culver st");
+        List<PersonsWithFireStation> result = testingFireStationService.getPersonsWithFireStationFromAddress("1509 culver st");
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
         assertNotNull(result);
-        assertEquals("3", result.firestation());
-        assertEquals(1, result.personsWithMedicalRecords().size());
+        assertEquals("3", result.get(0).firestation());
+        assertEquals(1, result.get(0).personsWithMedicalRecords().size());
     }
     @Test
     public void testGetPersonsWithFireStationFromAddressUppercase() {
@@ -249,12 +249,12 @@ public class FireStationServiceTest {
         when(medicalRecordService.getMedicationsFromName("John","Boyd")).thenReturn(medications);
         when(medicalRecordService.getAllergiesFromName("John","Boyd")).thenReturn(allergies);
 
-        PersonsWithFireStation result = testingFireStationService.getPersonsWithFireStationFromAddress("1509 CULVER ST");
+        List<PersonsWithFireStation> result = testingFireStationService.getPersonsWithFireStationFromAddress("1509 CULVER ST");
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
         assertNotNull(result);
-        assertEquals("3", result.firestation());
-        assertEquals(1, result.personsWithMedicalRecords().size());
+        assertEquals("3", result.get(0).firestation());
+        assertEquals(1, result.get(0).personsWithMedicalRecords().size());
     }
     @Test
     public void testGetPersonsWithFireStationFromAddressUnknown() {

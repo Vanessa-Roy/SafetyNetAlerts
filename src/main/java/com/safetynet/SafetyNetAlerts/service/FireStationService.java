@@ -89,7 +89,7 @@ public class FireStationService {
      * @param stationNumber a String represents the firestation to search for
      * @return a list of all the persons living nearby the firestation, obtained from personRepository, duplicates are possible
      */
-    public PersonWithCounterChildAdult getPersonsWithCounterFromStation(String stationNumber) {
+    public List<PersonWithCounterChildAdult> getPersonsWithCounterFromStation(String stationNumber) {
         int childrenCounter = 0;
         int adultCounter = 0;
         List<String> addressFromStation = getAddressFromStation(stationNumber);
@@ -117,17 +117,18 @@ public class FireStationService {
                 adultCounter++;
             }
         }
-
+        List<PersonWithCounterChildAdult> personsWithCounterChildAdult = new ArrayList<>();
         PersonWithCounterChildAdult personsFromStationWithMedicalRecordAndCounter = new PersonWithCounterChildAdult(
                 adultCounter,
                 childrenCounter,
                 personsWithoutEmailFromStation
         );
+        personsWithCounterChildAdult.add(personsFromStationWithMedicalRecordAndCounter);
         logger.info("response with the list of persons living near by the firestation number {} and a counter of children and adults", stationNumber);
-        return personsFromStationWithMedicalRecordAndCounter;
+        return personsWithCounterChildAdult;
     }
 
-    public PersonsWithFireStation getPersonsWithFireStationFromAddress(String address) {
+    public List<PersonsWithFireStation> getPersonsWithFireStationFromAddress(String address) {
         String fireStation = getStationsFromAddress(address);
         List<Person> personsFromAddress = personService.getPersonsFromAddress(address);
         List<PersonWithMedicalRecord> personsFromAddressWithMedicalRecord = new ArrayList<>();
@@ -141,11 +142,13 @@ public class FireStationService {
             );
             personsFromAddressWithMedicalRecord.add(personWithMedicalRecord);
         }
+        List<PersonsWithFireStation> personsWithFireStations = new ArrayList<>();
         PersonsWithFireStation personsFromStationWithMedicalRecord = new PersonsWithFireStation(
                 fireStation,
                 personsFromAddressWithMedicalRecord
         );
+        personsWithFireStations.add(personsFromStationWithMedicalRecord);
         logger.info("response with the list of persons living at {} and the number of firestation", address);
-        return personsFromStationWithMedicalRecord;
+        return personsWithFireStations;
     }
 }
