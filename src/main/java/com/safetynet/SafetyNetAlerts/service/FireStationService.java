@@ -89,7 +89,7 @@ public class FireStationService {
      * @param stationNumber a String represents the firestation to search for
      * @return a list of all the persons living nearby the firestation, obtained from personRepository, duplicates are possible
      */
-    public PersonWithCounterChildAdult getPersonsFromStationWithCounter(String stationNumber) {
+    public PersonWithCounterChildAdult getPersonsWithCounterFromStation(String stationNumber) {
         int childrenCounter = 0;
         int adultCounter = 0;
         List<String> addressFromStation = getAddressFromStation(stationNumber);
@@ -127,7 +127,7 @@ public class FireStationService {
         return personsFromStationWithMedicalRecordAndCounter;
     }
 
-    public PersonsWithFireStation getPersonsFromAddressWithFireStation(String address) {
+    public PersonsWithFireStation getPersonsWithFireStationFromAddress(String address) {
         String fireStation = getStationsFromAddress(address);
         List<Person> personsFromAddress = personService.getPersonsFromAddress(address);
         List<PersonWithMedicalRecord> personsFromAddressWithMedicalRecord = new ArrayList<>();

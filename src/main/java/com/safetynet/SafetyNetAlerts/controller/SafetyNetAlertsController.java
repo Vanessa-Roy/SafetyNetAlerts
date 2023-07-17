@@ -76,7 +76,7 @@ public class SafetyNetAlertsController {
     @ResponseBody
     public PersonWithCounterChildAdult getPersonsFromStation(@RequestParam String stationNumber) {
         logger.info("request a counter of adults and children from the list of persons living near by the firestation number {}", stationNumber);
-        return fireStationService.getPersonsFromStationWithCounter(stationNumber);
+        return fireStationService.getPersonsWithCounterFromStation(stationNumber);
     }
 
     /**
@@ -89,7 +89,7 @@ public class SafetyNetAlertsController {
     @ResponseBody
     public PersonsWithFireStation getPersonsFromAddress(@RequestParam String address) {
         logger.info("request the firestation number and the list of persons living at {}", address);
-        return fireStationService.getPersonsFromAddressWithFireStation(address);
+        return fireStationService.getPersonsWithFireStationFromAddress(address);
     }
 
 }
