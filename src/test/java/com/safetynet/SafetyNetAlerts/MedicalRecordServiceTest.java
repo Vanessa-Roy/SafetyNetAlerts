@@ -93,4 +93,84 @@ public class MedicalRecordServiceTest {
             testingMedicalRecordService.getAgeFromName("john","unknowLastName");
         });
     }
+
+    @Test
+    public void testGetMedicationsFromNameLowercase() throws IOException {
+        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
+
+        List<String> result = testingMedicalRecordService.getMedicationsFromName("john","boyd");
+
+        verify(medicalRecordRepository, Mockito.times(1)).getMedicalRecordList();
+        assertEquals(2,result.size());
+        assertTrue(result.toString().contains("aznol:350mg"));
+    }
+
+    @Test
+    public void testGetMedicationsFromNameUppercase() throws IOException {
+        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
+
+        List<String> result = testingMedicalRecordService.getMedicationsFromName("JOHN","BOYD");
+
+        verify(medicalRecordRepository, Mockito.times(1)).getMedicalRecordList();
+        assertEquals(2,result.size());
+        assertTrue(result.toString().contains("aznol:350mg"));
+    }
+
+    @Test
+    public void testGetMedicationsFromBothFirstNameLastNameUnknown() throws IOException {
+        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
+
+        assertThrows(NoSuchElementException.class, () -> {
+            testingMedicalRecordService.getMedicationsFromName("unknowFirstName","unknowLastName");
+        });
+    }
+
+    @Test
+    public void testGetMedicationsLastNameUnknown() throws IOException {
+        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
+
+        assertThrows(NoSuchElementException.class, () -> {
+            testingMedicalRecordService.getMedicationsFromName("john","unknowLastName");
+        });
+    }
+
+    @Test
+    public void testGetAllergiesFromNameLowercase() throws IOException {
+        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
+
+        List<String> result = testingMedicalRecordService.getAllergiesFromName("john","boyd");
+
+        verify(medicalRecordRepository, Mockito.times(1)).getMedicalRecordList();
+        assertEquals(1,result.size());
+        assertTrue(result.toString().contains("nillacilan"));
+    }
+
+    @Test
+    public void testGetAllergiesFromNameUppercase() throws IOException {
+        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
+
+        List<String> result = testingMedicalRecordService.getAllergiesFromName("JOHN","BOYD");
+
+        verify(medicalRecordRepository, Mockito.times(1)).getMedicalRecordList();
+        assertEquals(1,result.size());
+        assertTrue(result.toString().contains("nillacilan"));
+    }
+
+    @Test
+    public void testGetAllergiesFromBothFirstNameLastNameUnknown() throws IOException {
+        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
+
+        assertThrows(NoSuchElementException.class, () -> {
+            testingMedicalRecordService.getAllergiesFromName("unknowFirstName","unknowLastName");
+        });
+    }
+
+    @Test
+    public void testGetAllergiesLastNameUnknown() throws IOException {
+        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
+
+        assertThrows(NoSuchElementException.class, () -> {
+            testingMedicalRecordService.getAllergiesFromName("john","unknowLastName");
+        });
+    }
 }
