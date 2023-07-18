@@ -40,12 +40,11 @@ public class PersonService {
      */
     public List<String> getEmailsFromCity(String city) {
         List<Person> persons = personRepository.getPersonList();
-        List<String> communityEmailFromCity = persons.stream()
+        return persons.stream()
                 .filter(p -> p.getCity().equalsIgnoreCase(city))
                 .map(Person::getEmail)
                 .distinct()
                 .toList();
-        return communityEmailFromCity;
     }
 
     /**

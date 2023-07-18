@@ -18,7 +18,7 @@ public class SafetyNetAlertsControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void testGetEmailsFromCityShouldFail() throws Exception {
+    public void testGetEmailsFromCityWithoutParameterShouldFail() throws Exception {
         mockMvc.perform(get("/communityEmail"))
                 .andExpect(status().isBadRequest());
     }
@@ -34,7 +34,7 @@ public class SafetyNetAlertsControllerTest {
     }
 
     @Test
-    public void testGetPhonesFromStationShouldFail() throws Exception {
+    public void testGetPhonesFromStationParameterShouldFail() throws Exception {
         mockMvc.perform(get("/phoneAlert"))
                 .andExpect(status().isBadRequest());
     }
@@ -50,7 +50,7 @@ public class SafetyNetAlertsControllerTest {
     }
 
     @Test
-    public void testGetChildrenFromAddressShouldFail() throws Exception {
+    public void testGetChildrenFromAddressParameterShouldFail() throws Exception {
         mockMvc.perform(get("/childAlert"))
                 .andExpect(status().isBadRequest());
     }
@@ -68,7 +68,7 @@ public class SafetyNetAlertsControllerTest {
     }
 
     @Test
-    public void testGetPersonsWithCounterFromStationShouldFail() throws Exception {
+    public void testGetPersonsWithCounterFromStationParameterShouldFail() throws Exception {
         mockMvc.perform(get("/firestation"))
                 .andExpect(status().isBadRequest());
     }
@@ -86,7 +86,7 @@ public class SafetyNetAlertsControllerTest {
     }
 
     @Test
-    public void testGetPersonsWithFireStationFromAddressShouldFail() throws Exception {
+    public void testGetPersonsWithFireStationFromAddressParameterShouldFail() throws Exception {
         mockMvc.perform(get("/fire"))
                 .andExpect(status().isBadRequest());
     }

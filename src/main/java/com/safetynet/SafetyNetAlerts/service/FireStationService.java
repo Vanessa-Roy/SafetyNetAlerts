@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 /**
  * Centralize every methods relatives to the firestations.
@@ -43,7 +42,7 @@ public class FireStationService {
                 .filter(f -> f.getStation().equals(station))
                 .map(FireStation::getAddress)
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
         logger.debug("get the list of addresses that are covered by the fireStation number {}", station);
         return addressFromStation;
     }
@@ -60,8 +59,7 @@ public class FireStationService {
                 .filter(f -> f.getAddress().equalsIgnoreCase(address))
                 .map(FireStation::getStation)
                 .findAny()
-                .get()
-                .toString();
+                .orElseThrow();
         logger.debug("get the fireStation number that covers {}", address);
         return stationFromAddress;
     }
@@ -75,12 +73,11 @@ public class FireStationService {
     public List<String> getPhonesFromStation(String firestation) {
         List<String> addressFromStation = getAddressFromStation(firestation);
         List<Person> persons = personRepository.getPersonList();
-        List<String> phonesFromStation = persons.stream()
+        return persons.stream()
                 .filter(p -> addressFromStation.contains(p.getAddress()))
                 .map(Person::getPhone)
                 .distinct()
-                .collect(Collectors.toList());
-        return phonesFromStation;
+                .toList();
     }
 
     /**
