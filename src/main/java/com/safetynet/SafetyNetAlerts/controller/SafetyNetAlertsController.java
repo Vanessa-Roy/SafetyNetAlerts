@@ -2,20 +2,22 @@ package com.safetynet.SafetyNetAlerts.controller;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import com.safetynet.SafetyNetAlerts.model.Child;
-import com.safetynet.SafetyNetAlerts.model.PersonWithCounterChildAdult;
+import com.safetynet.SafetyNetAlerts.model.PersonsWithCounterChildAdult;
 import com.safetynet.SafetyNetAlerts.model.PersonsWithFireStation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import com.safetynet.SafetyNetAlerts.service.FireStationService;
 import com.safetynet.SafetyNetAlerts.service.PersonService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 /**
  * Centralise the endpoints and calls the right service in attempt to find and send the response.
- *
  */
 @RestController
 public class SafetyNetAlertsController {
@@ -37,7 +39,9 @@ public class SafetyNetAlertsController {
     @ResponseBody
     public List<String> getEmailsFromCity(@RequestParam String city) {
         logger.info("request the list of emails from persons living in {}", city);
-        return personService.getEmailsFromCity(city);
+        List<String> result = personService.getEmailsFromCity(city);
+        logger.info("response with {} email(s) from persons living in {}", result.size(), city);
+        return result;
     }
 
     /**
@@ -50,7 +54,9 @@ public class SafetyNetAlertsController {
     @ResponseBody
     public List<String> getPhonesFromStation(@RequestParam String firestation) {
         logger.info("request the list of phones from persons living near by the firestation number {}", firestation);
-        return fireStationService.getPhonesFromStation(firestation);
+        List<String> result = fireStationService.getPhonesFromStation(firestation);
+        logger.info("response with {} phone(s) from persons living near by the firestation number {}", result.size(), firestation);
+        return result;
     }
 
     /**
@@ -63,7 +69,9 @@ public class SafetyNetAlertsController {
     @ResponseBody
     public List<Child> getChildrenFromAddress(@RequestParam String address) {
         logger.info("request the list of children living at {}", address);
-        return personService.getChildrenFromAddress(address);
+        List<Child> result = personService.getChildrenFromAddress(address);
+        logger.info("response with {} child(ren) from persons living at {}", result.size(), address);
+        return result;
     }
 
     /**
@@ -74,9 +82,11 @@ public class SafetyNetAlertsController {
      */
     @GetMapping("/firestation")
     @ResponseBody
-    public List<PersonWithCounterChildAdult> getPersonsWithCounterFromStation(@RequestParam String stationNumber) {
+    public List<PersonsWithCounterChildAdult> getPersonsWithCounterFromStation(@RequestParam String stationNumber) {
         logger.info("request a counter of adults and children from the list of persons living near by the firestation number {}", stationNumber);
-        return fireStationService.getPersonsWithCounterFromStation(stationNumber);
+        List<PersonsWithCounterChildAdult> result = fireStationService.getPersonsWithCounterFromStation(stationNumber);
+        logger.info("response with {} person(s) living near by the firestation number {} with {} child(ren) and {} adult(s)", result.get(0).persons().size(), stationNumber, result.get(0).childrenCounter(), result.get(0).adultsCounter());
+        return result;
     }
 
     /**
@@ -89,7 +99,9 @@ public class SafetyNetAlertsController {
     @ResponseBody
     public List<PersonsWithFireStation> getPersonsWithFireStationFromAddress(@RequestParam String address) {
         logger.info("request the firestation number and the list of persons living at {}", address);
-        return fireStationService.getPersonsWithFireStationFromAddress(address);
+        List<PersonsWithFireStation> result = fireStationService.getPersonsWithFireStationFromAddress(address);
+        logger.info("response with {} person(s) living at {} and covered by firestation number {}", result.get(0).personsWithMedicalRecords().size(), address, result.get(0).firestation());
+        return result;
     }
 
 }

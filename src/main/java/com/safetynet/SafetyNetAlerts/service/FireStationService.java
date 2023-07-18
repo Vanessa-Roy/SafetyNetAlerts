@@ -9,12 +9,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
  * Centralize every methods relatives to the firestations.
- *
  */
 @Service
 public class FireStationService {
@@ -39,10 +40,10 @@ public class FireStationService {
     public List<String> getAddressFromStation(String station) {
         List<FireStation> fireStations = fireStationRepository.getFireStationList();
         List<String> addressFromStation = fireStations.stream()
-                                                        .filter(f -> f.getStation().equals(station))
-                                                        .map(FireStation::getAddress)
-                                                        .distinct()
-                                                        .collect(Collectors.toList());
+                .filter(f -> f.getStation().equals(station))
+                .map(FireStation::getAddress)
+                .distinct()
+                .collect(Collectors.toList());
         logger.debug("get the list of addresses that are covered by the fireStation number {}", station);
         return addressFromStation;
     }
@@ -56,11 +57,11 @@ public class FireStationService {
     public String getStationsFromAddress(String address) throws NoSuchElementException {
         List<FireStation> fireStations = fireStationRepository.getFireStationList();
         String stationFromAddress = fireStations.stream()
-                                                .filter(f -> f.getAddress().equalsIgnoreCase(address))
-                                                .map(FireStation::getStation)
-                                                .findAny()
-                                                .get()
-                                                .toString();
+                .filter(f -> f.getAddress().equalsIgnoreCase(address))
+                .map(FireStation::getStation)
+                .findAny()
+                .get()
+                .toString();
         logger.debug("get the fireStation number that covers {}", address);
         return stationFromAddress;
     }
@@ -75,11 +76,10 @@ public class FireStationService {
         List<String> addressFromStation = getAddressFromStation(firestation);
         List<Person> persons = personRepository.getPersonList();
         List<String> phonesFromStation = persons.stream()
-                                                .filter(p -> addressFromStation.contains(p.getAddress()))
-                                                .map(Person::getPhone)
-                                                .distinct()
-                                                .collect(Collectors.toList());
-        logger.info("response with the list of phones from persons living near by the firestation number {}", firestation);
+                .filter(p -> addressFromStation.contains(p.getAddress()))
+                .map(Person::getPhone)
+                .distinct()
+                .collect(Collectors.toList());
         return phonesFromStation;
     }
 
@@ -89,14 +89,14 @@ public class FireStationService {
      * @param stationNumber a String represents the firestation to search for
      * @return a list of all the persons living nearby the firestation, obtained from personRepository, duplicates are possible
      */
-    public List<PersonWithCounterChildAdult> getPersonsWithCounterFromStation(String stationNumber) {
+    public List<PersonsWithCounterChildAdult> getPersonsWithCounterFromStation(String stationNumber) {
         int childrenCounter = 0;
         int adultCounter = 0;
         List<String> addressFromStation = getAddressFromStation(stationNumber);
         List<Person> persons = personRepository.getPersonList();
         List<Person> personsFromStation = persons.stream()
                 .filter(p -> addressFromStation.contains(p.getAddress()))
-                .collect(Collectors.toList());
+                .toList();
         List<PersonWithoutEmail> personsWithoutEmailFromStation = new ArrayList<>();
         for (Person person : personsFromStation) {
             PersonWithoutEmail personWithoutEmail = new PersonWithoutEmail(
@@ -110,21 +110,20 @@ public class FireStationService {
             personsWithoutEmailFromStation.add(personWithoutEmail);
         }
         for (Person person : personsFromStation) {
-            int age = medicalRecordService.getAgeFromName(person.getFirstName(), person.getLastName());
+            int age = medicalRecordService.getMedicalRecordFromName(person.getFirstName(), person.getLastName()).age();
             if (age <= 18) {
                 childrenCounter++;
-            } else if (age > 18) {
+            } else {
                 adultCounter++;
             }
         }
-        List<PersonWithCounterChildAdult> personsWithCounterChildAdult = new ArrayList<>();
-        PersonWithCounterChildAdult personsFromStationWithMedicalRecordAndCounter = new PersonWithCounterChildAdult(
+        List<PersonsWithCounterChildAdult> personsWithCounterChildAdult = new ArrayList<>();
+        PersonsWithCounterChildAdult personsFromStationWithMedicalRecordAndCounter = new PersonsWithCounterChildAdult(
                 adultCounter,
                 childrenCounter,
                 personsWithoutEmailFromStation
         );
         personsWithCounterChildAdult.add(personsFromStationWithMedicalRecordAndCounter);
-        logger.info("response with the list of persons living near by the firestation number {} and a counter of children and adults", stationNumber);
         return personsWithCounterChildAdult;
     }
 
@@ -136,9 +135,7 @@ public class FireStationService {
             PersonWithMedicalRecord personWithMedicalRecord = new PersonWithMedicalRecord(
                     person.getLastName(),
                     person.getPhone(),
-                    medicalRecordService.getAgeFromName(person.getFirstName(),person.getLastName()),
-                    medicalRecordService.getMedicationsFromName(person.getFirstName(),person.getLastName()),
-                    medicalRecordService.getAllergiesFromName(person.getFirstName(),person.getLastName())
+                    medicalRecordService.getMedicalRecordFromName(person.getFirstName(), person.getLastName())
             );
             personsFromAddressWithMedicalRecord.add(personWithMedicalRecord);
         }
@@ -148,7 +145,6 @@ public class FireStationService {
                 personsFromAddressWithMedicalRecord
         );
         personsWithFireStations.add(personsFromStationWithMedicalRecord);
-        logger.info("response with the list of persons living at {} and the number of firestation", address);
         return personsWithFireStations;
     }
 }

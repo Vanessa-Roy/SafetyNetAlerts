@@ -1,6 +1,7 @@
 package com.safetynet.SafetyNetAlerts;
 
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
+import com.safetynet.SafetyNetAlerts.model.MedicalRecordWithAge;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
 import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
 import com.safetynet.SafetyNetAlerts.service.MedicalRecordService;
@@ -20,7 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,6 +33,8 @@ public class MedicalRecordServiceTest {
     private MedicalRecordService testingMedicalRecordService;
 
     private static List<MedicalRecord> medicalRecords;
+
+    private static MedicalRecordWithAge medicalRecordWithAge;
     @Mock
     private static MedicalRecordRepository medicalRecordRepository;
 
@@ -52,125 +56,51 @@ public class MedicalRecordServiceTest {
         allergies.add("nillacilan");
         medicalRecord.setAllergies(allergies);
         medicalRecords.add(medicalRecord);
+        medicalRecordWithAge = new MedicalRecordWithAge(39, medications, allergies);
     }
 
     @Test
-    public void testGetAgeFromNameLowercase() throws IOException {
+    public void testGetMedicalRecordFromNameLowercase() throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
-        int result = testingMedicalRecordService.getAgeFromName("john","boyd");
+        MedicalRecordWithAge result = testingMedicalRecordService.getMedicalRecordFromName("john", "boyd");
+        MedicalRecordWithAge expectedResult = medicalRecordWithAge;
 
         verify(medicalRecordRepository, Mockito.times(1)).getMedicalRecordList();
-        assertEquals(Period.between(LocalDate.parse(medicalRecords.get(0).getBirthdate(), formatter),LocalDate.now()).getYears(), result);
+        assertEquals(Period.between(LocalDate.parse(medicalRecords.get(0).getBirthdate(), formatter), LocalDate.now()).getYears(), result.age());
+        assertEquals(expectedResult, result);
     }
 
     @Test
-    public void testGetAgeFromNameUppercase() throws IOException {
+    public void testGetMedicalRecordFromNameUppercase() throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
-        int result = testingMedicalRecordService.getAgeFromName("JOHN","BOYD");
+        MedicalRecordWithAge result = testingMedicalRecordService.getMedicalRecordFromName("JOHN", "BOYD");
+        MedicalRecordWithAge expectedResult = medicalRecordWithAge;
 
         verify(medicalRecordRepository, Mockito.times(1)).getMedicalRecordList();
-        assertEquals(Period.between(LocalDate.parse(medicalRecords.get(0).getBirthdate(), formatter),LocalDate.now()).getYears(), result);
+        assertEquals(Period.between(LocalDate.parse(medicalRecords.get(0).getBirthdate(), formatter), LocalDate.now()).getYears(), result.age());
+        assertEquals(expectedResult, result);
     }
 
     @Test
-    public void testGetAgeFromBothFirstNameLastNameUnknown() throws IOException {
+    public void testGetMedicalRecordFromBothFirstNameLastNameUnknown() throws IOException {
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
         assertThrows(NoSuchElementException.class, () -> {
-            testingMedicalRecordService.getAgeFromName("unknowFirstName","unknowLastName");
+            testingMedicalRecordService.getMedicalRecordFromName("unknowFirstName", "unknowLastName").age();
         });
     }
 
     @Test
-    public void testGetAgeFromLastNameUnknown() throws IOException {
+    public void testGetMedicalRecordFromLastNameUnknown() throws IOException {
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
         assertThrows(NoSuchElementException.class, () -> {
-            testingMedicalRecordService.getAgeFromName("john","unknowLastName");
+            testingMedicalRecordService.getMedicalRecordFromName("john", "unknowLastName").age();
         });
     }
 
-    @Test
-    public void testGetMedicationsFromNameLowercase() throws IOException {
-        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
-
-        List<String> result = testingMedicalRecordService.getMedicationsFromName("john","boyd");
-
-        verify(medicalRecordRepository, Mockito.times(1)).getMedicalRecordList();
-        assertEquals(2,result.size());
-        assertTrue(result.toString().contains("aznol:350mg"));
-    }
-
-    @Test
-    public void testGetMedicationsFromNameUppercase() throws IOException {
-        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
-
-        List<String> result = testingMedicalRecordService.getMedicationsFromName("JOHN","BOYD");
-
-        verify(medicalRecordRepository, Mockito.times(1)).getMedicalRecordList();
-        assertEquals(2,result.size());
-        assertTrue(result.toString().contains("aznol:350mg"));
-    }
-
-    @Test
-    public void testGetMedicationsFromBothFirstNameLastNameUnknown() throws IOException {
-        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
-
-        assertThrows(NoSuchElementException.class, () -> {
-            testingMedicalRecordService.getMedicationsFromName("unknowFirstName","unknowLastName");
-        });
-    }
-
-    @Test
-    public void testGetMedicationsLastNameUnknown() throws IOException {
-        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
-
-        assertThrows(NoSuchElementException.class, () -> {
-            testingMedicalRecordService.getMedicationsFromName("john","unknowLastName");
-        });
-    }
-
-    @Test
-    public void testGetAllergiesFromNameLowercase() throws IOException {
-        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
-
-        List<String> result = testingMedicalRecordService.getAllergiesFromName("john","boyd");
-
-        verify(medicalRecordRepository, Mockito.times(1)).getMedicalRecordList();
-        assertEquals(1,result.size());
-        assertTrue(result.toString().contains("nillacilan"));
-    }
-
-    @Test
-    public void testGetAllergiesFromNameUppercase() throws IOException {
-        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
-
-        List<String> result = testingMedicalRecordService.getAllergiesFromName("JOHN","BOYD");
-
-        verify(medicalRecordRepository, Mockito.times(1)).getMedicalRecordList();
-        assertEquals(1,result.size());
-        assertTrue(result.toString().contains("nillacilan"));
-    }
-
-    @Test
-    public void testGetAllergiesFromBothFirstNameLastNameUnknown() throws IOException {
-        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
-
-        assertThrows(NoSuchElementException.class, () -> {
-            testingMedicalRecordService.getAllergiesFromName("unknowFirstName","unknowLastName");
-        });
-    }
-
-    @Test
-    public void testGetAllergiesLastNameUnknown() throws IOException {
-        when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
-
-        assertThrows(NoSuchElementException.class, () -> {
-            testingMedicalRecordService.getAllergiesFromName("john","unknowLastName");
-        });
-    }
 }

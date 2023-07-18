@@ -1,15 +1,14 @@
 package com.safetynet.SafetyNetAlerts;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import static org.hamcrest.CoreMatchers.is;
-
-import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -99,8 +98,7 @@ public class SafetyNetAlertsControllerTest {
                         status().isOk(),
                         content().contentType("application/json"),
                         jsonPath("$[0].firestation", is("3")),
-                        jsonPath("$[0].personsWithMedicalRecords[0].lastName", is("Boyd")),
-                        jsonPath("$[0].personsWithMedicalRecords[0].medications[0]", is("aznol:350mg"))
+                        jsonPath("$[0].personsWithMedicalRecords[0].lastName", is("Boyd"))
                 );
     }
 

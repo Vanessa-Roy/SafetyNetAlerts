@@ -2,6 +2,7 @@ package com.safetynet.SafetyNetAlerts.service;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
+import com.safetynet.SafetyNetAlerts.model.MedicalRecordWithAge;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +18,6 @@ import java.util.NoSuchElementException;
 
 /**
  * Centralize every methods relatives to the medical records.
- *
  */
 @Data
 @Service
@@ -28,63 +28,36 @@ public class MedicalRecordService {
     @Autowired
     private MedicalRecordRepository medicalRecordRepository;
 
-
     /**
-     * Get the age from a person.
+     * Get the medical record from a person.
      *
      * @param firstName a String represents the firstname to search for
      * @param lastName  a String represents the lastname to search for
-     * @return the person's age, obtained from medicalRepository
+     * @return the person's age, medications and allergies obtained from medicalRepository
      */
-    public int getAgeFromName(String firstName, String lastName) throws NoSuchElementException  {
+    public MedicalRecordWithAge getMedicalRecordFromName(String firstName, String lastName) throws NoSuchElementException {
         List<MedicalRecord> medicalRecords = medicalRecordRepository.getMedicalRecordList();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         String birthdate = medicalRecords.stream()
-                            .filter(m -> m.getFirstName().equalsIgnoreCase(firstName) && m.getLastName().equalsIgnoreCase(lastName))
-                            .map(MedicalRecord::getBirthdate)
-                            .findAny()
-                            .get()
-                            .toString();
-
-        int age = Period.between(LocalDate.parse(birthdate, formatter),LocalDate.now()).getYears();
-        logger.debug("response with the age of the person named {}", firstName + lastName);
-        return age;
-    }
-
-    /**
-     * Get the medications from a person.
-     *
-     * @param firstName a String represents the firstname to search for
-     * @param lastName  a String represents the lastname to search for
-     * @return the person's medications, obtained from medicalRepository
-     */
-    public List<String> getMedicationsFromName(String firstName, String lastName) throws NoSuchElementException  {
-        List<MedicalRecord> medicalRecords = medicalRecordRepository.getMedicalRecordList();
-        List<String> medications = medicalRecords.stream()
                 .filter(m -> m.getFirstName().equalsIgnoreCase(firstName) && m.getLastName().equalsIgnoreCase(lastName))
-                .map(MedicalRecord::getMedications)
+                .map(MedicalRecord::getBirthdate)
                 .findAny()
                 .get();
-        logger.debug("response with the medications of the person named {}", firstName + lastName);
-        return medications;
-    }
-
-    /**
-     * Get the allergies from a person.
-     *
-     * @param firstName a String represents the firstname to search for
-     * @param lastName  a String represents the lastname to search for
-     * @return the person's medications, obtained from medicalRepository
-     */
-    public List<String> getAllergiesFromName(String firstName, String lastName) throws NoSuchElementException  {
-        List<MedicalRecord> medicalRecords = medicalRecordRepository.getMedicalRecordList();
+        int age = Period.between(LocalDate.parse(birthdate, formatter), LocalDate.now()).getYears();
+        logger.debug("the person named {} is {} years old", firstName + " " + lastName, age);
         List<String> allergies = medicalRecords.stream()
                 .filter(m -> m.getFirstName().equalsIgnoreCase(firstName) && m.getLastName().equalsIgnoreCase(lastName))
                 .map(MedicalRecord::getAllergies)
                 .findAny()
                 .get();
-        logger.debug("response with the allergies of the person named {}", firstName + lastName);
-        return allergies;
+        logger.debug("the person named {} is allergic to {}", firstName + " " + lastName, allergies);
+        List<String> medications = medicalRecords.stream()
+                .filter(m -> m.getFirstName().equalsIgnoreCase(firstName) && m.getLastName().equalsIgnoreCase(lastName))
+                .map(MedicalRecord::getMedications)
+                .findAny()
+                .get();
+        logger.debug("the person named {} is taking the following medications {}", firstName + " " + lastName, medications);
+        return new MedicalRecordWithAge(age, medications, allergies);
     }
 
 }

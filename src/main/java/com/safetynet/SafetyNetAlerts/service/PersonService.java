@@ -13,11 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Centralize every methods relatives to the persons.
- *
  */
 @Data
 @Service
@@ -43,11 +41,10 @@ public class PersonService {
     public List<String> getEmailsFromCity(String city) {
         List<Person> persons = personRepository.getPersonList();
         List<String> communityEmailFromCity = persons.stream()
-                                                        .filter(p -> p.getCity().equalsIgnoreCase(city))
-                                                        .map(Person::getEmail)
-                                                        .distinct()
-                                                        .collect(Collectors.toList());
-        logger.info("response with the list of emails from persons living in {}", city);
+                .filter(p -> p.getCity().equalsIgnoreCase(city))
+                .map(Person::getEmail)
+                .distinct()
+                .toList();
         return communityEmailFromCity;
     }
 
@@ -60,8 +57,8 @@ public class PersonService {
     public List<Person> getPersonsFromAddress(String address) {
         List<Person> persons = personRepository.getPersonList();
         List<Person> personsFromAddress = persons.stream()
-                                                    .filter(p -> p.getAddress().equalsIgnoreCase(address))
-                                                    .collect(Collectors.toList());
+                .filter(p -> p.getAddress().equalsIgnoreCase(address))
+                .toList();
         logger.debug("get the list of persons living at {}", address);
         return personsFromAddress;
     }
@@ -76,8 +73,8 @@ public class PersonService {
         List<Person> personsFromAddress = getPersonsFromAddress(address);
         List<Child> childrenFromAddress = new ArrayList<>();
         for (Person person : personsFromAddress) {
-            int age = medicalRecordService.getAgeFromName(person.getFirstName(),person.getLastName());
-            if(age <= 18) {
+            int age = medicalRecordService.getMedicalRecordFromName(person.getFirstName(), person.getLastName()).age();
+            if (age <= 18) {
                 List<Person> family = new ArrayList<>(personsFromAddress);
                 family.remove(person);
                 Child child = new Child(
@@ -89,7 +86,6 @@ public class PersonService {
                 childrenFromAddress.add(child);
             }
         }
-        logger.info("response with the list of children from persons living at {}", address);
         return childrenFromAddress;
     }
 }
