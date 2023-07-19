@@ -3,6 +3,7 @@ package com.safetynet.SafetyNetAlerts;
 import com.safetynet.SafetyNetAlerts.model.Child;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecordWithAge;
 import com.safetynet.SafetyNetAlerts.model.Person;
+import com.safetynet.SafetyNetAlerts.model.PersonWithInformation;
 import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
 import com.safetynet.SafetyNetAlerts.service.MedicalRecordService;
 import com.safetynet.SafetyNetAlerts.service.PersonService;
@@ -29,8 +30,9 @@ public class PersonServiceTest {
     private PersonService testingPersonService;
 
     private static List<Person> persons;
-
     private static MedicalRecordWithAge medicalRecordWithAge;
+    private static List<String> medications;
+    private static List<String> allergies;
 
     @Mock
     private static PersonRepository personRepository;
@@ -51,6 +53,12 @@ public class PersonServiceTest {
         person.setPhone("841-874-6512");
         person.setEmail("jaboyd@email.com");
         persons.add(person);
+        medications = new ArrayList<>();
+        medications.add("aznol:350mg");
+        medications.add("hydrapermazol:100mg");
+        allergies = new ArrayList<>();
+        allergies.add("nillacilan");
+        medicalRecordWithAge = new MedicalRecordWithAge(39, medications, allergies);
     }
 
 
@@ -96,7 +104,6 @@ public class PersonServiceTest {
 
         verify(personRepository, Mockito.times(1)).getPersonList();
         assertEquals(expectedResult, result);
-
     }
 
     @Test
@@ -195,5 +202,101 @@ public class PersonServiceTest {
         verify(personRepository, Mockito.times(1)).getPersonList();
         assertEquals(0, result.size());
     }
+
+    @Test
+    public void testGetInformationFromNameLowercase() {
+        List<PersonWithInformation> personsWithInformation = new ArrayList<>();
+        personsWithInformation.add(new PersonWithInformation(
+                persons.get(0).getLastName(),
+                (persons.get(0).getAddress() + " " + persons.get(0).getZip() + " " + persons.get(0).getCity()),
+                medicalRecordWithAge.age(),
+                persons.get(0).getEmail(),
+                medicalRecordWithAge.medications(),
+                medicalRecordWithAge.allergies()));
+        when(personRepository.getPersonList()).thenReturn(persons);
+        when(medicalRecordService.getMedicalRecordFromName("john", "boyd")).thenReturn(medicalRecordWithAge);
+
+        List<PersonWithInformation> result = testingPersonService.getInformationFromName("john", "boyd");
+        List<PersonWithInformation> expectedResult = personsWithInformation;
+
+        verify(personRepository, Mockito.times(1)).getPersonList();
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
+    public void testGetInformationFromNameUppercase() {
+        List<PersonWithInformation> personsWithInformation = new ArrayList<>();
+        personsWithInformation.add(new PersonWithInformation(
+                persons.get(0).getLastName(),
+                (persons.get(0).getAddress() + " " + persons.get(0).getZip() + " " + persons.get(0).getCity()),
+                medicalRecordWithAge.age(),
+                persons.get(0).getEmail(),
+                medicalRecordWithAge.medications(),
+                medicalRecordWithAge.allergies()));
+        when(personRepository.getPersonList()).thenReturn(persons);
+        when(medicalRecordService.getMedicalRecordFromName("JOHN", "BOYD")).thenReturn(medicalRecordWithAge);
+
+        List<PersonWithInformation> result = testingPersonService.getInformationFromName("JOHN", "BOYD");
+        List<PersonWithInformation> expectedResult = personsWithInformation;
+
+        verify(personRepository, Mockito.times(1)).getPersonList();
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
+    public void testGetInformationFromNameWithDuplicate() {
+        Person person = new Person();
+        person.setFirstName("John");
+        person.setLastName("Boyd");
+        persons.add(person);
+        List<PersonWithInformation> personsWithInformation = new ArrayList<>();
+        personsWithInformation.add(new PersonWithInformation(
+                persons.get(0).getLastName(),
+                (persons.get(0).getAddress() + " " + persons.get(0).getZip() + " " + persons.get(0).getCity()),
+                medicalRecordWithAge.age(),
+                persons.get(0).getEmail(),
+                medicalRecordWithAge.medications(),
+                medicalRecordWithAge.allergies()));
+        personsWithInformation.add(new PersonWithInformation(
+                persons.get(1).getLastName(),
+                (persons.get(1).getAddress() + " " + persons.get(1).getZip() + " " + persons.get(1).getCity()),
+                medicalRecordWithAge.age(),
+                persons.get(1).getEmail(),
+                medicalRecordWithAge.medications(),
+                medicalRecordWithAge.allergies()));
+        when(personRepository.getPersonList()).thenReturn(persons);
+        when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordWithAge);
+
+        List<PersonWithInformation> result = testingPersonService.getInformationFromName("John", "Boyd");
+        List<PersonWithInformation> expectedResult = personsWithInformation;
+
+        verify(personRepository, Mockito.times(1)).getPersonList();
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
+    public void testGetInformationFromBothFirstNameLastNameUnknown() throws IOException {
+        when(personRepository.getPersonList()).thenReturn(persons);
+
+        List<PersonWithInformation> result = testingPersonService.getInformationFromName("unknowFirstName", "unknowLastName");
+        List<PersonWithInformation> expectedResult = new ArrayList<>();
+
+        verify(personRepository, Mockito.times(1)).getPersonList();
+        verify(medicalRecordService, Mockito.never()).getMedicalRecordFromName("unknowFirstName", "unknowLastName");
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
+    public void testGetInformationFromLastNameUnknown() throws IOException {
+        when(personRepository.getPersonList()).thenReturn(persons);
+
+        List<PersonWithInformation> result = testingPersonService.getInformationFromName("john", "unknowLastName");
+        List<PersonWithInformation> expectedResult = new ArrayList<>();
+
+        verify(personRepository, Mockito.times(1)).getPersonList();
+        verify(medicalRecordService, Mockito.never()).getMedicalRecordFromName("john", "unknowLastName");
+        assertEquals(expectedResult, result);
+    }
+
 
 }

@@ -102,4 +102,21 @@ public class SafetyNetAlertsControllerTest {
                 );
     }
 
+    @Test
+    public void testGetInformationFromNameParameterShouldFail() throws Exception {
+        mockMvc.perform(get("/personInfo"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetInformationFromNameParameterShouldPass() throws Exception {
+        mockMvc.perform(get("/personInfo?firstName=john&lastName=boyd"))
+                .andExpectAll(
+                        status().isOk(),
+                        content().contentType("application/json"),
+                        jsonPath("$[0].lastName", is("Boyd")),
+                        jsonPath("$[0].age", is(39))
+                );
+    }
+
 }

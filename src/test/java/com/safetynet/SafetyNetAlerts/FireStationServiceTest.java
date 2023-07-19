@@ -271,7 +271,9 @@ public class FireStationServiceTest {
         personsWithMedicalRecord.add(new PersonWithMedicalRecord(
                 persons.get(0).getLastName(),
                 persons.get(0).getPhone(),
-                medicalRecordWithAge));
+                medicalRecordWithAge.age(),
+                medicalRecordWithAge.medications(),
+                medicalRecordWithAge.allergies()));
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
         when(personService.getPersonsFromAddress("1509 culver st")).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordWithAge);
@@ -290,7 +292,9 @@ public class FireStationServiceTest {
         personsWithMedicalRecord.add(new PersonWithMedicalRecord(
                 persons.get(0).getLastName(),
                 persons.get(0).getPhone(),
-                medicalRecordWithAge));
+                medicalRecordWithAge.age(),
+                medicalRecordWithAge.medications(),
+                medicalRecordWithAge.allergies()));
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
         when(personService.getPersonsFromAddress("1509 CULVER ST")).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordWithAge);
