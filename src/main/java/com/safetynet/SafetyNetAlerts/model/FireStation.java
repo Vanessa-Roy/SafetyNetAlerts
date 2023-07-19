@@ -3,11 +3,10 @@ package com.safetynet.SafetyNetAlerts.model;
 import lombok.Data;
 
 /**
- * Represent a fire station
- *
+ * Represent a fireStation
  */
 @Data
-public 	class FireStation {
+public class FireStation {
 
     private String address;
     private String station;

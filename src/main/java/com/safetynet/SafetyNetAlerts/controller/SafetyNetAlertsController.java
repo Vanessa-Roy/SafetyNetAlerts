@@ -1,10 +1,7 @@
 package com.safetynet.SafetyNetAlerts.controller;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
-import com.safetynet.SafetyNetAlerts.model.Child;
-import com.safetynet.SafetyNetAlerts.model.PersonWithInformation;
-import com.safetynet.SafetyNetAlerts.model.PersonsWithCounterChildAdult;
-import com.safetynet.SafetyNetAlerts.model.PersonsWithFireStation;
+import com.safetynet.SafetyNetAlerts.model.*;
 import com.safetynet.SafetyNetAlerts.service.FireStationService;
 import com.safetynet.SafetyNetAlerts.service.PersonService;
 import org.apache.logging.log4j.LogManager;
@@ -48,15 +45,15 @@ public class SafetyNetAlertsController {
     /**
      * Get all the phones from an area.
      *
-     * @param firestation a String represents the firestation number we are looking for.
-     * @return a list of all phones from the firestation, obtained from fireStationService, duplicates are not allowed.
+     * @param fireStation a String represents the fireStation number we are looking for.
+     * @return a list of all phones from the fireStation, obtained from fireStationService, duplicates are not allowed.
      */
     @GetMapping("/phoneAlert")
     @ResponseBody
-    public List<String> getPhonesFromStation(@RequestParam String firestation) {
-        logger.info("request the list of phones from persons living near by the firestation number {}", firestation);
-        List<String> result = fireStationService.getPhonesFromStation(firestation);
-        logger.info("response with {} phone(s) from persons living near by the firestation number {}", result.size(), firestation);
+    public List<String> getPhonesFromStation(@RequestParam String fireStation) {
+        logger.info("request the list of phones from persons living near by the fireStation number {}", fireStation);
+        List<String> result = fireStationService.getPhonesFromStation(fireStation);
+        logger.info("response with {} phone(s) from persons living near by the fireStation number {}", result.size(), fireStation);
         return result;
     }
 
@@ -78,15 +75,15 @@ public class SafetyNetAlertsController {
     /**
      * Get all the persons from an area.
      *
-     * @param stationNumber a String represents the firestation number we are looking for.
-     * @return a list of all persons from the firestation, obtained from fireStationService, duplicates are possible.
+     * @param stationNumber a String represents the fireStation number we are looking for.
+     * @return a list of all persons from the fireStation, obtained from fireStationService, duplicates are possible.
      */
-    @GetMapping("/firestation")
+    @GetMapping("/fireStation")
     @ResponseBody
     public List<PersonsWithCounterChildAdult> getPersonsWithCounterFromStation(@RequestParam String stationNumber) {
-        logger.info("request a counter of adults and children from the list of persons living near by the firestation number {}", stationNumber);
+        logger.info("request a counter of adults and children from the list of persons living near by the fireStation number {}", stationNumber);
         List<PersonsWithCounterChildAdult> result = fireStationService.getPersonsWithCounterFromStation(stationNumber);
-        logger.info("response with {} person(s) living near by the firestation number {} with {} child(ren) and {} adult(s)", result.get(0).persons().size(), stationNumber, result.get(0).childrenCounter(), result.get(0).adultsCounter());
+        logger.info("response with {} person(s) living near by the fireStation number {} with {} child(ren) and {} adult(s)", result.get(0).persons().size(), stationNumber, result.get(0).childrenCounter(), result.get(0).adultsCounter());
         return result;
     }
 
@@ -98,15 +95,15 @@ public class SafetyNetAlertsController {
      */
     @GetMapping("/fire")
     @ResponseBody
-    public List<PersonsWithFireStation> getPersonsWithFireStationFromAddress(@RequestParam String address) {
-        logger.info("request the firestation number and the list of persons living at {}", address);
+    public List<PersonsWithFireStation> getPersonsWithfireStationFromAddress(@RequestParam String address) {
+        logger.info("request the fireStation number and the list of persons living at {}", address);
         List<PersonsWithFireStation> result = fireStationService.getPersonsWithFireStationFromAddress(address);
-        logger.info("response with {} person(s) living at {} and covered by firestation number {}", result.get(0).personsWithMedicalRecords().size(), address, result.get(0).firestation());
+        logger.info("response with {} person(s) living at {} and covered by fireStation number {}", result.get(0).personsWithMedicalRecords().size(), address, result.get(0).fireStation());
         return result;
     }
 
     /**
-     * Get the informations from a person.
+     * Get the information from a person.
      *
      * @param firstName a String represents the firstName of the person we are looking for.
      * @param lastName  a String represents the lastName of the person we are looking for.
@@ -118,6 +115,21 @@ public class SafetyNetAlertsController {
         logger.info("request the information about the persons named {} {}", firstName, lastName);
         List<PersonWithInformation> result = personService.getInformationFromName(firstName, lastName);
         logger.info("response with the information about {} person(s) named {} {}", result.size(), firstName, lastName);
+        return result;
+    }
+
+    /**
+     * Get the list of families from a fireStation.
+     *
+     * @param stations a String represents the fireStation number we are looking for.
+     * @return a list of families from a fireStation, obtained from fireStationService, duplicates are not allowed..
+     */
+    @GetMapping("/flood/stations")
+    @ResponseBody
+    public List<Family> getFamilyFromStation(@RequestParam String stations) {
+        logger.info("request the list of families living near by the fireStation {}", stations);
+        List<Family> result = fireStationService.getFamilyFromStation(stations);
+        logger.info("response with {} family(ies) covered by the fireStation number {}", result.size(), stations);
         return result;
     }
 

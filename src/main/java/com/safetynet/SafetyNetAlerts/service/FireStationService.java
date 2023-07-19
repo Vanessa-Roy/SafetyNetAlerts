@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * Centralize every methods relatives to the firestations.
+ * Centralize every methods relatives to the fireStations.
  */
 @Service
 public class FireStationService {
@@ -31,9 +31,9 @@ public class FireStationService {
 
 
     /**
-     * Get all the addresses from a firestation.
+     * Get all the addresses from a fireStation.
      *
-     * @param station a String represents the firestation to search for
+     * @param station a String represents the fireStation to search for
      * @return a list of all addresses from the station, obtained from fireStationRepository, duplicates are not allowed
      */
     public List<String> getAddressFromStation(String station) {
@@ -48,10 +48,10 @@ public class FireStationService {
     }
 
     /**
-     * Get the number of firestation from an address.
+     * Get the number of fireStation from an address.
      *
      * @param address a String represents the address to search for
-     * @return the number of firestation from the address, obtained from fireStationRepository
+     * @return the number of fireStation from the address, obtained from fireStationRepository
      */
     public String getStationsFromAddress(String address) throws NoSuchElementException {
         List<FireStation> fireStations = fireStationRepository.getFireStationList();
@@ -65,13 +65,13 @@ public class FireStationService {
     }
 
     /**
-     * Get all the phones from a firestation.
+     * Get all the phones from a fireStation.
      *
-     * @param firestation a String represents the firestation to search for
-     * @return a list of all phones from the persons living nearby the firestation, obtained from personRepository, duplicates are not allowed
+     * @param fireStation a String represents the fireStation to search for
+     * @return a list of all phones from the persons living nearby the fireStation, obtained from personRepository, duplicates are not allowed
      */
-    public List<String> getPhonesFromStation(String firestation) {
-        List<String> addressFromStation = getAddressFromStation(firestation);
+    public List<String> getPhonesFromStation(String fireStation) {
+        List<String> addressFromStation = getAddressFromStation(fireStation);
         List<Person> persons = personRepository.getPersonList();
         return persons.stream()
                 .filter(p -> addressFromStation.contains(p.getAddress()))
@@ -81,10 +81,10 @@ public class FireStationService {
     }
 
     /**
-     * Get all the persons from a firestation and a counter of children and adults.
+     * Get all the persons from a fireStation and a counter of children and adults.
      *
-     * @param stationNumber a String represents the firestation to search for
-     * @return a list of all the persons living nearby the firestation, obtained from personRepository, duplicates are possible
+     * @param stationNumber a String represents the fireStation to search for
+     * @return a list of all the persons living nearby the fireStation, obtained from personRepository, duplicates are possible
      */
     public List<PersonsWithCounterChildAdult> getPersonsWithCounterFromStation(String stationNumber) {
         int childrenCounter = 0;
@@ -125,7 +125,7 @@ public class FireStationService {
     }
 
     /**
-     * Get all the persons from an address and the number of the firestation.
+     * Get all the persons from an address and the number of the fireStation.
      *
      * @param address a String represents the address to search for
      * @return a list of all the persons living at the address with their information, obtained from personRepository, duplicates are possible
@@ -135,12 +135,16 @@ public class FireStationService {
         List<Person> personsFromAddress = personService.getPersonsFromAddress(address);
         List<PersonWithMedicalRecord> personsFromAddressWithMedicalRecord = new ArrayList<>();
         for (Person person : personsFromAddress) {
+            MedicalRecordWithAge medicalRecord = medicalRecordService.getMedicalRecordFromName(
+                    person.getFirstName(),
+                    person.getLastName()
+            );
             PersonWithMedicalRecord personWithMedicalRecord = new PersonWithMedicalRecord(
                     person.getLastName(),
                     person.getPhone(),
-                    medicalRecordService.getMedicalRecordFromName(person.getFirstName(), person.getLastName()).age(),
-                    medicalRecordService.getMedicalRecordFromName(person.getFirstName(), person.getLastName()).medications(),
-                    medicalRecordService.getMedicalRecordFromName(person.getFirstName(), person.getLastName()).allergies()
+                    medicalRecord.age(),
+                    medicalRecord.medications(),
+                    medicalRecord.allergies()
             );
             personsFromAddressWithMedicalRecord.add(personWithMedicalRecord);
         }
@@ -151,5 +155,31 @@ public class FireStationService {
         );
         personsWithFireStations.add(personsFromStationWithMedicalRecord);
         return personsWithFireStations;
+    }
+
+    public List<Family> getFamilyFromStation(String fireStation) {
+        List<String> addressFromStation = getAddressFromStation(fireStation);
+        List<Family> families = new ArrayList<>();
+        for (String address : addressFromStation) {
+            List<Person> personsFromAddress = personService.getPersonsFromAddress(address);
+            List<PersonWithMedicalRecord> personsFromAddressWithMedicalRecord = new ArrayList<>();
+            for (Person personFromAddress : personsFromAddress) {
+                MedicalRecordWithAge medicalRecord = medicalRecordService.getMedicalRecordFromName(
+                        personFromAddress.getFirstName(),
+                        personFromAddress.getLastName()
+                );
+                PersonWithMedicalRecord personWithMedicalRecord = new PersonWithMedicalRecord(
+                        personFromAddress.getLastName(),
+                        personFromAddress.getPhone(),
+                        medicalRecord.age(),
+                        medicalRecord.medications(),
+                        medicalRecord.allergies()
+                );
+                personsFromAddressWithMedicalRecord.add(personWithMedicalRecord);
+            }
+            Family family = new Family(address, personsFromAddressWithMedicalRecord);
+            families.add(family);
+        }
+        return families;
     }
 }

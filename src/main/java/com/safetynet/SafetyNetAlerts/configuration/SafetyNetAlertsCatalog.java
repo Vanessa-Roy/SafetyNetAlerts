@@ -21,7 +21,6 @@ import java.util.List;
 
 /**
  * Set Up for the SafetyNet Alerts Application
- *
  */
 @Data
 @Configuration
@@ -38,7 +37,6 @@ public class SafetyNetAlertsCatalog {
 
     /**
      * This constructor calls all the SafetyNetAlertsCatalog's methods to set up the different lists.
-     *
      */
     public SafetyNetAlertsCatalog() {
         dataJson = readFile();
@@ -67,7 +65,8 @@ public class SafetyNetAlertsCatalog {
         String jsonString = dataJson.get("persons").toString();
         try {
             logger.debug("create a list of persons");
-            return objectMapper.readValue(jsonString, new TypeReference<List<Person>>() {});
+            return objectMapper.readValue(jsonString, new TypeReference<List<Person>>() {
+            });
         } catch (JsonProcessingException e) {
             logger.error("the create of persons list failed", e);
             throw new RuntimeException(e);
@@ -78,7 +77,8 @@ public class SafetyNetAlertsCatalog {
         String jsonString = dataJson.get("firestations").toString();
         logger.debug("create a list of fire stations");
         try {
-            return objectMapper.readValue(jsonString, new TypeReference<List<FireStation>>() {});
+            return objectMapper.readValue(jsonString, new TypeReference<List<FireStation>>() {
+            });
         } catch (JsonProcessingException e) {
             logger.error("the create of fire stations list failed", e);
             throw new RuntimeException(e);
@@ -89,7 +89,8 @@ public class SafetyNetAlertsCatalog {
         String jsonString = dataJson.get("medicalrecords").toString();
         logger.debug("create a list of medical records");
         try {
-            return objectMapper.readValue(jsonString, new TypeReference<List<MedicalRecord>>() {});
+            return objectMapper.readValue(jsonString, new TypeReference<List<MedicalRecord>>() {
+            });
         } catch (JsonProcessingException e) {
             logger.error("the create of medical records list failed", e);
             throw new RuntimeException(e);
