@@ -2,7 +2,9 @@ package com.safetynet.SafetyNetAlerts.service;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import com.safetynet.SafetyNetAlerts.model.Child;
+import com.safetynet.SafetyNetAlerts.model.MedicalRecordWithAge;
 import com.safetynet.SafetyNetAlerts.model.Person;
+import com.safetynet.SafetyNetAlerts.model.PersonWithInformation;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
 import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
 import lombok.Data;
@@ -86,5 +88,33 @@ public class PersonService {
             }
         }
         return childrenFromAddress;
+    }
+
+    /**
+     * Get the information from a name.
+     *
+     * @param firstName a String represents the firstName of the person to search for
+     * @param lastName  a String represents the lastName of the person to search for
+     * @return a list of all the information from a person, obtained from personRepository, duplicates are possible
+     */
+    public List<PersonWithInformation> getInformationFromName(String firstName, String lastName) {
+        List<Person> persons = personRepository.getPersonList();
+        List<Person> personsFromName = persons.stream()
+                .filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
+                .toList();
+        List<PersonWithInformation> personsWithInformation = new ArrayList<>();
+        for (Person person : personsFromName) {
+            MedicalRecordWithAge medicalRecord = medicalRecordService.getMedicalRecordFromName(firstName, lastName);
+            PersonWithInformation personWithInformation = new PersonWithInformation(
+                    person.getLastName(),
+                    (person.getAddress() + " " + person.getZip() + " " + person.getCity()),
+                    medicalRecord.age(),
+                    person.getEmail(),
+                    medicalRecord.medications(),
+                    medicalRecord.allergies()
+            );
+            personsWithInformation.add(personWithInformation);
+        }
+        return personsWithInformation;
     }
 }

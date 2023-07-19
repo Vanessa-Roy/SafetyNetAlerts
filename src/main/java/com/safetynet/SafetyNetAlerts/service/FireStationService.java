@@ -124,6 +124,12 @@ public class FireStationService {
         return personsWithCounterChildAdult;
     }
 
+    /**
+     * Get all the persons from an address and the number of the firestation.
+     *
+     * @param address a String represents the address to search for
+     * @return a list of all the persons living at the address with their information, obtained from personRepository, duplicates are possible
+     */
     public List<PersonsWithFireStation> getPersonsWithFireStationFromAddress(String address) {
         String fireStation = getStationsFromAddress(address);
         List<Person> personsFromAddress = personService.getPersonsFromAddress(address);
@@ -132,7 +138,9 @@ public class FireStationService {
             PersonWithMedicalRecord personWithMedicalRecord = new PersonWithMedicalRecord(
                     person.getLastName(),
                     person.getPhone(),
-                    medicalRecordService.getMedicalRecordFromName(person.getFirstName(), person.getLastName())
+                    medicalRecordService.getMedicalRecordFromName(person.getFirstName(), person.getLastName()).age(),
+                    medicalRecordService.getMedicalRecordFromName(person.getFirstName(), person.getLastName()).medications(),
+                    medicalRecordService.getMedicalRecordFromName(person.getFirstName(), person.getLastName()).allergies()
             );
             personsFromAddressWithMedicalRecord.add(personWithMedicalRecord);
         }

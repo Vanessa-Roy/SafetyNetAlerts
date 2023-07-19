@@ -2,6 +2,7 @@ package com.safetynet.SafetyNetAlerts.controller;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import com.safetynet.SafetyNetAlerts.model.Child;
+import com.safetynet.SafetyNetAlerts.model.PersonWithInformation;
 import com.safetynet.SafetyNetAlerts.model.PersonsWithCounterChildAdult;
 import com.safetynet.SafetyNetAlerts.model.PersonsWithFireStation;
 import com.safetynet.SafetyNetAlerts.service.FireStationService;
@@ -101,6 +102,22 @@ public class SafetyNetAlertsController {
         logger.info("request the firestation number and the list of persons living at {}", address);
         List<PersonsWithFireStation> result = fireStationService.getPersonsWithFireStationFromAddress(address);
         logger.info("response with {} person(s) living at {} and covered by firestation number {}", result.get(0).personsWithMedicalRecords().size(), address, result.get(0).firestation());
+        return result;
+    }
+
+    /**
+     * Get the informations from a person.
+     *
+     * @param firstName a String represents the firstName of the person we are looking for.
+     * @param lastName  a String represents the lastName of the person we are looking for.
+     * @return a list of information from the person, obtained from personService, duplicates are possible.
+     */
+    @GetMapping("/personInfo")
+    @ResponseBody
+    public List<PersonWithInformation> getInformationFromName(@RequestParam String firstName, String lastName) {
+        logger.info("request the information about the persons named {} {}", firstName, lastName);
+        List<PersonWithInformation> result = personService.getInformationFromName(firstName, lastName);
+        logger.info("response with the information about {} person(s) named {} {}", result.size(), firstName, lastName);
         return result;
     }
 
