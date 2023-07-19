@@ -36,22 +36,22 @@ public class MedicalRecordService {
      */
     public MedicalRecordWithAge getMedicalRecordFromName(String firstName, String lastName) {
         List<MedicalRecord> medicalRecords = medicalRecordRepository.getMedicalRecordList();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        String birthdate = medicalRecords.stream()
+        List<MedicalRecord> medicalRecordsFromName = medicalRecords.stream()
                 .filter(m -> m.getFirstName().equalsIgnoreCase(firstName) && m.getLastName().equalsIgnoreCase(lastName))
+                .toList();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        String birthdate = medicalRecordsFromName.stream()
                 .map(MedicalRecord::getBirthdate)
                 .findAny()
                 .orElseThrow();
         int age = Period.between(LocalDate.parse(birthdate, formatter), LocalDate.now()).getYears();
         logger.debug("the person named {} is {} years old", firstName + " " + lastName, age);
-        List<String> allergies = medicalRecords.stream()
-                .filter(m -> m.getFirstName().equalsIgnoreCase(firstName) && m.getLastName().equalsIgnoreCase(lastName))
+        List<String> allergies = medicalRecordsFromName.stream()
                 .map(MedicalRecord::getAllergies)
                 .findAny()
                 .orElseThrow();
         logger.debug("the person named {} is allergic to {}", firstName + " " + lastName, allergies);
-        List<String> medications = medicalRecords.stream()
-                .filter(m -> m.getFirstName().equalsIgnoreCase(firstName) && m.getLastName().equalsIgnoreCase(lastName))
+        List<String> medications = medicalRecordsFromName.stream()
                 .map(MedicalRecord::getMedications)
                 .findAny()
                 .orElseThrow();
