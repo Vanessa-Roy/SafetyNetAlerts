@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
-import com.safetynet.SafetyNetAlerts.model.Child;
 import com.safetynet.SafetyNetAlerts.model.FireStation;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
 import com.safetynet.SafetyNetAlerts.model.Person;
@@ -32,7 +31,6 @@ public class SafetyNetAlertsCatalog {
     private List<Person> persons;
     private List<FireStation> fireStations;
     private List<MedicalRecord> medicalRecords;
-    private List<Child> children;
     ObjectMapper objectMapper = new ObjectMapper();
 
     /**

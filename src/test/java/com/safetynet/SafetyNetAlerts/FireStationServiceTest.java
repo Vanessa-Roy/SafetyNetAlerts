@@ -315,4 +315,35 @@ public class FireStationServiceTest {
             testingFireStationService.getPersonsWithFireStationFromAddress("unknownAddress");
         });
     }
+
+    @Test
+    public void testGetFamilyFromStation() {
+        List<PersonWithMedicalRecord> personsWithMedicalRecord = new ArrayList<>();
+        personsWithMedicalRecord.add(new PersonWithMedicalRecord(
+                persons.get(0).getLastName(),
+                persons.get(0).getPhone(),
+                medicalRecordWithAge.age(),
+                medicalRecordWithAge.medications(),
+                medicalRecordWithAge.allergies()));
+        when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
+        when(personService.getPersonsFromAddress("1509 Culver St")).thenReturn(persons);
+        when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordWithAge);
+
+        List<Family> result = testingFireStationService.getFamilyFromStation("3");
+        List<Family> expectedResult = new ArrayList<>();
+        expectedResult.add(new Family("1509 Culver St", personsWithMedicalRecord));
+
+        verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
+    public void testGetFamilyFromStationUnknown() {
+        when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
+
+        List<Family> result = testingFireStationService.getFamilyFromStation("unknownStation");
+
+        verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        assertEquals(0, result.size());
+    }
 }

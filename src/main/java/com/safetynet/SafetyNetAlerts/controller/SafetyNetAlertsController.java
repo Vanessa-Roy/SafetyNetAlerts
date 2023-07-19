@@ -50,10 +50,10 @@ public class SafetyNetAlertsController {
      */
     @GetMapping("/phoneAlert")
     @ResponseBody
-    public List<String> getPhonesFromStation(@RequestParam String fireStation) {
-        logger.info("request the list of phones from persons living near by the fireStation number {}", fireStation);
-        List<String> result = fireStationService.getPhonesFromStation(fireStation);
-        logger.info("response with {} phone(s) from persons living near by the fireStation number {}", result.size(), fireStation);
+    public List<String> getPhonesFromStation(@RequestParam String firestation) {
+        logger.info("request the list of phones from persons living near by the fireStation number {}", firestation);
+        List<String> result = fireStationService.getPhonesFromStation(firestation);
+        logger.info("response with {} phone(s) from persons living near by the fireStation number {}", result.size(), firestation);
         return result;
     }
 
@@ -78,7 +78,7 @@ public class SafetyNetAlertsController {
      * @param stationNumber a String represents the fireStation number we are looking for.
      * @return a list of all persons from the fireStation, obtained from fireStationService, duplicates are possible.
      */
-    @GetMapping("/fireStation")
+    @GetMapping("/firestation")
     @ResponseBody
     public List<PersonsWithCounterChildAdult> getPersonsWithCounterFromStation(@RequestParam String stationNumber) {
         logger.info("request a counter of adults and children from the list of persons living near by the fireStation number {}", stationNumber);
@@ -95,7 +95,7 @@ public class SafetyNetAlertsController {
      */
     @GetMapping("/fire")
     @ResponseBody
-    public List<PersonsWithFireStation> getPersonsWithfireStationFromAddress(@RequestParam String address) {
+    public List<PersonsWithFireStation> getPersonsWithFireStationFromAddress(@RequestParam String address) {
         logger.info("request the fireStation number and the list of persons living at {}", address);
         List<PersonsWithFireStation> result = fireStationService.getPersonsWithFireStationFromAddress(address);
         logger.info("response with {} person(s) living at {} and covered by fireStation number {}", result.get(0).personsWithMedicalRecords().size(), address, result.get(0).fireStation());

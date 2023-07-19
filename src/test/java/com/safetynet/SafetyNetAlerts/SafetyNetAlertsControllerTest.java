@@ -34,7 +34,7 @@ public class SafetyNetAlertsControllerTest {
     }
 
     @Test
-    public void testGetPhonesFromStationParameterShouldFail() throws Exception {
+    public void testGetPhonesFromStationWithoutParameterShouldFail() throws Exception {
         mockMvc.perform(get("/phoneAlert"))
                 .andExpect(status().isBadRequest());
     }
@@ -50,7 +50,7 @@ public class SafetyNetAlertsControllerTest {
     }
 
     @Test
-    public void testGetChildrenFromAddressParameterShouldFail() throws Exception {
+    public void testGetChildrenFromAddressWithoutParameterShouldFail() throws Exception {
         mockMvc.perform(get("/childAlert"))
                 .andExpect(status().isBadRequest());
     }
@@ -68,7 +68,7 @@ public class SafetyNetAlertsControllerTest {
     }
 
     @Test
-    public void testGetPersonsWithCounterFromStationParameterShouldFail() throws Exception {
+    public void testGetPersonsWithCounterFromStationWithoutParameterShouldFail() throws Exception {
         mockMvc.perform(get("/firestation"))
                 .andExpect(status().isBadRequest());
     }
@@ -86,7 +86,7 @@ public class SafetyNetAlertsControllerTest {
     }
 
     @Test
-    public void testGetPersonsWithFireStationFromAddressParameterShouldFail() throws Exception {
+    public void testGetPersonsWithFireStationFromAddressWithoutParameterShouldFail() throws Exception {
         mockMvc.perform(get("/fire"))
                 .andExpect(status().isBadRequest());
     }
@@ -97,25 +97,42 @@ public class SafetyNetAlertsControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         content().contentType("application/json"),
-                        jsonPath("$[0].firestation", is("3")),
+                        jsonPath("$[0].fireStation", is("3")),
                         jsonPath("$[0].personsWithMedicalRecords[0].lastName", is("Boyd"))
                 );
     }
 
     @Test
-    public void testGetInformationFromNameParameterShouldFail() throws Exception {
+    public void testGetInformationFromNameWithoutParameterShouldFail() throws Exception {
         mockMvc.perform(get("/personInfo"))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testGetInformationFromNameParameterShouldPass() throws Exception {
+    public void testGetInformationFromNameShouldPass() throws Exception {
         mockMvc.perform(get("/personInfo?firstName=john&lastName=boyd"))
                 .andExpectAll(
                         status().isOk(),
                         content().contentType("application/json"),
                         jsonPath("$[0].lastName", is("Boyd")),
                         jsonPath("$[0].age", is(39))
+                );
+    }
+
+    @Test
+    public void testGetFamilyFromStationWithoutParameterShouldFail() throws Exception {
+        mockMvc.perform(get("/flood/stations"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetFamilyFromStationShouldPass() throws Exception {
+        mockMvc.perform(get("/flood/stations?stations=3"))
+                .andExpectAll(
+                        status().isOk(),
+                        content().contentType("application/json"),
+                        jsonPath("$[0].address", is("1509 Culver St")),
+                        jsonPath("$[0].family[0].lastName", is("Boyd"))
                 );
     }
 
