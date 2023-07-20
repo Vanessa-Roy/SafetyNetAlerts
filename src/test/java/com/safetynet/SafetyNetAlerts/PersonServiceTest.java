@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +30,6 @@ public class PersonServiceTest {
 
     private static List<Person> persons;
     private static MedicalRecordWithAge medicalRecordWithAge;
-    private static List<String> medications;
-    private static List<String> allergies;
 
     @Mock
     private static PersonRepository personRepository;
@@ -42,7 +39,7 @@ public class PersonServiceTest {
 
 
     @BeforeEach
-    private void setUpPertest() {
+    public void setUpPertest() {
         Person person = new Person();
         persons = new ArrayList<>();
         person.setFirstName("John");
@@ -53,17 +50,17 @@ public class PersonServiceTest {
         person.setPhone("841-874-6512");
         person.setEmail("jaboyd@email.com");
         persons.add(person);
-        medications = new ArrayList<>();
+        List<String> medications = new ArrayList<>();
         medications.add("aznol:350mg");
         medications.add("hydrapermazol:100mg");
-        allergies = new ArrayList<>();
+        List<String> allergies = new ArrayList<>();
         allergies.add("nillacilan");
         medicalRecordWithAge = new MedicalRecordWithAge(39, medications, allergies);
     }
 
 
     @Test
-    public void testGetEmailsFromCityLowercase() throws IOException {
+    public void testGetEmailsFromCityLowercase() {
 
         when(personRepository.getPersonList()).thenReturn(persons);
 
@@ -77,7 +74,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void testGetEmailsFromCityUppercase() throws IOException {
+    public void testGetEmailsFromCityUppercase() {
 
         when(personRepository.getPersonList()).thenReturn(persons);
 
@@ -91,7 +88,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void testGetEmailsFromCityWithDuplicate() throws IOException {
+    public void testGetEmailsFromCityWithDuplicate() {
         Person person = new Person();
         person.setCity("Culver");
         person.setEmail("jaboyd@email.com");
@@ -107,7 +104,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void testGetEmailsFromCityUnknown() throws IOException {
+    public void testGetEmailsFromCityUnknown() {
 
         when(personRepository.getPersonList()).thenReturn(persons);
 
@@ -119,7 +116,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void testGetChildrenFromAddressLowercase() throws IOException {
+    public void testGetChildrenFromAddressLowercase() {
         medicalRecordWithAge = new MedicalRecordWithAge(6, null, null);
         when(personRepository.getPersonList()).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordWithAge);
@@ -134,7 +131,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void testGetChildrenFromAddressUppercase() throws IOException {
+    public void testGetChildrenFromAddressUppercase() {
         medicalRecordWithAge = new MedicalRecordWithAge(6, null, null);
         when(personRepository.getPersonList()).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordWithAge);
@@ -149,7 +146,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void testGetChildrenFromAddressWithAdult() throws IOException {
+    public void testGetChildrenFromAddressWithAdult() {
         medicalRecordWithAge = new MedicalRecordWithAge(39, null, null);
         when(personRepository.getPersonList()).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordWithAge);
@@ -162,7 +159,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void testGetChildrenFromAddressUnknown() throws IOException {
+    public void testGetChildrenFromAddressUnknown() {
         when(personRepository.getPersonList()).thenReturn(persons);
 
         List<Child> result = testingPersonService.getChildrenFromAddress("unknownAddress");
@@ -172,7 +169,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void testGetPersonFromAddressLowercase() throws IOException {
+    public void testGetPersonFromAddressLowercase() {
         when(personRepository.getPersonList()).thenReturn(persons);
 
         List<Person> result = testingPersonService.getPersonsFromAddress("1509 culver st");
@@ -183,7 +180,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void testGetPersonFromAddressUppercase() throws IOException {
+    public void testGetPersonFromAddressUppercase() {
         when(personRepository.getPersonList()).thenReturn(persons);
 
         List<Person> result = testingPersonService.getPersonsFromAddress("1509 CULVER ST");
@@ -194,7 +191,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void testGetPersonFromAddressUnknown() throws IOException {
+    public void testGetPersonFromAddressUnknown() {
         when(personRepository.getPersonList()).thenReturn(persons);
 
         List<Person> result = testingPersonService.getPersonsFromAddress("unknownAddress");
@@ -217,10 +214,10 @@ public class PersonServiceTest {
         when(medicalRecordService.getMedicalRecordFromName("john", "boyd")).thenReturn(medicalRecordWithAge);
 
         List<PersonWithInformation> result = testingPersonService.getInformationFromName("john", "boyd");
-        List<PersonWithInformation> expectedResult = personsWithInformation;
 
         verify(personRepository, Mockito.times(1)).getPersonList();
-        assertEquals(expectedResult, result);
+        verify(medicalRecordService, Mockito.times(1)).getMedicalRecordFromName("john", "boyd");
+        assertEquals(personsWithInformation, result);
     }
 
     @Test
@@ -237,10 +234,10 @@ public class PersonServiceTest {
         when(medicalRecordService.getMedicalRecordFromName("JOHN", "BOYD")).thenReturn(medicalRecordWithAge);
 
         List<PersonWithInformation> result = testingPersonService.getInformationFromName("JOHN", "BOYD");
-        List<PersonWithInformation> expectedResult = personsWithInformation;
 
         verify(personRepository, Mockito.times(1)).getPersonList();
-        assertEquals(expectedResult, result);
+        verify(medicalRecordService, Mockito.times(1)).getMedicalRecordFromName("JOHN", "BOYD");
+        assertEquals(personsWithInformation, result);
     }
 
     @Test
@@ -268,14 +265,14 @@ public class PersonServiceTest {
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordWithAge);
 
         List<PersonWithInformation> result = testingPersonService.getInformationFromName("John", "Boyd");
-        List<PersonWithInformation> expectedResult = personsWithInformation;
 
         verify(personRepository, Mockito.times(1)).getPersonList();
-        assertEquals(expectedResult, result);
+        verify(medicalRecordService, Mockito.times(2)).getMedicalRecordFromName("John", "Boyd");
+        assertEquals(personsWithInformation, result);
     }
 
     @Test
-    public void testGetInformationFromBothFirstNameLastNameUnknown() throws IOException {
+    public void testGetInformationFromBothFirstNameLastNameUnknown() {
         when(personRepository.getPersonList()).thenReturn(persons);
 
         List<PersonWithInformation> result = testingPersonService.getInformationFromName("unknowFirstName", "unknowLastName");
@@ -287,7 +284,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void testGetInformationFromLastNameUnknown() throws IOException {
+    public void testGetInformationFromLastNameUnknown() {
         when(personRepository.getPersonList()).thenReturn(persons);
 
         List<PersonWithInformation> result = testingPersonService.getInformationFromName("john", "unknowLastName");

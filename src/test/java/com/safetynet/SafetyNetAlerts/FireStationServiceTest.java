@@ -2,7 +2,6 @@ package com.safetynet.SafetyNetAlerts;
 
 import com.safetynet.SafetyNetAlerts.model.*;
 import com.safetynet.SafetyNetAlerts.repository.FireStationRepository;
-import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
 import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
 import com.safetynet.SafetyNetAlerts.service.FireStationService;
 import com.safetynet.SafetyNetAlerts.service.MedicalRecordService;
@@ -15,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -34,21 +32,17 @@ public class FireStationServiceTest {
     private static List<FireStation> fireStations;
     private static List<Person> persons;
     private static MedicalRecordWithAge medicalRecordWithAge;
-    private static List<String> medications;
-    private static List<String> allergies;
     @Mock
     private static FireStationRepository fireStationRepository;
     @Mock
     private static PersonRepository personRepository;
-    @Mock
-    private static MedicalRecordRepository medicalRecordRepository;
     @Mock
     private static PersonService personService;
     @Mock
     private static MedicalRecordService medicalRecordService;
 
     @BeforeEach
-    private void setUpPertest() {
+    public void setUpPertest() {
         FireStation fireStation = new FireStation();
         fireStations = new ArrayList<>();
         fireStation.setStation("3");
@@ -64,10 +58,10 @@ public class FireStationServiceTest {
         person.setPhone("841-874-6512");
         person.setEmail("jaboyd@email.com");
         persons.add(person);
-        medications = new ArrayList<>();
+        List<String> medications = new ArrayList<>();
         medications.add("aznol:350mg");
         medications.add("hydrapermazol:100mg");
-        allergies = new ArrayList<>();
+        List<String> allergies = new ArrayList<>();
         allergies.add("nillacilan");
         medicalRecordWithAge = new MedicalRecordWithAge(39, medications, allergies);
     }
@@ -82,6 +76,7 @@ public class FireStationServiceTest {
         expectedResult.add(persons.get(0).getPhone());
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        verify(personRepository, Mockito.times(1)).getPersonList();
         assertEquals(expectedResult, result);
     }
 
@@ -120,7 +115,7 @@ public class FireStationServiceTest {
     }
 
     @Test
-    public void testGetAddressFromStationWithDuplicate() throws IOException {
+    public void testGetAddressFromStationWithDuplicate() {
         FireStation fireStation = new FireStation();
         fireStation.setStation("3");
         fireStation.setAddress("1509 Culver St");
@@ -187,6 +182,8 @@ public class FireStationServiceTest {
         expectedResult.add(new PersonsWithCounterChildAdult(1, 0, personsWithoutEmail));
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        verify(personRepository, Mockito.times(1)).getPersonList();
+        verify(medicalRecordService, Mockito.times(1)).getMedicalRecordFromName("John", "Boyd");
         assertEquals(expectedResult, result);
     }
 
@@ -211,6 +208,8 @@ public class FireStationServiceTest {
         expectedResult.add(new PersonsWithCounterChildAdult(0, 1, personsWithoutEmail));
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        verify(personRepository, Mockito.times(1)).getPersonList();
+        verify(medicalRecordService, Mockito.times(1)).getMedicalRecordFromName("John", "Boyd");
         assertEquals(expectedResult, result);
     }
 
@@ -250,6 +249,8 @@ public class FireStationServiceTest {
         expectedResult.add(new PersonsWithCounterChildAdult(1, 1, personsWithoutEmail));
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        verify(personRepository, Mockito.times(1)).getPersonList();
+        verify(medicalRecordService, Mockito.times(1)).getMedicalRecordFromName("John", "Boyd");
         assertEquals(expectedResult, result);
     }
 
@@ -262,6 +263,7 @@ public class FireStationServiceTest {
         expectedResult.add(new PersonsWithCounterChildAdult(0, 0, new ArrayList<>()));
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        verify(personRepository, Mockito.times(1)).getPersonList();
         assertEquals(expectedResult, result);
     }
 
@@ -283,6 +285,8 @@ public class FireStationServiceTest {
         expectedResult.add(new PersonsWithFireStation(fireStations.get(0).getStation(), personsWithMedicalRecord));
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        verify(personService, Mockito.times(1)).getPersonsFromAddress("1509 culver st");
+        verify(medicalRecordService, Mockito.times(1)).getMedicalRecordFromName("John", "Boyd");
         assertEquals(expectedResult, result);
     }
 
@@ -304,6 +308,8 @@ public class FireStationServiceTest {
         expectedResult.add(new PersonsWithFireStation(fireStations.get(0).getStation(), personsWithMedicalRecord));
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        verify(personService, Mockito.times(1)).getPersonsFromAddress("1509 CULVER ST");
+        verify(medicalRecordService, Mockito.times(1)).getMedicalRecordFromName("John", "Boyd");
         assertEquals(expectedResult, result);
     }
 
@@ -334,6 +340,8 @@ public class FireStationServiceTest {
         expectedResult.add(new Family("1509 Culver St", personsWithMedicalRecord));
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        verify(personService, Mockito.times(1)).getPersonsFromAddress("1509 Culver St");
+        verify(medicalRecordService, Mockito.times(1)).getMedicalRecordFromName("John", "Boyd");
         assertEquals(expectedResult, result);
     }
 
@@ -344,6 +352,8 @@ public class FireStationServiceTest {
         List<Family> result = testingFireStationService.getFamilyFromStation("unknownStation");
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        verify(personService, Mockito.never()).getPersonsFromAddress("1509 Culver St");
+        verify(medicalRecordService, Mockito.never()).getMedicalRecordFromName("John", "Boyd");
         assertEquals(0, result.size());
     }
 }

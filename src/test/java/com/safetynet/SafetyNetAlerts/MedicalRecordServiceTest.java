@@ -3,7 +3,6 @@ package com.safetynet.SafetyNetAlerts;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecordWithAge;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
-import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
 import com.safetynet.SafetyNetAlerts.service.MedicalRecordService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -38,11 +36,8 @@ public class MedicalRecordServiceTest {
     @Mock
     private static MedicalRecordRepository medicalRecordRepository;
 
-    @Mock
-    private static PersonRepository personRepository;
-
     @BeforeEach
-    private void setUpPertest() {
+    public void setUpPertest() {
         MedicalRecord medicalRecord = new MedicalRecord();
         medicalRecords = new ArrayList<>();
         medicalRecord.setFirstName("John");
@@ -60,7 +55,7 @@ public class MedicalRecordServiceTest {
     }
 
     @Test
-    public void testGetMedicalRecordFromNameLowercase() throws IOException {
+    public void testGetMedicalRecordFromNameLowercase() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
@@ -73,7 +68,7 @@ public class MedicalRecordServiceTest {
     }
 
     @Test
-    public void testGetMedicalRecordFromNameUppercase() throws IOException {
+    public void testGetMedicalRecordFromNameUppercase() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
@@ -86,21 +81,17 @@ public class MedicalRecordServiceTest {
     }
 
     @Test
-    public void testGetMedicalRecordFromBothFirstNameLastNameUnknown() throws IOException {
+    public void testGetMedicalRecordFromBothFirstNameLastNameUnknown() {
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
-        assertThrows(NoSuchElementException.class, () -> {
-            testingMedicalRecordService.getMedicalRecordFromName("unknowFirstName", "unknowLastName").age();
-        });
+        assertThrows(NoSuchElementException.class, () -> testingMedicalRecordService.getMedicalRecordFromName("unknowFirstName", "unknowLastName").age());
     }
 
     @Test
-    public void testGetMedicalRecordFromLastNameUnknown() throws IOException {
+    public void testGetMedicalRecordFromLastNameUnknown() {
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
-        assertThrows(NoSuchElementException.class, () -> {
-            testingMedicalRecordService.getMedicalRecordFromName("john", "unknowLastName").age();
-        });
+        assertThrows(NoSuchElementException.class, () -> testingMedicalRecordService.getMedicalRecordFromName("john", "unknowLastName").age());
     }
 
 }

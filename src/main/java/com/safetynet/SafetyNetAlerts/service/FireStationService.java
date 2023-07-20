@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * Centralize every methods relatives to the fireStations.
@@ -53,7 +52,7 @@ public class FireStationService {
      * @param address a String represents the address to search for
      * @return the number of fireStation from the address, obtained from fireStationRepository
      */
-    public String getStationsFromAddress(String address) throws NoSuchElementException {
+    public String getStationsFromAddress(String address) {
         List<FireStation> fireStations = fireStationRepository.getFireStationList();
         String stationFromAddress = fireStations.stream()
                 .filter(f -> f.getAddress().equalsIgnoreCase(address))
@@ -157,6 +156,12 @@ public class FireStationService {
         return personsWithFireStations;
     }
 
+    /**
+     * Get all the families from a station and the address.
+     *
+     * @param fireStation a String represents the station to search for
+     * @return a list of all the families living nearby the station with their information, obtained from personRepository, duplicates are possible
+     */
     public List<Family> getFamilyFromStation(String fireStation) {
         List<String> addressFromStation = getAddressFromStation(fireStation);
         List<Family> families = new ArrayList<>();

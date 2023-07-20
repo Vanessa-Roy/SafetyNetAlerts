@@ -4,11 +4,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.CoreMatchers.is;
+import java.io.IOException;
+import java.nio.file.Files;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -16,6 +21,16 @@ public class SafetyNetAlertsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    public static String loadJson(String fileName) {
+        try {
+            Resource data = new ClassPathResource(fileName);
+            return Files.readString(data.getFile().toPath()
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Test
     public void testGetEmailsFromCityWithoutParameterShouldFail() throws Exception {
@@ -29,7 +44,7 @@ public class SafetyNetAlertsControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         content().contentType("application/json"),
-                        jsonPath("$[0]", is("jaboyd@email.com"))
+                        content().json(loadJson("expectedResultGetEmailsFromCityCulver.json"))
                 );
     }
 
@@ -45,7 +60,7 @@ public class SafetyNetAlertsControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         content().contentType("application/json"),
-                        jsonPath("$[0]", is("841-874-6512"))
+                        content().json(loadJson("expectedResultGetPhonesFromStation3.json"))
                 );
     }
 
@@ -61,9 +76,7 @@ public class SafetyNetAlertsControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         content().contentType("application/json"),
-                        jsonPath("$[0].firstName", is("Tenley")),
-                        jsonPath("$[0].age", is(11)),
-                        jsonPath("$[0].family[0].firstName", is("John"))
+                        content().json(loadJson("expectedResultGetChildrenFromAddress1509CulverSt.json"))
                 );
     }
 
@@ -79,9 +92,7 @@ public class SafetyNetAlertsControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         content().contentType("application/json"),
-                        jsonPath("$[0].adultsCounter", is(8)),
-                        jsonPath("$[0].childrenCounter", is(3)),
-                        jsonPath("$[0].persons[0].firstName", is("John"))
+                        content().json(loadJson("expectedResultGetPersonsWithCounterFromStation3.json"))
                 );
     }
 
@@ -97,8 +108,7 @@ public class SafetyNetAlertsControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         content().contentType("application/json"),
-                        jsonPath("$[0].fireStation", is("3")),
-                        jsonPath("$[0].personsWithMedicalRecords[0].lastName", is("Boyd"))
+                        content().json(loadJson("expectedResultGetPersonsWithFireStationFromAddress1509CulverSt.json"))
                 );
     }
 
@@ -114,8 +124,7 @@ public class SafetyNetAlertsControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         content().contentType("application/json"),
-                        jsonPath("$[0].lastName", is("Boyd")),
-                        jsonPath("$[0].age", is(39))
+                        content().json(loadJson("expectedResultGetInformationFromNameJohnBoyd.json"))
                 );
     }
 
@@ -131,8 +140,7 @@ public class SafetyNetAlertsControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         content().contentType("application/json"),
-                        jsonPath("$[0].address", is("1509 Culver St")),
-                        jsonPath("$[0].family[0].lastName", is("Boyd"))
+                        content().json(loadJson("expectedResultGetFamilyFromStation3.json"))
                 );
     }
 
