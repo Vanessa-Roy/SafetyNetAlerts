@@ -1,0 +1,123 @@
+[
+  {
+    "address": "1509 Culver St",
+    "family": [
+      {
+        "lastName": "Boyd",
+        "phone": "841-874-6512",
+        "age": 39,
+        "medications": [
+          "aznol:350mg",
+          "hydrapermazol:100mg"
+        ],
+        "allergies": [
+          "nillacilan"
+        ]
+      },
+      {
+        "lastName": "Boyd",
+        "phone": "841-874-6513",
+        "age": 34,
+        "medications": [
+          "pharmacol:5000mg",
+          "terazine:10mg",
+          "noznazol:250mg"
+        ],
+        "allergies": []
+      },
+      {
+        "lastName": "Boyd",
+        "phone": "841-874-6512",
+        "age": 11,
+        "medications": [],
+        "allergies": [
+          "peanut"
+        ]
+      },
+      {
+        "lastName": "Boyd",
+        "phone": "841-874-6512",
+        "age": 5,
+        "medications": [],
+        "allergies": []
+      },
+      {
+        "lastName": "Boyd",
+        "phone": "841-874-6544",
+        "age": 37,
+        "medications": [
+          "tetracyclaz:650mg"
+        ],
+        "allergies": [
+          "xilliathal"
+        ]
+      }
+    ]
+  },
+  {
+    "address": "834 Binoc Ave",
+    "family": [
+      {
+        "lastName": "Carman",
+        "phone": "841-874-6512",
+        "age": 11,
+        "medications": [],
+        "allergies": []
+      }
+    ]
+  },
+  {
+    "address": "748 Townings Dr",
+    "family": [
+      {
+        "lastName": "Shepard",
+        "phone": "841-874-6544",
+        "age": 43,
+        "medications": [],
+        "allergies": []
+      },
+      {
+        "lastName": "Ferguson",
+        "phone": "841-874-6741",
+        "age": 29,
+        "medications": [],
+        "allergies": []
+      }
+    ]
+  },
+  {
+    "address": "112 Steppes Pl",
+    "family": [
+      {
+        "lastName": "Cooper",
+        "phone": "841-874-6874",
+        "age": 29,
+        "medications": [
+          "hydrapermazol:300mg",
+          "dodoxadin:30mg"
+        ],
+        "allergies": [
+          "shellfish"
+        ]
+      },
+      {
+        "lastName": "Peters",
+        "phone": "841-874-8888",
+        "age": 58,
+        "medications": [],
+        "allergies": []
+      },
+      {
+        "lastName": "Boyd",
+        "phone": "841-874-9888",
+        "age": 58,
+        "medications": [
+          "aznol:200mg"
+        ],
+        "allergies": [
+          "nillacilan"
+        ]
+      }
+    ]
+  }
+]
