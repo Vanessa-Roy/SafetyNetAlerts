@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -34,7 +33,6 @@ public class SafetyNetAlertsController {
      * @return a list of all emails from the city, obtained from personService, duplicates are not allowed.
      */
     @GetMapping("/communityEmail")
-    @ResponseBody
     public List<String> getEmailsFromCity(@RequestParam String city) {
         logger.info("request the list of emails from persons living in {}", city);
         List<String> result = personService.getEmailsFromCity(city);
@@ -45,11 +43,10 @@ public class SafetyNetAlertsController {
     /**
      * Get all the phones from an area.
      *
-     * @param fireStation a String represents the fireStation number we are looking for.
+     * @param firestation a String represents the fireStation number we are looking for.
      * @return a list of all phones from the fireStation, obtained from fireStationService, duplicates are not allowed.
      */
     @GetMapping("/phoneAlert")
-    @ResponseBody
     public List<String> getPhonesFromStation(@RequestParam String firestation) {
         logger.info("request the list of phones from persons living near by the fireStation number {}", firestation);
         List<String> result = fireStationService.getPhonesFromStation(firestation);
@@ -64,7 +61,6 @@ public class SafetyNetAlertsController {
      * @return a list of all children from the address, obtained from personService, duplicates are possible.
      */
     @GetMapping("/childAlert")
-    @ResponseBody
     public List<Child> getChildrenFromAddress(@RequestParam String address) {
         logger.info("request the list of children living at {}", address);
         List<Child> result = personService.getChildrenFromAddress(address);
@@ -79,11 +75,10 @@ public class SafetyNetAlertsController {
      * @return a list of all persons from the fireStation, obtained from fireStationService, duplicates are possible.
      */
     @GetMapping("/firestation")
-    @ResponseBody
-    public List<PersonsWithCounterChildAdult> getPersonsWithCounterFromStation(@RequestParam String stationNumber) {
+    public PersonsWithCounterChildAdult getPersonsWithCounterFromStation(@RequestParam String stationNumber) {
         logger.info("request a counter of adults and children from the list of persons living near by the fireStation number {}", stationNumber);
-        List<PersonsWithCounterChildAdult> result = fireStationService.getPersonsWithCounterFromStation(stationNumber);
-        logger.info("response with {} person(s) living near by the fireStation number {} with {} child(ren) and {} adult(s)", result.get(0).persons().size(), stationNumber, result.get(0).childrenCounter(), result.get(0).adultsCounter());
+        PersonsWithCounterChildAdult result = fireStationService.getPersonsWithCounterFromStation(stationNumber);
+        logger.info("response with {} person(s) living near by the fireStation number {} with {} child(ren) and {} adult(s)", result.persons().size(), stationNumber, result.childrenCounter(), result.adultsCounter());
         return result;
     }
 
@@ -94,11 +89,10 @@ public class SafetyNetAlertsController {
      * @return a list of all persons from the address, obtained from fireStationService, duplicates are possible.
      */
     @GetMapping("/fire")
-    @ResponseBody
-    public List<PersonsWithFireStation> getPersonsWithFireStationFromAddress(@RequestParam String address) {
+    public PersonsWithFireStation getPersonsWithFireStationFromAddress(@RequestParam String address) {
         logger.info("request the fireStation number and the list of persons living at {}", address);
-        List<PersonsWithFireStation> result = fireStationService.getPersonsWithFireStationFromAddress(address);
-        logger.info("response with {} person(s) living at {} and covered by fireStation number {}", result.get(0).personsWithMedicalRecords().size(), address, result.get(0).fireStation());
+        PersonsWithFireStation result = fireStationService.getPersonsWithFireStationFromAddress(address);
+        logger.info("response with {} person(s) living at {} and covered by fireStation number {}", result.personsWithMedicalRecords().size(), address, result.fireStation());
         return result;
     }
 
@@ -110,7 +104,6 @@ public class SafetyNetAlertsController {
      * @return a list of information from the person, obtained from personService, duplicates are possible.
      */
     @GetMapping("/personInfo")
-    @ResponseBody
     public List<PersonWithInformation> getInformationFromName(@RequestParam String firstName, String lastName) {
         logger.info("request the information about the persons named {} {}", firstName, lastName);
         List<PersonWithInformation> result = personService.getInformationFromName(firstName, lastName);
@@ -125,10 +118,9 @@ public class SafetyNetAlertsController {
      * @return a list of families from a fireStation, obtained from fireStationService, duplicates are not allowed..
      */
     @GetMapping("/flood/stations")
-    @ResponseBody
-    public List<Family> getFamilyFromStation(@RequestParam String stations) {
+    public List<Family> getFamiliesFromStation(@RequestParam String stations) {
         logger.info("request the list of families living near by the fireStation {}", stations);
-        List<Family> result = fireStationService.getFamilyFromStation(stations);
+        List<Family> result = fireStationService.getFamiliesFromStation(stations);
         logger.info("response with {} family(ies) covered by the fireStation number {}", result.size(), stations);
         return result;
     }

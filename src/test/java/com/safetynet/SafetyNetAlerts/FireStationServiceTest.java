@@ -177,9 +177,8 @@ public class FireStationServiceTest {
         when(personRepository.getPersonList()).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordAdult);
 
-        List<PersonsWithCounterChildAdult> result = testingFireStationService.getPersonsWithCounterFromStation("3");
-        List<PersonsWithCounterChildAdult> expectedResult = new ArrayList<>();
-        expectedResult.add(new PersonsWithCounterChildAdult(1, 0, personsWithoutEmail));
+        PersonsWithCounterChildAdult result = testingFireStationService.getPersonsWithCounterFromStation("3");
+        PersonsWithCounterChildAdult expectedResult = new PersonsWithCounterChildAdult(1, 0, personsWithoutEmail);
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
         verify(personRepository, Mockito.times(1)).getPersonList();
@@ -203,9 +202,8 @@ public class FireStationServiceTest {
         when(personRepository.getPersonList()).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordChild);
 
-        List<PersonsWithCounterChildAdult> result = testingFireStationService.getPersonsWithCounterFromStation("3");
-        List<PersonsWithCounterChildAdult> expectedResult = new ArrayList<>();
-        expectedResult.add(new PersonsWithCounterChildAdult(0, 1, personsWithoutEmail));
+        PersonsWithCounterChildAdult result = testingFireStationService.getPersonsWithCounterFromStation("3");
+        PersonsWithCounterChildAdult expectedResult = new PersonsWithCounterChildAdult(0, 1, personsWithoutEmail);
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
         verify(personRepository, Mockito.times(1)).getPersonList();
@@ -244,9 +242,8 @@ public class FireStationServiceTest {
         when(medicalRecordService.getMedicalRecordFromName("Tenley", "Boyd")).thenReturn(medicalRecordChild);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordAdult);
 
-        List<PersonsWithCounterChildAdult> result = testingFireStationService.getPersonsWithCounterFromStation("3");
-        List<PersonsWithCounterChildAdult> expectedResult = new ArrayList<>();
-        expectedResult.add(new PersonsWithCounterChildAdult(1, 1, personsWithoutEmail));
+        PersonsWithCounterChildAdult result = testingFireStationService.getPersonsWithCounterFromStation("3");
+        PersonsWithCounterChildAdult expectedResult = new PersonsWithCounterChildAdult(1, 1, personsWithoutEmail);
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
         verify(personRepository, Mockito.times(1)).getPersonList();
@@ -258,9 +255,8 @@ public class FireStationServiceTest {
     public void testGetPersonsWithCounterFromStationUnknown() {
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
 
-        List<PersonsWithCounterChildAdult> result = testingFireStationService.getPersonsWithCounterFromStation("unknownStation");
-        List<PersonsWithCounterChildAdult> expectedResult = new ArrayList<>();
-        expectedResult.add(new PersonsWithCounterChildAdult(0, 0, new ArrayList<>()));
+        PersonsWithCounterChildAdult result = testingFireStationService.getPersonsWithCounterFromStation("unknownStation");
+        PersonsWithCounterChildAdult expectedResult = new PersonsWithCounterChildAdult(0, 0, new ArrayList<>());
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
         verify(personRepository, Mockito.times(1)).getPersonList();
@@ -280,9 +276,8 @@ public class FireStationServiceTest {
         when(personService.getPersonsFromAddress("1509 culver st")).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordWithAge);
 
-        List<PersonsWithFireStation> result = testingFireStationService.getPersonsWithFireStationFromAddress("1509 culver st");
-        List<PersonsWithFireStation> expectedResult = new ArrayList<>();
-        expectedResult.add(new PersonsWithFireStation(fireStations.get(0).getStation(), personsWithMedicalRecord));
+        PersonsWithFireStation result = testingFireStationService.getPersonsWithFireStationFromAddress("1509 culver st");
+        PersonsWithFireStation expectedResult = new PersonsWithFireStation(fireStations.get(0).getStation(), personsWithMedicalRecord);
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
         verify(personService, Mockito.times(1)).getPersonsFromAddress("1509 culver st");
@@ -303,9 +298,8 @@ public class FireStationServiceTest {
         when(personService.getPersonsFromAddress("1509 CULVER ST")).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordWithAge);
 
-        List<PersonsWithFireStation> result = testingFireStationService.getPersonsWithFireStationFromAddress("1509 CULVER ST");
-        List<PersonsWithFireStation> expectedResult = new ArrayList<>();
-        expectedResult.add(new PersonsWithFireStation(fireStations.get(0).getStation(), personsWithMedicalRecord));
+        PersonsWithFireStation result = testingFireStationService.getPersonsWithFireStationFromAddress("1509 CULVER ST");
+        PersonsWithFireStation expectedResult = new PersonsWithFireStation(fireStations.get(0).getStation(), personsWithMedicalRecord);
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
         verify(personService, Mockito.times(1)).getPersonsFromAddress("1509 CULVER ST");
@@ -323,7 +317,7 @@ public class FireStationServiceTest {
     }
 
     @Test
-    public void testGetFamilyFromStation() {
+    public void testGetFamiliesFromStation() {
         List<PersonWithMedicalRecord> personsWithMedicalRecord = new ArrayList<>();
         personsWithMedicalRecord.add(new PersonWithMedicalRecord(
                 persons.get(0).getLastName(),
@@ -335,7 +329,7 @@ public class FireStationServiceTest {
         when(personService.getPersonsFromAddress("1509 Culver St")).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordWithAge);
 
-        List<Family> result = testingFireStationService.getFamilyFromStation("3");
+        List<Family> result = testingFireStationService.getFamiliesFromStation("3");
         List<Family> expectedResult = new ArrayList<>();
         expectedResult.add(new Family("1509 Culver St", personsWithMedicalRecord));
 
@@ -346,10 +340,10 @@ public class FireStationServiceTest {
     }
 
     @Test
-    public void testGetFamilyFromStationUnknown() {
+    public void testGetFamiliesFromStationUnknown() {
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
 
-        List<Family> result = testingFireStationService.getFamilyFromStation("unknownStation");
+        List<Family> result = testingFireStationService.getFamiliesFromStation("unknownStation");
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
         verify(personService, Mockito.never()).getPersonsFromAddress("1509 Culver St");

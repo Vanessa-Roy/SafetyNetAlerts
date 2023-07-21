@@ -85,7 +85,7 @@ public class FireStationService {
      * @param stationNumber a String represents the fireStation to search for
      * @return a list of all the persons living nearby the fireStation, obtained from personRepository, duplicates are possible
      */
-    public List<PersonsWithCounterChildAdult> getPersonsWithCounterFromStation(String stationNumber) {
+    public PersonsWithCounterChildAdult getPersonsWithCounterFromStation(String stationNumber) {
         int childrenCounter = 0;
         int adultCounter = 0;
         List<String> addressFromStation = getAddressFromStation(stationNumber);
@@ -113,14 +113,11 @@ public class FireStationService {
                 adultCounter++;
             }
         }
-        List<PersonsWithCounterChildAdult> personsWithCounterChildAdult = new ArrayList<>();
-        PersonsWithCounterChildAdult personsFromStationWithMedicalRecordAndCounter = new PersonsWithCounterChildAdult(
+        return new PersonsWithCounterChildAdult(
                 adultCounter,
                 childrenCounter,
                 personsWithoutEmailFromStation
         );
-        personsWithCounterChildAdult.add(personsFromStationWithMedicalRecordAndCounter);
-        return personsWithCounterChildAdult;
     }
 
     /**
@@ -129,7 +126,7 @@ public class FireStationService {
      * @param address a String represents the address to search for
      * @return a list of all the persons living at the address with their information, obtained from personRepository, duplicates are possible
      */
-    public List<PersonsWithFireStation> getPersonsWithFireStationFromAddress(String address) {
+    public PersonsWithFireStation getPersonsWithFireStationFromAddress(String address) {
         String fireStation = getStationsFromAddress(address);
         List<Person> personsFromAddress = personService.getPersonsFromAddress(address);
         List<PersonWithMedicalRecord> personsFromAddressWithMedicalRecord = new ArrayList<>();
@@ -147,13 +144,10 @@ public class FireStationService {
             );
             personsFromAddressWithMedicalRecord.add(personWithMedicalRecord);
         }
-        List<PersonsWithFireStation> personsWithFireStations = new ArrayList<>();
-        PersonsWithFireStation personsFromStationWithMedicalRecord = new PersonsWithFireStation(
+        return new PersonsWithFireStation(
                 fireStation,
                 personsFromAddressWithMedicalRecord
         );
-        personsWithFireStations.add(personsFromStationWithMedicalRecord);
-        return personsWithFireStations;
     }
 
     /**
@@ -162,26 +156,30 @@ public class FireStationService {
      * @param fireStation a String represents the station to search for
      * @return a list of all the families living nearby the station with their information, obtained from personRepository, duplicates are possible
      */
-    public List<Family> getFamilyFromStation(String fireStation) {
+    public List<Family> getFamiliesFromStation(String fireStation) {
         List<String> addressFromStation = getAddressFromStation(fireStation);
         List<Family> families = new ArrayList<>();
         for (String address : addressFromStation) {
             List<Person> personsFromAddress = personService.getPersonsFromAddress(address);
-            List<PersonWithMedicalRecord> personsFromAddressWithMedicalRecord = new ArrayList<>();
-            for (Person personFromAddress : personsFromAddress) {
-                MedicalRecordWithAge medicalRecord = medicalRecordService.getMedicalRecordFromName(
-                        personFromAddress.getFirstName(),
-                        personFromAddress.getLastName()
-                );
-                PersonWithMedicalRecord personWithMedicalRecord = new PersonWithMedicalRecord(
-                        personFromAddress.getLastName(),
-                        personFromAddress.getPhone(),
-                        medicalRecord.age(),
-                        medicalRecord.medications(),
-                        medicalRecord.allergies()
-                );
-                personsFromAddressWithMedicalRecord.add(personWithMedicalRecord);
-            }
+            List<PersonWithMedicalRecord> personsFromAddressWithMedicalRecord;
+            personsFromAddressWithMedicalRecord = personsFromAddress.stream()
+                    .map(p -> {
+                                MedicalRecordWithAge medicalRecord = medicalRecordService.getMedicalRecordFromName(
+                                        p.getFirstName(),
+                                        p.getLastName()
+                                );
+                                return (
+                                        new PersonWithMedicalRecord(
+                                                p.getLastName(),
+                                                p.getPhone(),
+                                                medicalRecord.age(),
+                                                medicalRecord.medications(),
+                                                medicalRecord.allergies()
+                                        )
+                                );
+                            }
+                    )
+                    .toList();
             Family family = new Family(address, personsFromAddressWithMedicalRecord);
             families.add(family);
         }

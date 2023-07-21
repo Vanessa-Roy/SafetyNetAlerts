@@ -140,7 +140,7 @@ public class SafetyNetAlertsControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         content().contentType("application/json"),
-                        content().json(loadJson("expectedResultGetFamilyFromStation3.json"))
+                        content().json(loadJson("expectedResultGetFamiliesFromStation3.json"))
                 );
     }
 
