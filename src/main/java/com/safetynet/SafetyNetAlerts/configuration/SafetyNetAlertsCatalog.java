@@ -30,7 +30,7 @@ public class SafetyNetAlertsCatalog {
     private List<Person> persons;
     private List<FireStation> fireStations;
     private List<MedicalRecord> medicalRecords;
-    ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * This constructor calls all the SafetyNetAlertsCatalog's methods to set up the different lists.

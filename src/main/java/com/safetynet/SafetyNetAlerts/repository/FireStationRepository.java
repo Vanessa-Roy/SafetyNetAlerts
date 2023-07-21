@@ -12,7 +12,6 @@ import java.util.List;
 
 /**
  * Load and save data relatives to the fire stations from SafetynetAlertsCatalog.
- *
  */
 @Repository
 public class FireStationRepository {
@@ -20,7 +19,7 @@ public class FireStationRepository {
     private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);
 
     @Autowired
-    SafetyNetAlertsCatalog data;
+    private SafetyNetAlertsCatalog data;
 
     /**
      * Get all the fire stations from the JSON source.

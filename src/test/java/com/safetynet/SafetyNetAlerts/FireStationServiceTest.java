@@ -16,10 +16,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -156,9 +155,10 @@ public class FireStationServiceTest {
     public void testGetStationFromAddressUnknown() {
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
 
-        assertThrows(NoSuchElementException.class, () -> {
-            testingFireStationService.getStationsFromAddress("unknownAddress");
-        });
+        String result = testingFireStationService.getStationsFromAddress("address Unknown");
+
+        verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        assertNull(result);
     }
 
     @Test
@@ -309,11 +309,17 @@ public class FireStationServiceTest {
 
     @Test
     public void testGetPersonsWithFireStationFromAddressUnknown() {
+        List<Person> emptyList = new ArrayList<>();
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
+        when(personService.getPersonsFromAddress("address unknown")).thenReturn(emptyList);
 
-        assertThrows(NoSuchElementException.class, () -> {
-            testingFireStationService.getPersonsWithFireStationFromAddress("unknownAddress");
-        });
+        PersonsWithFireStation result = testingFireStationService.getPersonsWithFireStationFromAddress("address unknown");
+        PersonsWithFireStation expectedResult = new PersonsWithFireStation(null, new ArrayList<>());
+
+        verify(fireStationRepository, Mockito.times(1)).getFireStationList();
+        verify(personService, Mockito.times(1)).getPersonsFromAddress("address unknown");
+        verify(medicalRecordService, Mockito.never()).getMedicalRecordFromName("", "");
+        assertEquals(expectedResult, result);
     }
 
     @Test

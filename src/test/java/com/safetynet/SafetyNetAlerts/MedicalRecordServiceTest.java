@@ -17,10 +17,8 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -84,14 +82,21 @@ public class MedicalRecordServiceTest {
     public void testGetMedicalRecordFromBothFirstNameLastNameUnknown() {
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
-        assertThrows(NoSuchElementException.class, () -> testingMedicalRecordService.getMedicalRecordFromName("unknowFirstName", "unknowLastName").age());
+        MedicalRecordWithAge result = testingMedicalRecordService.getMedicalRecordFromName("unknowFirstName", "unknowLastName");
+        MedicalRecordWithAge expectedResult = new MedicalRecordWithAge(0, null, null);
+
+        assertEquals(expectedResult, result);
     }
 
     @Test
     public void testGetMedicalRecordFromLastNameUnknown() {
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
-        assertThrows(NoSuchElementException.class, () -> testingMedicalRecordService.getMedicalRecordFromName("john", "unknowLastName").age());
+        MedicalRecordWithAge result = testingMedicalRecordService.getMedicalRecordFromName("john", "unknowLastName");
+
+        MedicalRecordWithAge expectedResult = new MedicalRecordWithAge(0, null, null);
+
+        assertEquals(expectedResult, result);
     }
 
 }

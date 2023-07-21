@@ -58,7 +58,7 @@ public class FireStationService {
                 .filter(f -> f.getAddress().equalsIgnoreCase(address))
                 .map(FireStation::getStation)
                 .findAny()
-                .orElseThrow();
+                .orElse(null);
         logger.debug("get the fireStation number that covers {}", address);
         return stationFromAddress;
     }

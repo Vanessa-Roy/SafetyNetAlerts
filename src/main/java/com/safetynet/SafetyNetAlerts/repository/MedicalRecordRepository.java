@@ -12,7 +12,6 @@ import java.util.List;
 
 /**
  * Load and save data relatives to the medical records from SafetynetAlertsCatalog.
- *
  */
 @Repository
 public class MedicalRecordRepository {
@@ -20,7 +19,7 @@ public class MedicalRecordRepository {
     private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);
 
     @Autowired
-    SafetyNetAlertsCatalog data;
+    private SafetyNetAlertsCatalog data;
 
     /**
      * Get all the medical records from the JSON source.

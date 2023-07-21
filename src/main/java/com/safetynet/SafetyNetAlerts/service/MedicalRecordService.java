@@ -43,18 +43,18 @@ public class MedicalRecordService {
         String birthdate = medicalRecordsFromName.stream()
                 .map(MedicalRecord::getBirthdate)
                 .findAny()
-                .orElseThrow();
+                .orElse(LocalDate.now().format(formatter));
         int age = Period.between(LocalDate.parse(birthdate, formatter), LocalDate.now()).getYears();
         logger.debug("the person named {} is {} years old", firstName + " " + lastName, age);
         List<String> allergies = medicalRecordsFromName.stream()
                 .map(MedicalRecord::getAllergies)
                 .findAny()
-                .orElseThrow();
+                .orElse(null);
         logger.debug("the person named {} is allergic to {}", firstName + " " + lastName, allergies);
         List<String> medications = medicalRecordsFromName.stream()
                 .map(MedicalRecord::getMedications)
                 .findAny()
-                .orElseThrow();
+                .orElse(null);
         logger.debug("the person named {} is taking the following medications {}", firstName + " " + lastName, medications);
         return new MedicalRecordWithAge(age, medications, allergies);
     }
