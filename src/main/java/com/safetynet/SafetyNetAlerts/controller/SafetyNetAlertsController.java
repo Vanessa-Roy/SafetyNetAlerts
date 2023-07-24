@@ -47,7 +47,9 @@ public class SafetyNetAlertsController {
             @ApiResponse(responseCode = "400", description = "the parameter city is missing",
                     content = @Content)})
     @GetMapping("/communityEmail")
-    public List<String> getEmailsFromCity(@Parameter(description = "city to search for") @RequestParam String city) {
+    public List<String> getEmailsFromCity(
+            @Parameter(description = "city to search for")
+            @RequestParam String city) {
         logger.info("request the list of emails from persons living in {}", city);
         List<String> result = personService.getEmailsFromCity(city);
         logger.info("response with {} email(s) from persons living in {}", result.size(), city);
@@ -68,7 +70,9 @@ public class SafetyNetAlertsController {
             @ApiResponse(responseCode = "400", description = "the parameter firestation is missing",
                     content = @Content)})
     @GetMapping("/phoneAlert")
-    public List<String> getPhonesFromStation(@Parameter(description = "number of FireStation to search for") @RequestParam String firestation) {
+    public List<String> getPhonesFromStation(
+            @Parameter(description = "number of fireStation to search for")
+            @RequestParam String firestation) {
         logger.info("request the list of phones from persons living near by the fireStation number {}", firestation);
         List<String> result = fireStationService.getPhonesFromStation(firestation);
         logger.info("response with {} phone(s) from persons living near by the fireStation number {}", result.size(), firestation);
@@ -89,7 +93,9 @@ public class SafetyNetAlertsController {
             @ApiResponse(responseCode = "400", description = "the parameter address is missing",
                     content = @Content)})
     @GetMapping("/childAlert")
-    public List<Child> getChildrenFromAddress(@Parameter(description = "address to search for") @RequestParam String address) {
+    public List<Child> getChildrenFromAddress(
+            @Parameter(description = "address to search for")
+            @RequestParam String address) {
         logger.info("request the list of children living at {}", address);
         List<Child> result = personService.getChildrenFromAddress(address);
         logger.info("response with {} child(ren) from persons living at {}", result.size(), address);
@@ -110,7 +116,9 @@ public class SafetyNetAlertsController {
             @ApiResponse(responseCode = "400", description = "the parameter stationNumber is missing",
                     content = @Content)})
     @GetMapping("/firestation")
-    public PersonsWithCounterChildAdult getPersonsWithCounterFromStation(@RequestParam String stationNumber) {
+    public PersonsWithCounterChildAdult getPersonsWithCounterFromStation(
+            @Parameter(description = "number of fireStation to search for")
+            @RequestParam String stationNumber) {
         logger.info("request a counter of adults and children from the list of persons living near by the fireStation number {}", stationNumber);
         PersonsWithCounterChildAdult result = fireStationService.getPersonsWithCounterFromStation(stationNumber);
         logger.info("response with {} person(s) living near by the fireStation number {} with {} child(ren) and {} adult(s)", result.persons().size(), stationNumber, result.childrenCounter(), result.adultsCounter());
@@ -131,7 +139,9 @@ public class SafetyNetAlertsController {
             @ApiResponse(responseCode = "400", description = "the parameter address is missing",
                     content = @Content)})
     @GetMapping("/fire")
-    public PersonsWithFireStation getPersonsWithFireStationFromAddress(@Parameter(description = "address to search for") @RequestParam String address) {
+    public PersonsWithFireStation getPersonsWithFireStationFromAddress(
+            @Parameter(description = "address to search for")
+            @RequestParam String address) {
         logger.info("request the fireStation number and the list of persons living at {}", address);
         PersonsWithFireStation result = fireStationService.getPersonsWithFireStationFromAddress(address);
         logger.info("response with {} person(s) living at {} and covered by fireStation number {}", result.personsWithMedicalRecords().size(), address, result.fireStation());
@@ -153,7 +163,9 @@ public class SafetyNetAlertsController {
             @ApiResponse(responseCode = "400", description = "the parameters firstName and lastNames are missing",
                     content = @Content)})
     @GetMapping("/personInfo")
-    public List<PersonWithInformation> getInformationFromName(@Parameter(description = "name to search for") @RequestParam String firstName, String lastName) {
+    public List<PersonWithInformation> getInformationFromName(
+            @Parameter(description = "name to search for")
+            @RequestParam String firstName, String lastName) {
         logger.info("request the information about the persons named {} {}", firstName, lastName);
         List<PersonWithInformation> result = personService.getInformationFromName(firstName, lastName);
         logger.info("response with the information about {} person(s) named {} {}", result.size(), firstName, lastName);
@@ -161,21 +173,23 @@ public class SafetyNetAlertsController {
     }
 
     /**
-     * Get the list of families from a fireStation.
+     * Get the list of families from a list of fireStations.
      *
-     * @param stations a String represents the fireStation number we are looking for.
-     * @return a list of families from a fireStation, obtained from fireStationService, duplicates are not allowed..
+     * @param stations a list of String represents the fireStation numbers we are looking for.
+     * @return a list of families from fireStations, obtained from fireStationService, duplicates are not allowed..
      */
-    @Operation(summary = "Get the list of families from a fireStation")
+    @Operation(summary = "Get the list of families from a list of fireStations")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found the list of families from the fireStation",
+            @ApiResponse(responseCode = "200", description = "Found the list of families from the list of fireStation",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Family.class))}),
             @ApiResponse(responseCode = "400", description = "the parameter stations is missing",
                     content = @Content)})
     @GetMapping("/flood/stations")
-    public List<Family> getFamiliesFromStation(@Parameter(description = "number of fireStation to search for") @RequestParam String stations) {
-        logger.info("request the list of families living near by the fireStation {}", stations);
+    public List<Family> getFamiliesFromStation(
+            @Parameter(description = "list of fireStation numbers to search for")
+            @RequestParam List<String> stations) {
+        logger.info("request the list of families living near by the fireStation(s) {}", stations);
         List<Family> result = fireStationService.getFamiliesFromStation(stations);
         logger.info("response with {} family(ies) covered by the fireStation number {}", result.size(), stations);
         return result;

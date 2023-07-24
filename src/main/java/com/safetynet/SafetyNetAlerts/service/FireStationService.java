@@ -151,15 +151,18 @@ public class FireStationService {
     }
 
     /**
-     * Get all the families from a station and the address.
+     * Get all the families from the address covered by the list of stations.
      *
-     * @param fireStation a String represents the station to search for
+     * @param stations a list of String represents the stations to search for
      * @return a list of all the families living nearby the station with their information, obtained from personRepository, duplicates are possible
      */
-    public List<Family> getFamiliesFromStation(String fireStation) {
-        List<String> addressFromStation = getAddressFromStation(fireStation);
+    public List<Family> getFamiliesFromStation(List<String> stations) {
         List<Family> families = new ArrayList<>();
-        for (String address : addressFromStation) {
+        List<String> addressFromStations = new ArrayList<>();
+        for (String station : stations) {
+            addressFromStations.addAll(getAddressFromStation(station));
+        }
+        for (String address : addressFromStations) {
             List<Person> personsFromAddress = personService.getPersonsFromAddress(address);
             List<PersonWithMedicalRecord> personsFromAddressWithMedicalRecord;
             personsFromAddressWithMedicalRecord = personsFromAddress.stream()
