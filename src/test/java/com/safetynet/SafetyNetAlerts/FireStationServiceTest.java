@@ -323,7 +323,7 @@ public class FireStationServiceTest {
     }
 
     @Test
-    public void testGetFamiliesFromStation() {
+    public void testGetFamiliesFromStationsWithOneStation() {
         List<String> stations = new ArrayList<>();
         stations.add("3");
         List<PersonWithMedicalRecord> personsWithMedicalRecord = new ArrayList<>();
@@ -337,7 +337,7 @@ public class FireStationServiceTest {
         when(personService.getPersonsFromAddress("1509 Culver St")).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordWithAge);
 
-        List<Family> result = testingFireStationService.getFamiliesFromStation(stations);
+        List<Family> result = testingFireStationService.getFamiliesFromStations(stations);
         List<Family> expectedResult = new ArrayList<>();
         expectedResult.add(new Family("1509 Culver St", personsWithMedicalRecord));
 
@@ -348,7 +348,7 @@ public class FireStationServiceTest {
     }
 
     @Test
-    public void testGetFamiliesFromStations() {
+    public void testGetFamiliesFromStationsWithTwoStations() {
         List<String> stations = new ArrayList<>();
         stations.add("3");
         stations.add("2");
@@ -368,7 +368,7 @@ public class FireStationServiceTest {
         when(personService.getPersonsFromAddress("29 15th St")).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordWithAge);
 
-        List<Family> result = testingFireStationService.getFamiliesFromStation(stations);
+        List<Family> result = testingFireStationService.getFamiliesFromStations(stations);
         List<Family> expectedResult = new ArrayList<>();
         expectedResult.add(new Family("1509 Culver St", personsWithMedicalRecord));
         expectedResult.add(new Family("29 15th St", personsWithMedicalRecord));
@@ -386,7 +386,7 @@ public class FireStationServiceTest {
         stations.add("unknownStation");
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
 
-        List<Family> result = testingFireStationService.getFamiliesFromStation(stations);
+        List<Family> result = testingFireStationService.getFamiliesFromStations(stations);
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
         verify(personService, Mockito.never()).getPersonsFromAddress("unknownStation");

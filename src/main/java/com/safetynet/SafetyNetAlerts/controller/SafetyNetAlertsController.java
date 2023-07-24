@@ -160,7 +160,7 @@ public class SafetyNetAlertsController {
             @ApiResponse(responseCode = "200", description = "Found the information from the person",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = PersonWithInformation.class))}),
-            @ApiResponse(responseCode = "400", description = "the parameters firstName and lastNames are missing",
+            @ApiResponse(responseCode = "400", description = "the parameters firstName and lastName are missing",
                     content = @Content)})
     @GetMapping("/personInfo")
     public List<PersonWithInformation> getInformationFromName(
@@ -186,11 +186,11 @@ public class SafetyNetAlertsController {
             @ApiResponse(responseCode = "400", description = "the parameter stations is missing",
                     content = @Content)})
     @GetMapping("/flood/stations")
-    public List<Family> getFamiliesFromStation(
+    public List<Family> getFamiliesFromStations(
             @Parameter(description = "list of fireStation numbers to search for")
             @RequestParam List<String> stations) {
         logger.info("request the list of families living near by the fireStation(s) {}", stations);
-        List<Family> result = fireStationService.getFamiliesFromStation(stations);
+        List<Family> result = fireStationService.getFamiliesFromStations(stations);
         logger.info("response with {} family(ies) covered by the fireStation number {}", result.size(), stations);
         return result;
     }

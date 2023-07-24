@@ -129,18 +129,18 @@ public class SafetyNetAlertsControllerTest {
     }
 
     @Test
-    public void testGetFamilyFromStationWithoutParameterShouldFail() throws Exception {
+    public void testGetFamiliesFromStationsWithoutParameterShouldFail() throws Exception {
         mockMvc.perform(get("/flood/stations"))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testGetFamilyFromStationShouldPass() throws Exception {
-        mockMvc.perform(get("/flood/stations?stations=3"))
+    public void testGetFamiliesFromStationsShouldPass() throws Exception {
+        mockMvc.perform(get("/flood/stations?stations=2,3"))
                 .andExpectAll(
                         status().isOk(),
                         content().contentType("application/json"),
-                        content().json(loadJson("expectedResultGetFamiliesFromStation3.json"))
+                        content().json(loadJson("expectedResultGetFamiliesFromStations2&3.json"))
                 );
     }
 

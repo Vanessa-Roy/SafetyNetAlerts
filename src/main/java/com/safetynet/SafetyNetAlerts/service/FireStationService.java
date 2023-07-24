@@ -156,7 +156,7 @@ public class FireStationService {
      * @param stations a list of String represents the stations to search for
      * @return a list of all the families living nearby the station with their information, obtained from personRepository, duplicates are possible
      */
-    public List<Family> getFamiliesFromStation(List<String> stations) {
+    public List<Family> getFamiliesFromStations(List<String> stations) {
         List<Family> families = new ArrayList<>();
         List<String> addressFromStations = new ArrayList<>();
         for (String station : stations) {
