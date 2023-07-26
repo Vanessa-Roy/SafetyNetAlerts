@@ -4,7 +4,6 @@ import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecordWithAge;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
-import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import java.util.List;
 /**
  * Centralize every methods relatives to the medical records.
  */
-@Data
+
 @Service
 public class MedicalRecordService {
 

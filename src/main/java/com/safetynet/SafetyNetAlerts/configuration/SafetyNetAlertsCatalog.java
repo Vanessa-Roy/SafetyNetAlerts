@@ -8,7 +8,8 @@ import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import com.safetynet.SafetyNetAlerts.model.FireStation;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
 import com.safetynet.SafetyNetAlerts.model.Person;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +22,8 @@ import java.util.List;
 /**
  * Set Up for the SafetyNet Alerts Application
  */
-@Data
+@Getter
+@Setter
 @Configuration
 public class SafetyNetAlertsCatalog {
 

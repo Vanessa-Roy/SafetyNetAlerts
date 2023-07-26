@@ -164,25 +164,21 @@ public class FireStationService {
         }
         for (String address : addressFromStations) {
             List<Person> personsFromAddress = personService.getPersonsFromAddress(address);
-            List<PersonWithMedicalRecord> personsFromAddressWithMedicalRecord;
-            personsFromAddressWithMedicalRecord = personsFromAddress.stream()
-                    .map(p -> {
-                                MedicalRecordWithAge medicalRecord = medicalRecordService.getMedicalRecordFromName(
-                                        p.getFirstName(),
-                                        p.getLastName()
-                                );
-                                return (
-                                        new PersonWithMedicalRecord(
-                                                p.getLastName(),
-                                                p.getPhone(),
-                                                medicalRecord.age(),
-                                                medicalRecord.medications(),
-                                                medicalRecord.allergies()
-                                        )
-                                );
-                            }
-                    )
-                    .toList();
+            List<PersonWithMedicalRecord> personsFromAddressWithMedicalRecord = new ArrayList<>();
+            for (Person personFromAddress : personsFromAddress) {
+                MedicalRecordWithAge medicalRecord = medicalRecordService.getMedicalRecordFromName(
+                        personFromAddress.getFirstName(),
+                        personFromAddress.getLastName()
+                );
+                PersonWithMedicalRecord personWithMedicalRecord = new PersonWithMedicalRecord(
+                        personFromAddress.getLastName(),
+                        personFromAddress.getPhone(),
+                        medicalRecord.age(),
+                        medicalRecord.medications(),
+                        medicalRecord.allergies()
+                );
+                personsFromAddressWithMedicalRecord.add(personWithMedicalRecord);
+            }
             Family family = new Family(address, personsFromAddressWithMedicalRecord);
             families.add(family);
         }

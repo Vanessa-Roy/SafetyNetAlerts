@@ -1,15 +1,16 @@
 package com.safetynet.SafetyNetAlerts.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Represent a medical record
- *
  */
-@Data
+@Getter
+@Setter
 public class MedicalRecord {
 
     private String firstName;

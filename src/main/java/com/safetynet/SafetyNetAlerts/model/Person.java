@@ -1,12 +1,13 @@
 package com.safetynet.SafetyNetAlerts.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Represent a person
- *
  */
-@Data
+@Getter
+@Setter
 public class Person {
 
     private String firstName;

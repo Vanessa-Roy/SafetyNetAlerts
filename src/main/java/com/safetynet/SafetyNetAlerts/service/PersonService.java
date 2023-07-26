@@ -7,7 +7,6 @@ import com.safetynet.SafetyNetAlerts.model.Person;
 import com.safetynet.SafetyNetAlerts.model.PersonWithInformation;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
 import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
-import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import java.util.List;
 /**
  * Centralize every methods relatives to the persons.
  */
-@Data
 @Service
 public class PersonService {
 
@@ -116,5 +114,9 @@ public class PersonService {
             personsWithInformation.add(personWithInformation);
         }
         return personsWithInformation;
+    }
+
+    public void createPerson(Person person) {
+        personRepository.createPerson(person);
     }
 }

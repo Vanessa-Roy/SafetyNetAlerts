@@ -13,9 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,7 +46,7 @@ public class SafetyNetAlertsController {
                     content = @Content)})
     @GetMapping("/communityEmail")
     public List<String> getEmailsFromCity(
-            @Parameter(description = "city to search for")
+            @Parameter(description = "city to search for", example = "Culver")
             @RequestParam String city) {
         logger.info("request the list of emails from persons living in {}", city);
         List<String> result = personService.getEmailsFromCity(city);
@@ -71,7 +69,7 @@ public class SafetyNetAlertsController {
                     content = @Content)})
     @GetMapping("/phoneAlert")
     public List<String> getPhonesFromStation(
-            @Parameter(description = "number of fireStation to search for")
+            @Parameter(description = "number of fireStation to search for", example = "1")
             @RequestParam String firestation) {
         logger.info("request the list of phones from persons living near by the fireStation number {}", firestation);
         List<String> result = fireStationService.getPhonesFromStation(firestation);
@@ -94,7 +92,7 @@ public class SafetyNetAlertsController {
                     content = @Content)})
     @GetMapping("/childAlert")
     public List<Child> getChildrenFromAddress(
-            @Parameter(description = "address to search for")
+            @Parameter(description = "address to search for", example = "1509&nbsp;Culver&nbsp;St")
             @RequestParam String address) {
         logger.info("request the list of children living at {}", address);
         List<Child> result = personService.getChildrenFromAddress(address);
@@ -117,7 +115,7 @@ public class SafetyNetAlertsController {
                     content = @Content)})
     @GetMapping("/firestation")
     public PersonsWithCounterChildAdult getPersonsWithCounterFromStation(
-            @Parameter(description = "number of fireStation to search for")
+            @Parameter(description = "number of fireStation to search for", example = "1")
             @RequestParam String stationNumber) {
         logger.info("request a counter of adults and children from the list of persons living near by the fireStation number {}", stationNumber);
         PersonsWithCounterChildAdult result = fireStationService.getPersonsWithCounterFromStation(stationNumber);
@@ -140,7 +138,7 @@ public class SafetyNetAlertsController {
                     content = @Content)})
     @GetMapping("/fire")
     public PersonsWithFireStation getPersonsWithFireStationFromAddress(
-            @Parameter(description = "address to search for")
+            @Parameter(description = "address to search for", example = "1509 Culver St")
             @RequestParam String address) {
         logger.info("request the fireStation number and the list of persons living at {}", address);
         PersonsWithFireStation result = fireStationService.getPersonsWithFireStationFromAddress(address);
@@ -164,8 +162,9 @@ public class SafetyNetAlertsController {
                     content = @Content)})
     @GetMapping("/personInfo")
     public List<PersonWithInformation> getInformationFromName(
-            @Parameter(description = "name to search for")
-            @RequestParam String firstName, String lastName) {
+            @RequestParam
+            @Parameter(description = "firstName to search for", example = "John") String firstName,
+            @Parameter(description = "lastName to search for", example = "Boyd") String lastName) {
         logger.info("request the information about the persons named {} {}", firstName, lastName);
         List<PersonWithInformation> result = personService.getInformationFromName(firstName, lastName);
         logger.info("response with the information about {} person(s) named {} {}", result.size(), firstName, lastName);
@@ -187,11 +186,22 @@ public class SafetyNetAlertsController {
                     content = @Content)})
     @GetMapping("/flood/stations")
     public List<Family> getFamiliesFromStations(
-            @Parameter(description = "list of fireStation numbers to search for")
+            @Parameter(description = "list of fireStation numbers to search for", example = "1,2")
             @RequestParam List<String> stations) {
         logger.info("request the list of families living near by the fireStation(s) {}", stations);
         List<Family> result = fireStationService.getFamiliesFromStations(stations);
         logger.info("response with {} family(ies) covered by the fireStation number {}", result.size(), stations);
         return result;
     }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "The new person has been created correctly",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Person.class))})})
+    @PostMapping("/person")
+    public void createPerson(@RequestBody Person person) {
+        logger.info("creating a new person {} has been posted", person.getFirstName() + " " + person.getLastName());
+        personService.createPerson(person);
+    }
+
 }
