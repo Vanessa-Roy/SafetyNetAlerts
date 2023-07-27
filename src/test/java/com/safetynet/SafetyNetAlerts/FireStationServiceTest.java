@@ -393,4 +393,6 @@ public class FireStationServiceTest {
         verify(medicalRecordService, Mockito.never()).getMedicalRecordFromName("John", "Boyd");
         assertEquals(0, result.size());
     }
+
+
 }

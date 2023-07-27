@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,11 +27,7 @@ public class PersonRepository {
     }
 
     public void createPerson(Person person) {
-        List<Person> newPersonList = new ArrayList<>(data.getPersons());
-        newPersonList.add(person);
-        data.setPersons(newPersonList);
-        if (newPersonList.contains(person)) {
-            logger.info("The new person {} has been created correctly", person.getFirstName() + " " + person.getLastName());
-        }
+        data.getPersons().add(person);
+        logger.info("The new person {} has been created correctly", person.getFirstName() + " " + person.getLastName());
     }
 }

@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -199,9 +201,10 @@ public class SafetyNetAlertsController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Person.class))})})
     @PostMapping("/person")
-    public void createPerson(@RequestBody Person person) {
+    public ResponseEntity<Person> createPerson(@RequestBody Person person) {
         logger.info("creating a new person {} has been posted", person.getFirstName() + " " + person.getLastName());
         personService.createPerson(person);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }
