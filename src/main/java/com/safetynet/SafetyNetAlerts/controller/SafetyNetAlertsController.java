@@ -207,4 +207,23 @@ public class SafetyNetAlertsController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The person has been updated correctly",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Person.class))}),
+            @ApiResponse(responseCode = "400", description = "the parameters firstName and lastName are missing",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "the parameters are incorrect or at least one of person's parameters are missing",
+                    content = @Content)})
+    @PutMapping("/person")
+    public ResponseEntity<Person> UpdatePerson(
+            @RequestBody Person person,
+            @RequestParam
+            @Parameter(description = "firstName to search for", example = "John") String firstName,
+            @Parameter(description = "lastName to search for", example = "Boyd") String lastName) {
+        logger.info("request an update for the person named {}", person.getFirstName() + " " + person.getLastName());
+        personService.updatePerson(firstName, lastName, person);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
+
 }

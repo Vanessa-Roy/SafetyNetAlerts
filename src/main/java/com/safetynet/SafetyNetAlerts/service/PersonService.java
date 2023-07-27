@@ -119,4 +119,8 @@ public class PersonService {
     public void createPerson(Person person) {
         personRepository.createPerson(person);
     }
+
+    public void updatePerson(String firstName, String lastName, Person person) {
+        personRepository.updatePerson(firstName, lastName, person);
+    }
 }
