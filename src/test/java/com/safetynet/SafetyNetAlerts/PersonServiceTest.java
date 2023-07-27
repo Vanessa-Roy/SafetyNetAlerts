@@ -295,5 +295,12 @@ public class PersonServiceTest {
         assertEquals(expectedResult, result);
     }
 
+    @Test
+    public void testCreatePerson() {
+        testingPersonService.createPerson(persons.get(0));
+
+        verify(personRepository, Mockito.times(1)).createPerson(persons.get(0));
+    }
+
 
 }
