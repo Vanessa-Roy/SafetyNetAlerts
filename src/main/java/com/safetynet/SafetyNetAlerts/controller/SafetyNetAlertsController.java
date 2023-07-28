@@ -212,9 +212,9 @@ public class SafetyNetAlertsController {
             @ApiResponse(responseCode = "200", description = "The person has been updated correctly",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Person.class))}),
-            @ApiResponse(responseCode = "400", description = "the parameters firstName and lastName are missing",
+            @ApiResponse(responseCode = "400", description = "the parameters firstName and lastName are missing or the body is incomplete",
                     content = @Content),
-            @ApiResponse(responseCode = "500", description = "the parameters are incorrect or at least one of person's parameters are missing",
+            @ApiResponse(responseCode = "404", description = "the person doesn't exist in our system",
                     content = @Content)})
     @PutMapping("/person")
     public ResponseEntity<Person> UpdatePerson(

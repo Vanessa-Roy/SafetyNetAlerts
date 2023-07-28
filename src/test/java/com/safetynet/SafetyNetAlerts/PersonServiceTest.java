@@ -1,9 +1,6 @@
 package com.safetynet.SafetyNetAlerts;
 
-import com.safetynet.SafetyNetAlerts.model.Child;
-import com.safetynet.SafetyNetAlerts.model.MedicalRecordWithAge;
-import com.safetynet.SafetyNetAlerts.model.Person;
-import com.safetynet.SafetyNetAlerts.model.PersonWithInformation;
+import com.safetynet.SafetyNetAlerts.model.*;
 import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
 import com.safetynet.SafetyNetAlerts.service.MedicalRecordService;
 import com.safetynet.SafetyNetAlerts.service.PersonService;
@@ -301,6 +298,22 @@ public class PersonServiceTest {
         testingPersonService.createPerson(persons.get(0));
 
         verify(personRepository, Mockito.times(1)).createPerson(persons.get(0));
+    }
+
+    @Test
+    public void testUpdatePerson() {
+
+        PersonWithoutNameDTO personUpdate = new PersonWithoutNameDTO(
+                "addressTestUpdate",
+                "cityTestUpdate",
+                "zipTestUpdate",
+                "phoneTestUpdate",
+                "emailTestUpdate"
+        );
+
+        testingPersonService.updatePerson("firstName", "lastName", personUpdate);
+
+        verify(personRepository, Mockito.times(1)).updatePerson("firstName", "lastName", personUpdate);
     }
 
 

@@ -2,6 +2,7 @@ package com.safetynet.SafetyNetAlerts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.SafetyNetAlerts.model.Person;
+import com.safetynet.SafetyNetAlerts.model.PersonWithoutNameDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,18 +10,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
 import java.nio.file.Files;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class SafetyNetAlertsControllerTest {
 
     @Autowired
@@ -161,6 +163,40 @@ public class SafetyNetAlertsControllerTest {
     @Test
     public void testCreatePersonWithoutParameterShouldFail() throws Exception {
         mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testUpdatePersonShouldPass() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        PersonWithoutNameDTO person = new PersonWithoutNameDTO("addressTest", "cityTest", "zipTest", "phoneTest", "emailTest");
+        String json = mapper.writeValueAsString(person);
+        mockMvc.perform(put("/person?firstName=john&lastName=boyd").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted());
+    }
+
+    @Test
+    public void testUpdatePersonWithoutParameterShouldFail() throws Exception {
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testUpdatePersonWithParameterIncorrectShouldFail() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        PersonWithoutNameDTO person = new PersonWithoutNameDTO("addressTest", "cityTest", "zipTest", "phoneTest", "emailTest");
+        String json = mapper.writeValueAsString(person);
+        mockMvc.perform(put("/person?firstName=notFound&lastName=notFound").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testUpdatePersonWithBodyIncorrectShouldFail() throws Exception {
+        String json = "{\"city\":\"cityTest\",\"zip\":\"zipTest\",\"phone\":\"phoneTest\",\"email\":\"emailTest\"}";
+        mockMvc.perform(put("/person?firstName=john&lastName=boyd").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 

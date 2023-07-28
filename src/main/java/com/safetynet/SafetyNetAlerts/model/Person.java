@@ -30,4 +30,9 @@ public class Person {
         this.phone = phone;
         this.email = email;
     }
+
+    @Override
+    public final String toString() {
+        return firstName + " " + lastName + " " + address + " " + city + " " + zip + " " + phone + " " + email;
+    }
 }

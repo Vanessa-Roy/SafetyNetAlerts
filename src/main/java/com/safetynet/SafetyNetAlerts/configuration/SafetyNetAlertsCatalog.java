@@ -49,7 +49,7 @@ public class SafetyNetAlertsCatalog {
         final String RESOURCE_NAME = "data.json";
         Resource data = new ClassPathResource(RESOURCE_NAME);
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = null;
+        JsonNode jsonNode;
         try {
             jsonNode = objectMapper.readTree(data.getFile());
         } catch (IOException e) {
