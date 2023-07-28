@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Centralise the endpoints and calls the right service in attempt to find and send the response.
@@ -217,13 +218,18 @@ public class SafetyNetAlertsController {
                     content = @Content)})
     @PutMapping("/person")
     public ResponseEntity<Person> UpdatePerson(
-            @RequestBody Person person,
+            @RequestBody PersonWithoutNameDTO person,
             @RequestParam
             @Parameter(description = "firstName to search for", example = "John") String firstName,
             @Parameter(description = "lastName to search for", example = "Boyd") String lastName) {
-        logger.info("request an update for the person named {}", person.getFirstName() + " " + person.getLastName());
-        personService.updatePerson(firstName, lastName, person);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        logger.info("request an update for the person named {}", firstName + " " + lastName);
+        try {
+            personService.updatePerson(firstName, lastName, person);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        } catch (NoSuchElementException e) {
+            logger.error("the person named {} doesn't exist in our system", firstName + " " + lastName);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
 }

@@ -3,12 +3,14 @@ package com.safetynet.SafetyNetAlerts.repository;
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import com.safetynet.SafetyNetAlerts.configuration.SafetyNetAlertsCatalog;
 import com.safetynet.SafetyNetAlerts.model.Person;
+import com.safetynet.SafetyNetAlerts.model.PersonWithoutNameDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Load and save data relatives to the persons from SafetynetAlertsCatalog.
@@ -31,28 +33,18 @@ public class PersonRepository {
         logger.info("The new person {} has been created correctly", person.getFirstName() + " " + person.getLastName());
     }
 
-    public void updatePerson(String firstName, String lastName, Person person) {
+    public void updatePerson(String firstName, String lastName, PersonWithoutNameDTO person) throws NoSuchElementException {
         List<Person> personList = data.getPersons();
         Person personUpdate = personList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
                 .findAny()
-                .orElse(new Person());
+                .orElseThrow();
         int index = personList.indexOf(personUpdate);
-        if (!person.getAddress().equalsIgnoreCase(personUpdate.getAddress())) {
-            personUpdate.setAddress(person.getAddress());
-        }
-        if (!person.getZip().equalsIgnoreCase(personUpdate.getZip())) {
-            personUpdate.setZip(person.getZip());
-        }
-        if (!person.getCity().equalsIgnoreCase(personUpdate.getCity())) {
-            personUpdate.setCity(person.getCity());
-        }
-        if (!person.getPhone().equalsIgnoreCase(personUpdate.getPhone())) {
-            personUpdate.setPhone(person.getPhone());
-        }
-        if (!person.getEmail().equalsIgnoreCase(personUpdate.getEmail())) {
-            personUpdate.setEmail(person.getEmail());
-        }
+        personUpdate.setAddress(person.address());
+        personUpdate.setCity(person.city());
+        personUpdate.setZip(person.zip());
+        personUpdate.setEmail(person.email());
+        personUpdate.setPhone(person.phone());
         data.getPersons().set(index, personUpdate);
-        logger.info("The person named {} has been updated correctly", person.getFirstName() + " " + person.getLastName());
+        logger.info("The person named {} has been updated correctly", firstName + " " + lastName);
     }
 }

@@ -1,10 +1,7 @@
 package com.safetynet.SafetyNetAlerts.service;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
-import com.safetynet.SafetyNetAlerts.model.Child;
-import com.safetynet.SafetyNetAlerts.model.MedicalRecordWithAge;
-import com.safetynet.SafetyNetAlerts.model.Person;
-import com.safetynet.SafetyNetAlerts.model.PersonWithInformation;
+import com.safetynet.SafetyNetAlerts.model.*;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
 import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
 import org.apache.logging.log4j.LogManager;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Centralize every methods relatives to the persons.
@@ -120,7 +118,7 @@ public class PersonService {
         personRepository.createPerson(person);
     }
 
-    public void updatePerson(String firstName, String lastName, Person person) {
+    public void updatePerson(String firstName, String lastName, PersonWithoutNameDTO person) throws NoSuchElementException {
         personRepository.updatePerson(firstName, lastName, person);
     }
 }
