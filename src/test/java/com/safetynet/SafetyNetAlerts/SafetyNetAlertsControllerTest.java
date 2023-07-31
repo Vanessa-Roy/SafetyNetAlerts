@@ -173,7 +173,7 @@ public class SafetyNetAlertsControllerTest {
         String json = mapper.writeValueAsString(person);
         mockMvc.perform(put("/person?firstName=john&lastName=boyd").contentType(MediaType.APPLICATION_JSON)
                         .content(json).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isAccepted());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -200,4 +200,21 @@ public class SafetyNetAlertsControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    public void testDeletePersonShouldPass() throws Exception {
+        mockMvc.perform(delete("/person?firstName=john&lastName=boyd").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDeletePersonWithoutParameterShouldFail() throws Exception {
+        mockMvc.perform(delete("/person").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testDeletePersonWithParameterIncorrectShouldFail() throws Exception {
+        mockMvc.perform(delete("/person?firstName=notFound&lastName=notFound").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 }

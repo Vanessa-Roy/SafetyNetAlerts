@@ -111,7 +111,7 @@ public class PersonRepositoryTest {
     public void testUpdatePersonWithoutAllParameters() {
 
         assertThrows(IllegalArgumentException.class, () -> {
-            testingPersonRepository.updatePerson("firstName", "lastName",
+            testingPersonRepository.updatePerson("firstNameTest", "lastNameTest",
                     new PersonWithoutNameDTO(
                             null,
                             "cityTestUpdate",
@@ -140,6 +140,68 @@ public class PersonRepositoryTest {
                             "phoneTestUpdate",
                             "emailTestUpdate")
             );
+        });
+
+        verify(safetyNetAlertsCatalog, Mockito.times(1)).getPersons();
+    }
+
+    @Test
+    public void testUpdatePersonWithLastNameUnknown() {
+        List<Person> persons = new ArrayList<>();
+        persons.add(person);
+
+        when(safetyNetAlertsCatalog.getPersons()).thenReturn(persons);
+
+        assertThrows(NoSuchElementException.class, () -> {
+            testingPersonRepository.updatePerson("firstNameTest", "lastNameUnknown",
+                    new PersonWithoutNameDTO(
+                            "addressTestUpdate",
+                            "cityTestUpdate",
+                            "zipTestUpdate",
+                            "phoneTestUpdate",
+                            "emailTestUpdate")
+            );
+        });
+
+        verify(safetyNetAlertsCatalog, Mockito.times(1)).getPersons();
+    }
+
+    @Test
+    public void testDeletePersonWithAllParameters() {
+        List<Person> persons = new ArrayList<>();
+        persons.add(person);
+
+        when(safetyNetAlertsCatalog.getPersons()).thenReturn(persons);
+
+        testingPersonRepository.deletePerson("firstNameTest", "lastNameTest");
+
+        verify(safetyNetAlertsCatalog, Mockito.times(2)).getPersons();
+        assertEquals(0, persons.size());
+    }
+
+    @Test
+    public void testDeletePersonWithPersonUnknown() {
+        List<Person> persons = new ArrayList<>();
+        persons.add(person);
+
+        when(safetyNetAlertsCatalog.getPersons()).thenReturn(persons);
+
+        assertThrows(NoSuchElementException.class, () -> {
+            testingPersonRepository.deletePerson("personUnknown", "personUnknown");
+        });
+
+        verify(safetyNetAlertsCatalog, Mockito.times(1)).getPersons();
+    }
+
+    @Test
+    public void testDeletePersonWithLastNameUnknown() {
+        List<Person> persons = new ArrayList<>();
+        persons.add(person);
+
+        when(safetyNetAlertsCatalog.getPersons()).thenReturn(persons);
+
+        assertThrows(NoSuchElementException.class, () -> {
+            testingPersonRepository.deletePerson("firstNameTest", "lastNameUnknown");
         });
 
         verify(safetyNetAlertsCatalog, Mockito.times(1)).getPersons();

@@ -225,11 +225,25 @@ public class SafetyNetAlertsController {
         logger.info("request an update for the person named {}", firstName + " " + lastName);
         try {
             personService.updatePerson(firstName, lastName, person);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+            return ResponseEntity.status(HttpStatus.OK).build();
         } catch (NoSuchElementException e) {
             logger.error("the person named {} doesn't exist in our system", firstName + " " + lastName);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
+    @DeleteMapping("/person")
+    public ResponseEntity<Person> DeletePerson(
+            @RequestParam
+            @Parameter(description = "firstName to search for", example = "John") String firstName,
+            @Parameter(description = "lastName to search for", example = "Boyd") String lastName) {
+        logger.info("request a deletion for the person named {}", firstName + " " + lastName);
+        try {
+            personService.deletePerson(firstName, lastName);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (NoSuchElementException e) {
+            logger.error("the person named {} doesn't exist in our system", firstName + " " + lastName);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }

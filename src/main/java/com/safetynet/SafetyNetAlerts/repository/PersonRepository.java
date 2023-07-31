@@ -47,4 +47,14 @@ public class PersonRepository {
         data.getPersons().set(index, personUpdate);
         logger.info("The person named {} has been updated correctly", firstName + " " + lastName);
     }
+
+    public void deletePerson(String firstName, String lastName) throws NoSuchElementException {
+        List<Person> personList = data.getPersons();
+        Person personUpdate = personList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
+                .findAny()
+                .orElseThrow();
+        int index = personList.indexOf(personUpdate);
+        data.getPersons().remove(index);
+        logger.info("The person named {} has been deleted correctly", firstName + " " + lastName);
+    }
 }

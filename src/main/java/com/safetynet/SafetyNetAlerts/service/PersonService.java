@@ -121,4 +121,8 @@ public class PersonService {
     public void updatePerson(String firstName, String lastName, PersonWithoutNameDTO person) throws NoSuchElementException {
         personRepository.updatePerson(firstName, lastName, person);
     }
+
+    public void deletePerson(String firstName, String lastName) throws NoSuchElementException {
+        personRepository.deletePerson(firstName, lastName);
+    }
 }

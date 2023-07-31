@@ -316,5 +316,13 @@ public class PersonServiceTest {
         verify(personRepository, Mockito.times(1)).updatePerson("firstName", "lastName", personUpdate);
     }
 
+    @Test
+    public void testDeletePerson() {
+
+        testingPersonService.deletePerson("firstName", "lastName");
+
+        verify(personRepository, Mockito.times(1)).deletePerson("firstName", "lastName");
+    }
+
 
 }
