@@ -2,6 +2,7 @@ package com.safetynet.SafetyNetAlerts.controller;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import com.safetynet.SafetyNetAlerts.dto.*;
+import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
 import com.safetynet.SafetyNetAlerts.model.Person;
 import com.safetynet.SafetyNetAlerts.service.FireStationService;
 import com.safetynet.SafetyNetAlerts.service.PersonService;
@@ -233,6 +234,14 @@ public class SafetyNetAlertsController {
         }
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The person has been deleted correctly",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Person.class))}),
+            @ApiResponse(responseCode = "400", description = "the parameters firstName and lastName are missing",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "the person doesn't exist in our system",
+                    content = @Content)})
     @DeleteMapping("/person")
     public ResponseEntity<Person> DeletePerson(
             @RequestParam
@@ -244,6 +253,29 @@ public class SafetyNetAlertsController {
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (NoSuchElementException e) {
             logger.error("the person named {} doesn't exist in our system", firstName + " " + lastName);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The medical record has been deleted correctly",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Person.class))}),
+            @ApiResponse(responseCode = "400", description = "the parameters firstName and lastName are missing",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "the medical record about this person doesn't exist in our system",
+                    content = @Content)})
+    @DeleteMapping("/medicalRecord")
+    public ResponseEntity<MedicalRecord> DeleteMedicalRecord(
+            @RequestParam
+            @Parameter(description = "firstName to search for", example = "John") String firstName,
+            @Parameter(description = "lastName to search for", example = "Boyd") String lastName) {
+        logger.info("request a deletion for the medical record about the person named {}", firstName + " " + lastName);
+        try {
+            personService.deleteMedicalRecord(firstName, lastName);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (NoSuchElementException e) {
+            logger.error("the person named {} hasn't a medical record in our system", firstName + " " + lastName);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Load and save data relatives to the medical records from SafetynetAlertsCatalog.
@@ -29,5 +30,15 @@ public class MedicalRecordRepository {
     public List<MedicalRecord> getMedicalRecordList() {
         logger.debug("get the list of medical records");
         return data.getMedicalRecords();
+    }
+
+    public void deleteMedicalRecord(String firstName, String lastName) throws NoSuchElementException {
+        List<MedicalRecord> medicalRecordList = data.getMedicalRecords();
+        MedicalRecord medicalRecordUpdate = medicalRecordList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
+                .findAny()
+                .orElseThrow();
+        int index = medicalRecordList.indexOf(medicalRecordUpdate);
+        data.getMedicalRecords().remove(index);
+        logger.info("The medical record about the person named {} has been deleted correctly", firstName + " " + lastName);
     }
 }

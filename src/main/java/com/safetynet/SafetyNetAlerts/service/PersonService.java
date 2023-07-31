@@ -129,4 +129,8 @@ public class PersonService {
     public void deletePerson(String firstName, String lastName) throws NoSuchElementException {
         personRepository.deletePerson(firstName, lastName);
     }
+
+    public void deleteMedicalRecord(String firstName, String lastName) {
+        medicalRecordRepository.deleteMedicalRecord(firstName, lastName);
+    }
 }
