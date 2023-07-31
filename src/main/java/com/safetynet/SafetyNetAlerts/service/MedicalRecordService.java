@@ -1,8 +1,8 @@
 package com.safetynet.SafetyNetAlerts.service;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
+import com.safetynet.SafetyNetAlerts.dto.MedicalRecordWithAgeDTO;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
-import com.safetynet.SafetyNetAlerts.model.MedicalRecordWithAge;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +33,7 @@ public class MedicalRecordService {
      * @param lastName  a String represents the lastname to search for
      * @return the person's age, medications and allergies obtained from medicalRepository
      */
-    public MedicalRecordWithAge getMedicalRecordFromName(String firstName, String lastName) {
+    public MedicalRecordWithAgeDTO getMedicalRecordFromName(String firstName, String lastName) {
         List<MedicalRecord> medicalRecords = medicalRecordRepository.getMedicalRecordList();
         List<MedicalRecord> medicalRecordsFromName = medicalRecords.stream()
                 .filter(m -> m.getFirstName().equalsIgnoreCase(firstName) && m.getLastName().equalsIgnoreCase(lastName))
@@ -55,7 +55,7 @@ public class MedicalRecordService {
                 .findAny()
                 .orElse(null);
         logger.debug("the person named {} is taking the following medications {}", firstName + " " + lastName, medications);
-        return new MedicalRecordWithAge(age, medications, allergies);
+        return new MedicalRecordWithAgeDTO(age, medications, allergies);
     }
 
 }

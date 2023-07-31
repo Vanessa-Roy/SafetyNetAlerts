@@ -1,8 +1,8 @@
 package com.safetynet.SafetyNetAlerts;
 
 import com.safetynet.SafetyNetAlerts.configuration.SafetyNetAlertsCatalog;
+import com.safetynet.SafetyNetAlerts.dto.PersonWithoutNameDTO;
 import com.safetynet.SafetyNetAlerts.model.Person;
-import com.safetynet.SafetyNetAlerts.model.PersonWithoutNameDTO;
 import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

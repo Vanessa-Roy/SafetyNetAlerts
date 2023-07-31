@@ -1,7 +1,11 @@
 package com.safetynet.SafetyNetAlerts.service;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
-import com.safetynet.SafetyNetAlerts.model.*;
+import com.safetynet.SafetyNetAlerts.dto.ChildDTO;
+import com.safetynet.SafetyNetAlerts.dto.MedicalRecordWithAgeDTO;
+import com.safetynet.SafetyNetAlerts.dto.PersonWithInformationDTO;
+import com.safetynet.SafetyNetAlerts.dto.PersonWithoutNameDTO;
+import com.safetynet.SafetyNetAlerts.model.Person;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
 import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
 import org.apache.logging.log4j.LogManager;
@@ -66,15 +70,15 @@ public class PersonService {
      * @param address a String represents the address to search for
      * @return a list of all children from the address, obtained from personRepository, duplicates are allowed
      */
-    public List<Child> getChildrenFromAddress(String address) {
+    public List<ChildDTO> getChildrenFromAddress(String address) {
         List<Person> personsFromAddress = getPersonsFromAddress(address);
-        List<Child> childrenFromAddress = new ArrayList<>();
+        List<ChildDTO> childrenFromAddress = new ArrayList<>();
         for (Person person : personsFromAddress) {
             int age = medicalRecordService.getMedicalRecordFromName(person.getFirstName(), person.getLastName()).age();
             if (age <= 18) {
                 List<Person> family = new ArrayList<>(personsFromAddress);
                 family.remove(person);
-                Child child = new Child(
+                ChildDTO child = new ChildDTO(
                         person.getFirstName(),
                         person.getLastName(),
                         age,
@@ -93,15 +97,15 @@ public class PersonService {
      * @param lastName  a String represents the lastName of the person to search for
      * @return a list of all the information from a person, obtained from personRepository, duplicates are possible
      */
-    public List<PersonWithInformation> getInformationFromName(String firstName, String lastName) {
+    public List<PersonWithInformationDTO> getInformationFromName(String firstName, String lastName) {
         List<Person> persons = personRepository.getPersonList();
         List<Person> personsFromName = persons.stream()
                 .filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
                 .toList();
-        List<PersonWithInformation> personsWithInformation = new ArrayList<>();
+        List<PersonWithInformationDTO> personsWithInformation = new ArrayList<>();
         for (Person person : personsFromName) {
-            MedicalRecordWithAge medicalRecord = medicalRecordService.getMedicalRecordFromName(firstName, lastName);
-            PersonWithInformation personWithInformation = new PersonWithInformation(
+            MedicalRecordWithAgeDTO medicalRecord = medicalRecordService.getMedicalRecordFromName(firstName, lastName);
+            PersonWithInformationDTO personWithInformationDTO = new PersonWithInformationDTO(
                     person.getLastName(),
                     (person.getAddress() + " " + person.getZip() + " " + person.getCity()),
                     medicalRecord.age(),
@@ -109,7 +113,7 @@ public class PersonService {
                     medicalRecord.medications(),
                     medicalRecord.allergies()
             );
-            personsWithInformation.add(personWithInformation);
+            personsWithInformation.add(personWithInformationDTO);
         }
         return personsWithInformation;
     }

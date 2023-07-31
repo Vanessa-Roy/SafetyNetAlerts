@@ -1,8 +1,8 @@
 package com.safetynet.SafetyNetAlerts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.safetynet.SafetyNetAlerts.dto.PersonWithoutNameDTO;
 import com.safetynet.SafetyNetAlerts.model.Person;
-import com.safetynet.SafetyNetAlerts.model.PersonWithoutNameDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

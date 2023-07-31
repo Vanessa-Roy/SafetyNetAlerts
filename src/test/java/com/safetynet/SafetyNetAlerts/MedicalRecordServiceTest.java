@@ -1,7 +1,7 @@
 package com.safetynet.SafetyNetAlerts;
 
+import com.safetynet.SafetyNetAlerts.dto.MedicalRecordWithAgeDTO;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
-import com.safetynet.SafetyNetAlerts.model.MedicalRecordWithAge;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
 import com.safetynet.SafetyNetAlerts.service.MedicalRecordService;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +30,7 @@ public class MedicalRecordServiceTest {
 
     private static List<MedicalRecord> medicalRecords;
 
-    private static MedicalRecordWithAge medicalRecordWithAge;
+    private static MedicalRecordWithAgeDTO medicalRecordWithAgeDTO;
     @Mock
     private static MedicalRecordRepository medicalRecordRepository;
 
@@ -49,7 +49,7 @@ public class MedicalRecordServiceTest {
         allergies.add("nillacilan");
         medicalRecord.setAllergies(allergies);
         medicalRecords.add(medicalRecord);
-        medicalRecordWithAge = new MedicalRecordWithAge(39, medications, allergies);
+        medicalRecordWithAgeDTO = new MedicalRecordWithAgeDTO(39, medications, allergies);
     }
 
     @Test
@@ -57,8 +57,8 @@ public class MedicalRecordServiceTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
-        MedicalRecordWithAge result = testingMedicalRecordService.getMedicalRecordFromName("john", "boyd");
-        MedicalRecordWithAge expectedResult = medicalRecordWithAge;
+        MedicalRecordWithAgeDTO result = testingMedicalRecordService.getMedicalRecordFromName("john", "boyd");
+        MedicalRecordWithAgeDTO expectedResult = medicalRecordWithAgeDTO;
 
         verify(medicalRecordRepository, Mockito.times(1)).getMedicalRecordList();
         assertEquals(Period.between(LocalDate.parse(medicalRecords.get(0).getBirthdate(), formatter), LocalDate.now()).getYears(), result.age());
@@ -70,8 +70,8 @@ public class MedicalRecordServiceTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
-        MedicalRecordWithAge result = testingMedicalRecordService.getMedicalRecordFromName("JOHN", "BOYD");
-        MedicalRecordWithAge expectedResult = medicalRecordWithAge;
+        MedicalRecordWithAgeDTO result = testingMedicalRecordService.getMedicalRecordFromName("JOHN", "BOYD");
+        MedicalRecordWithAgeDTO expectedResult = medicalRecordWithAgeDTO;
 
         verify(medicalRecordRepository, Mockito.times(1)).getMedicalRecordList();
         assertEquals(Period.between(LocalDate.parse(medicalRecords.get(0).getBirthdate(), formatter), LocalDate.now()).getYears(), result.age());
@@ -82,8 +82,8 @@ public class MedicalRecordServiceTest {
     public void testGetMedicalRecordFromBothFirstNameLastNameUnknown() {
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
-        MedicalRecordWithAge result = testingMedicalRecordService.getMedicalRecordFromName("unknowFirstName", "unknowLastName");
-        MedicalRecordWithAge expectedResult = new MedicalRecordWithAge(0, null, null);
+        MedicalRecordWithAgeDTO result = testingMedicalRecordService.getMedicalRecordFromName("unknowFirstName", "unknowLastName");
+        MedicalRecordWithAgeDTO expectedResult = new MedicalRecordWithAgeDTO(0, null, null);
 
         assertEquals(expectedResult, result);
     }
@@ -92,9 +92,9 @@ public class MedicalRecordServiceTest {
     public void testGetMedicalRecordFromLastNameUnknown() {
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
-        MedicalRecordWithAge result = testingMedicalRecordService.getMedicalRecordFromName("john", "unknowLastName");
+        MedicalRecordWithAgeDTO result = testingMedicalRecordService.getMedicalRecordFromName("john", "unknowLastName");
 
-        MedicalRecordWithAge expectedResult = new MedicalRecordWithAge(0, null, null);
+        MedicalRecordWithAgeDTO expectedResult = new MedicalRecordWithAgeDTO(0, null, null);
 
         assertEquals(expectedResult, result);
     }

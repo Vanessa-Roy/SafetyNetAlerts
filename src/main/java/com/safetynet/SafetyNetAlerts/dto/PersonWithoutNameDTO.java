@@ -1,4 +1,4 @@
-package com.safetynet.SafetyNetAlerts.model;
+package com.safetynet.SafetyNetAlerts.dto;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import org.apache.logging.log4j.LogManager;

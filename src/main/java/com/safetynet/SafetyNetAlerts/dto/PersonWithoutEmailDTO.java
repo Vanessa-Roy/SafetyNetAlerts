@@ -1,9 +1,9 @@
-package com.safetynet.SafetyNetAlerts.model;
+package com.safetynet.SafetyNetAlerts.dto;
 
 /**
  * Represent a person without their email
  */
-public record PersonWithoutEmail(
+public record PersonWithoutEmailDTO(
         String firstName,
         String lastName,
         String address,

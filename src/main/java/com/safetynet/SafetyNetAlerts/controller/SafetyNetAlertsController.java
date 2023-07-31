@@ -1,7 +1,8 @@
 package com.safetynet.SafetyNetAlerts.controller;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
-import com.safetynet.SafetyNetAlerts.model.*;
+import com.safetynet.SafetyNetAlerts.dto.*;
+import com.safetynet.SafetyNetAlerts.model.Person;
 import com.safetynet.SafetyNetAlerts.service.FireStationService;
 import com.safetynet.SafetyNetAlerts.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -90,15 +91,15 @@ public class SafetyNetAlertsController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the list of children and their families from an address",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Child.class))}),
+                            schema = @Schema(implementation = ChildDTO.class))}),
             @ApiResponse(responseCode = "400", description = "the parameter address is missing",
                     content = @Content)})
     @GetMapping("/childAlert")
-    public List<Child> getChildrenFromAddress(
+    public List<ChildDTO> getChildrenFromAddress(
             @Parameter(description = "address to search for", example = "1509&nbsp;Culver&nbsp;St")
             @RequestParam String address) {
         logger.info("request the list of children living at {}", address);
-        List<Child> result = personService.getChildrenFromAddress(address);
+        List<ChildDTO> result = personService.getChildrenFromAddress(address);
         logger.info("response with {} child(ren) from persons living at {}", result.size(), address);
         return result;
     }
@@ -111,17 +112,17 @@ public class SafetyNetAlertsController {
      */
     @Operation(summary = "Get all the persons from an area and the counter of children and adults")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found the persons and the counter Child/Adult from a stationNumber",
+            @ApiResponse(responseCode = "200", description = "Found the persons and the counter ChildDTO/Adult from a stationNumber",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PersonsWithCounterChildAdult.class))}),
+                            schema = @Schema(implementation = PersonsWithCounterChildAdultDTO.class))}),
             @ApiResponse(responseCode = "400", description = "the parameter stationNumber is missing",
                     content = @Content)})
     @GetMapping("/firestation")
-    public PersonsWithCounterChildAdult getPersonsWithCounterFromStation(
+    public PersonsWithCounterChildAdultDTO getPersonsWithCounterFromStation(
             @Parameter(description = "number of fireStation to search for", example = "1")
             @RequestParam String stationNumber) {
         logger.info("request a counter of adults and children from the list of persons living near by the fireStation number {}", stationNumber);
-        PersonsWithCounterChildAdult result = fireStationService.getPersonsWithCounterFromStation(stationNumber);
+        PersonsWithCounterChildAdultDTO result = fireStationService.getPersonsWithCounterFromStation(stationNumber);
         logger.info("response with {} person(s) living near by the fireStation number {} with {} child(ren) and {} adult(s)", result.persons().size(), stationNumber, result.childrenCounter(), result.adultsCounter());
         return result;
     }
@@ -136,15 +137,15 @@ public class SafetyNetAlertsController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the fireStation and the persons from an address",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PersonsWithFireStation.class))}),
+                            schema = @Schema(implementation = PersonsWithFireStationDTO.class))}),
             @ApiResponse(responseCode = "400", description = "the parameter address is missing",
                     content = @Content)})
     @GetMapping("/fire")
-    public PersonsWithFireStation getPersonsWithFireStationFromAddress(
+    public PersonsWithFireStationDTO getPersonsWithFireStationFromAddress(
             @Parameter(description = "address to search for", example = "1509 Culver St")
             @RequestParam String address) {
         logger.info("request the fireStation number and the list of persons living at {}", address);
-        PersonsWithFireStation result = fireStationService.getPersonsWithFireStationFromAddress(address);
+        PersonsWithFireStationDTO result = fireStationService.getPersonsWithFireStationFromAddress(address);
         logger.info("response with {} person(s) living at {} and covered by fireStation number {}", result.personsWithMedicalRecords().size(), address, result.fireStation());
         return result;
     }
@@ -160,16 +161,16 @@ public class SafetyNetAlertsController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the information from the person",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PersonWithInformation.class))}),
+                            schema = @Schema(implementation = PersonWithInformationDTO.class))}),
             @ApiResponse(responseCode = "400", description = "the parameters firstName and lastName are missing",
                     content = @Content)})
     @GetMapping("/personInfo")
-    public List<PersonWithInformation> getInformationFromName(
+    public List<PersonWithInformationDTO> getInformationFromName(
             @RequestParam
             @Parameter(description = "firstName to search for", example = "John") String firstName,
             @Parameter(description = "lastName to search for", example = "Boyd") String lastName) {
         logger.info("request the information about the persons named {} {}", firstName, lastName);
-        List<PersonWithInformation> result = personService.getInformationFromName(firstName, lastName);
+        List<PersonWithInformationDTO> result = personService.getInformationFromName(firstName, lastName);
         logger.info("response with the information about {} person(s) named {} {}", result.size(), firstName, lastName);
         return result;
     }
@@ -184,15 +185,15 @@ public class SafetyNetAlertsController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the list of families from the list of fireStation",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Family.class))}),
+                            schema = @Schema(implementation = FamilyDTO.class))}),
             @ApiResponse(responseCode = "400", description = "the parameter stations is missing",
                     content = @Content)})
     @GetMapping("/flood/stations")
-    public List<Family> getFamiliesFromStations(
+    public List<FamilyDTO> getFamiliesFromStations(
             @Parameter(description = "list of fireStation numbers to search for", example = "1,2")
             @RequestParam List<String> stations) {
         logger.info("request the list of families living near by the fireStation(s) {}", stations);
-        List<Family> result = fireStationService.getFamiliesFromStations(stations);
+        List<FamilyDTO> result = fireStationService.getFamiliesFromStations(stations);
         logger.info("response with {} family(ies) covered by the fireStation number {}", result.size(), stations);
         return result;
     }

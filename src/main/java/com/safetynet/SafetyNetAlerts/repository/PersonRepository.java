@@ -2,8 +2,8 @@ package com.safetynet.SafetyNetAlerts.repository;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import com.safetynet.SafetyNetAlerts.configuration.SafetyNetAlertsCatalog;
+import com.safetynet.SafetyNetAlerts.dto.PersonWithoutNameDTO;
 import com.safetynet.SafetyNetAlerts.model.Person;
-import com.safetynet.SafetyNetAlerts.model.PersonWithoutNameDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

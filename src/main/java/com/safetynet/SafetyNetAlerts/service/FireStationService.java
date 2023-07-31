@@ -1,7 +1,9 @@
 package com.safetynet.SafetyNetAlerts.service;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
-import com.safetynet.SafetyNetAlerts.model.*;
+import com.safetynet.SafetyNetAlerts.dto.*;
+import com.safetynet.SafetyNetAlerts.model.FireStation;
+import com.safetynet.SafetyNetAlerts.model.Person;
 import com.safetynet.SafetyNetAlerts.repository.FireStationRepository;
 import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
 import org.apache.logging.log4j.LogManager;
@@ -85,7 +87,7 @@ public class FireStationService {
      * @param stationNumber a String represents the fireStation to search for
      * @return a list of all the persons living nearby the fireStation, obtained from personRepository, duplicates are possible
      */
-    public PersonsWithCounterChildAdult getPersonsWithCounterFromStation(String stationNumber) {
+    public PersonsWithCounterChildAdultDTO getPersonsWithCounterFromStation(String stationNumber) {
         int childrenCounter = 0;
         int adultCounter = 0;
         List<String> addressFromStation = getAddressFromStation(stationNumber);
@@ -93,9 +95,9 @@ public class FireStationService {
         List<Person> personsFromStation = persons.stream()
                 .filter(p -> addressFromStation.contains(p.getAddress()))
                 .toList();
-        List<PersonWithoutEmail> personsWithoutEmailFromStation = new ArrayList<>();
+        List<PersonWithoutEmailDTO> personsWithoutEmailFromStation = new ArrayList<>();
         for (Person person : personsFromStation) {
-            PersonWithoutEmail personWithoutEmail = new PersonWithoutEmail(
+            PersonWithoutEmailDTO personWithoutEmailDTO = new PersonWithoutEmailDTO(
                     person.getFirstName(),
                     person.getLastName(),
                     person.getAddress(),
@@ -103,7 +105,7 @@ public class FireStationService {
                     person.getCity(),
                     person.getPhone()
             );
-            personsWithoutEmailFromStation.add(personWithoutEmail);
+            personsWithoutEmailFromStation.add(personWithoutEmailDTO);
         }
         for (Person person : personsFromStation) {
             int age = medicalRecordService.getMedicalRecordFromName(person.getFirstName(), person.getLastName()).age();
@@ -113,7 +115,7 @@ public class FireStationService {
                 adultCounter++;
             }
         }
-        return new PersonsWithCounterChildAdult(
+        return new PersonsWithCounterChildAdultDTO(
                 adultCounter,
                 childrenCounter,
                 personsWithoutEmailFromStation
@@ -126,25 +128,25 @@ public class FireStationService {
      * @param address a String represents the address to search for
      * @return a list of all the persons living at the address with their information, obtained from personRepository, duplicates are possible
      */
-    public PersonsWithFireStation getPersonsWithFireStationFromAddress(String address) {
+    public PersonsWithFireStationDTO getPersonsWithFireStationFromAddress(String address) {
         String fireStation = getStationsFromAddress(address);
         List<Person> personsFromAddress = personService.getPersonsFromAddress(address);
-        List<PersonWithMedicalRecord> personsFromAddressWithMedicalRecord = new ArrayList<>();
+        List<PersonWithMedicalRecordDTO> personsFromAddressWithMedicalRecord = new ArrayList<>();
         for (Person person : personsFromAddress) {
-            MedicalRecordWithAge medicalRecord = medicalRecordService.getMedicalRecordFromName(
+            MedicalRecordWithAgeDTO medicalRecord = medicalRecordService.getMedicalRecordFromName(
                     person.getFirstName(),
                     person.getLastName()
             );
-            PersonWithMedicalRecord personWithMedicalRecord = new PersonWithMedicalRecord(
+            PersonWithMedicalRecordDTO personWithMedicalRecordDTO = new PersonWithMedicalRecordDTO(
                     person.getLastName(),
                     person.getPhone(),
                     medicalRecord.age(),
                     medicalRecord.medications(),
                     medicalRecord.allergies()
             );
-            personsFromAddressWithMedicalRecord.add(personWithMedicalRecord);
+            personsFromAddressWithMedicalRecord.add(personWithMedicalRecordDTO);
         }
-        return new PersonsWithFireStation(
+        return new PersonsWithFireStationDTO(
                 fireStation,
                 personsFromAddressWithMedicalRecord
         );
@@ -156,31 +158,31 @@ public class FireStationService {
      * @param stations a list of String represents the stations to search for
      * @return a list of all the families living nearby the station with their information, obtained from personRepository, duplicates are possible
      */
-    public List<Family> getFamiliesFromStations(List<String> stations) {
-        List<Family> families = new ArrayList<>();
+    public List<FamilyDTO> getFamiliesFromStations(List<String> stations) {
+        List<FamilyDTO> families = new ArrayList<>();
         List<String> addressFromStations = new ArrayList<>();
         for (String station : stations) {
             addressFromStations.addAll(getAddressFromStation(station));
         }
         for (String address : addressFromStations) {
             List<Person> personsFromAddress = personService.getPersonsFromAddress(address);
-            List<PersonWithMedicalRecord> personsFromAddressWithMedicalRecord = new ArrayList<>();
+            List<PersonWithMedicalRecordDTO> personsFromAddressWithMedicalRecord = new ArrayList<>();
             for (Person personFromAddress : personsFromAddress) {
-                MedicalRecordWithAge medicalRecord = medicalRecordService.getMedicalRecordFromName(
+                MedicalRecordWithAgeDTO medicalRecord = medicalRecordService.getMedicalRecordFromName(
                         personFromAddress.getFirstName(),
                         personFromAddress.getLastName()
                 );
-                PersonWithMedicalRecord personWithMedicalRecord = new PersonWithMedicalRecord(
+                PersonWithMedicalRecordDTO personWithMedicalRecordDTO = new PersonWithMedicalRecordDTO(
                         personFromAddress.getLastName(),
                         personFromAddress.getPhone(),
                         medicalRecord.age(),
                         medicalRecord.medications(),
                         medicalRecord.allergies()
                 );
-                personsFromAddressWithMedicalRecord.add(personWithMedicalRecord);
+                personsFromAddressWithMedicalRecord.add(personWithMedicalRecordDTO);
             }
-            Family family = new Family(address, personsFromAddressWithMedicalRecord);
-            families.add(family);
+            FamilyDTO familyDTO = new FamilyDTO(address, personsFromAddressWithMedicalRecord);
+            families.add(familyDTO);
         }
         return families;
     }
