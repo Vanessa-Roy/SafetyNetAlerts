@@ -58,4 +58,8 @@ public class MedicalRecordService {
         return new MedicalRecordWithAgeDTO(age, medications, allergies);
     }
 
+    public void deleteMedicalRecord(String firstName, String lastName) {
+        medicalRecordRepository.deleteMedicalRecord(firstName, lastName);
+    }
+
 }

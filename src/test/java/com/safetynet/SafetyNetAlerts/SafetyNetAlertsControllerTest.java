@@ -217,4 +217,22 @@ public class SafetyNetAlertsControllerTest {
         mockMvc.perform(delete("/person?firstName=notFound&lastName=notFound").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    public void testDeleteMedicalRecordShouldPass() throws Exception {
+        mockMvc.perform(delete("/medicalRecord?firstName=john&lastName=boyd").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDeleteMedicalRecordWithoutParameterShouldFail() throws Exception {
+        mockMvc.perform(delete("/medicalRecord").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testDeleteMedicalRecordWithParameterIncorrectShouldFail() throws Exception {
+        mockMvc.perform(delete("/medicalRecord?firstName=notFound&lastName=notFound").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 }

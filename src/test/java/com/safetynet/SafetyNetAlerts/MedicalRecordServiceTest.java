@@ -99,4 +99,12 @@ public class MedicalRecordServiceTest {
         assertEquals(expectedResult, result);
     }
 
+    @Test
+    public void testDeleteMedicalRecord() {
+
+        testingMedicalRecordService.deleteMedicalRecord("firstName", "lastName");
+
+        verify(medicalRecordRepository, Mockito.times(1)).deleteMedicalRecord("firstName", "lastName");
+    }
+
 }

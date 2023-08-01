@@ -5,6 +5,7 @@ import com.safetynet.SafetyNetAlerts.dto.*;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
 import com.safetynet.SafetyNetAlerts.model.Person;
 import com.safetynet.SafetyNetAlerts.service.FireStationService;
+import com.safetynet.SafetyNetAlerts.service.MedicalRecordService;
 import com.safetynet.SafetyNetAlerts.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,6 +35,9 @@ public class SafetyNetAlertsController {
     private PersonService personService;
     @Autowired
     private FireStationService fireStationService;
+
+    @Autowired
+    private MedicalRecordService medicalRecordService;
 
 
     /**
@@ -272,7 +276,7 @@ public class SafetyNetAlertsController {
             @Parameter(description = "lastName to search for", example = "Boyd") String lastName) {
         logger.info("request a deletion for the medical record about the person named {}", firstName + " " + lastName);
         try {
-            personService.deleteMedicalRecord(firstName, lastName);
+            medicalRecordService.deleteMedicalRecord(firstName, lastName);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (NoSuchElementException e) {
             logger.error("the person named {} hasn't a medical record in our system", firstName + " " + lastName);
