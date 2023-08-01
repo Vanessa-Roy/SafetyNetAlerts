@@ -296,9 +296,19 @@ public class PersonServiceTest {
     @Test
     public void testCreatePerson() {
 
-        testingPersonService.createPerson(persons.get(0));
+        PersonDTO personCreate = new PersonDTO(
+                "firstNameTest",
+                "lastNameTest",
+                "addressTest",
+                "cityTest",
+                "zipTest",
+                "phoneTest",
+                "emailTest"
+        );
 
-        verify(personRepository, Mockito.times(1)).createPerson(persons.get(0));
+        testingPersonService.createPerson(personCreate);
+
+        verify(personRepository, Mockito.times(1)).createPerson(personCreate);
     }
 
     @Test

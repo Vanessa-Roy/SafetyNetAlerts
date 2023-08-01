@@ -115,7 +115,7 @@ public class PersonService {
         return personsWithInformation;
     }
 
-    public void createPerson(Person person) {
+    public void createPerson(PersonDTO person) {
         personRepository.createPerson(person);
     }
 

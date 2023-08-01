@@ -3,7 +3,6 @@ package com.safetynet.SafetyNetAlerts;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.SafetyNetAlerts.dto.PersonDTO;
 import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
-import com.safetynet.SafetyNetAlerts.model.Person;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -154,7 +153,7 @@ public class SafetyNetAlertsControllerTest {
     @Test
     public void testCreatePersonShouldPass() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        Person person = new Person("firstNameTest", "lastNameTest", "addressTest", "cityTest", "zipTest", "phoneTest", "emailTest");
+        PersonDTO person = new PersonDTO("firstNameTest", "lastNameTest", "addressTest", "cityTest", "zipTest", "phoneTest", "emailTest");
         String json = mapper.writeValueAsString(person);
         mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
                         .content(json).accept(MediaType.APPLICATION_JSON))
@@ -162,7 +161,7 @@ public class SafetyNetAlertsControllerTest {
     }
 
     @Test
-    public void testCreatePersonWithoutParameterShouldFail() throws Exception {
+    public void testCreatePersonWithoutBodyShouldFail() throws Exception {
         mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }

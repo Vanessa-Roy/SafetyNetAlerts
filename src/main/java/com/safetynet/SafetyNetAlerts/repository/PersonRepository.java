@@ -32,9 +32,10 @@ public class PersonRepository {
         return data.getPersons();
     }
 
-    public void createPerson(Person person) {
-        data.getPersons().add(person);
-        logger.info("The new person {} has been created correctly", person.getFirstName() + " " + person.getLastName());
+    public void createPerson(PersonDTO person) {
+        Person personCreate = objectMapper.convertValue(person, Person.class);
+        data.getPersons().add(personCreate);
+        logger.info("The new person {} has been created correctly", person.firstName() + " " + person.lastName());
     }
 
     public void updatePerson(PersonDTO person) throws NoSuchElementException {
@@ -50,10 +51,10 @@ public class PersonRepository {
 
     public void deletePerson(PersonNameDTO person) throws NoSuchElementException {
         List<Person> personList = data.getPersons();
-        Person personUpdate = personList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.firstName()) && p.getLastName().equalsIgnoreCase(person.lastName()))
+        Person personDelete = personList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.firstName()) && p.getLastName().equalsIgnoreCase(person.lastName()))
                 .findAny()
                 .orElseThrow();
-        int index = personList.indexOf(personUpdate);
+        int index = personList.indexOf(personDelete);
         data.getPersons().remove(index);
         logger.info("The person named {} has been deleted correctly", person.firstName() + " " + person.lastName());
     }

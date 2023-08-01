@@ -1,5 +1,6 @@
 package com.safetynet.SafetyNetAlerts;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.SafetyNetAlerts.configuration.SafetyNetAlertsCatalog;
 import com.safetynet.SafetyNetAlerts.dto.PersonDTO;
 import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
@@ -33,41 +34,51 @@ public class PersonRepositoryTest {
 
     private Person person;
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     @BeforeEach
     public void setUpPerTest() {
         person = new Person("firstNameTest", "lastNameTest", "addressTest", "cityTest", "zipTest", "phoneTest", "emailTest");
     }
 
     @Test
-    public void testCreatePersonWithAllParameters() {
+    public void testCreatePersonWithCompleteBody() {
+
+        PersonDTO personCreate = new PersonDTO(
+                "firstNameTest",
+                "lastNameTest",
+                "addressTest",
+                "cityTest",
+                "zipTest",
+                "phoneTest",
+                "emailTest"
+        );
 
         when(safetyNetAlertsCatalog.getPersons()).thenReturn(new ArrayList<>());
 
-        testingPersonRepository.createPerson(person);
-        List<Person> expectedResult = new ArrayList<>();
-        expectedResult.add(person);
+        testingPersonRepository.createPerson(personCreate);
+        String expectedResult = "firstNameTest lastNameTest addressTest cityTest zipTest phoneTest emailTest";
 
         assertEquals(1, testingPersonRepository.getPersonList().size());
-        assertEquals(expectedResult, testingPersonRepository.getPersonList());
+        assertEquals(expectedResult, testingPersonRepository.getPersonList().get(0).toString());
     }
 
     @Test
-    public void testCreatePersonWithoutAllParameters() {
-        Person personWithoutAllParameters = new Person();
-        person.setFirstName("firstNameTest");
-        person.setLastName("lastNameTest");
-        person.setAddress("addressTest");
-        person.setCity("cityTest");
-        person.setZip("zipTest");
+    public void testCreatePersonWithIncompleteBody() {
 
-        when(safetyNetAlertsCatalog.getPersons()).thenReturn(new ArrayList<>());
+        assertThrows(IllegalArgumentException.class, () -> {
+            testingPersonRepository.createPerson(new PersonDTO(
+                    "firstNameTest",
+                    "lastNameTest",
+                    "addressTest",
+                    "cityTest",
+                    "zipTest",
+                    "phoneTest",
+                    null)
+            );
+        });
 
-        testingPersonRepository.createPerson(personWithoutAllParameters);
-        List<Person> expectedResult = new ArrayList<>();
-        expectedResult.add(personWithoutAllParameters);
-
-        assertEquals(1, testingPersonRepository.getPersonList().size());
-        assertEquals(expectedResult, testingPersonRepository.getPersonList());
+        verify(safetyNetAlertsCatalog, Mockito.never()).getPersons();
     }
 
     @Test
@@ -75,15 +86,24 @@ public class PersonRepositoryTest {
         List<Person> persons = new ArrayList<>();
         persons.add(person);
 
+        PersonDTO personCreate = new PersonDTO(
+                "firstNameTest",
+                "lastNameTest",
+                "addressTest",
+                "cityTest",
+                "zipTest",
+                "phoneTest",
+                "emailTest"
+        );
+
         when(safetyNetAlertsCatalog.getPersons()).thenReturn(persons);
 
-        testingPersonRepository.createPerson(person);
-        List<Person> expectedResult = new ArrayList<>();
-        expectedResult.add(person);
-        expectedResult.add(person);
+        testingPersonRepository.createPerson(personCreate);
+        String expectedResult = "firstNameTest lastNameTest addressTest cityTest zipTest phoneTest emailTest";
 
         assertEquals(2, testingPersonRepository.getPersonList().size());
-        assertEquals(expectedResult, testingPersonRepository.getPersonList());
+        assertEquals(expectedResult, testingPersonRepository.getPersonList().get(1).toString());
+        assertEquals(expectedResult, testingPersonRepository.getPersonList().get(0).toString());
     }
 
     @Test

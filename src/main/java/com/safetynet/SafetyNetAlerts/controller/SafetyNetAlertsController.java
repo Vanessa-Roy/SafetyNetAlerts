@@ -208,8 +208,8 @@ public class SafetyNetAlertsController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Person.class))})})
     @PostMapping("/person")
-    public ResponseEntity<Person> createPerson(@RequestBody Person person) {
-        logger.info("creating a new person {} has been posted", person.getFirstName() + " " + person.getLastName());
+    public ResponseEntity<Person> createPerson(@RequestBody PersonDTO person) {
+        logger.info("creating a new person {} has been posted", person.firstName() + " " + person.lastName());
         personService.createPerson(person);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
