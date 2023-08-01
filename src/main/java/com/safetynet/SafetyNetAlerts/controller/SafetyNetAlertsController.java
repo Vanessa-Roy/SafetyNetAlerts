@@ -255,6 +255,17 @@ public class SafetyNetAlertsController {
     }
 
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "The new medical record has been created correctly",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MedicalRecord.class))})})
+    @PostMapping("/medicalRecord")
+    public ResponseEntity<MedicalRecord> createMedicalRecord(@RequestBody MedicalRecordDTO medicalRecord) {
+        logger.info("creating for the medical record about the person named {} has been posted", medicalRecord.firstName() + " " + medicalRecord.lastName());
+        medicalRecordService.createMedicalRecord(medicalRecord);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The medical record has been updated correctly",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = MedicalRecord.class))}),
@@ -264,7 +275,7 @@ public class SafetyNetAlertsController {
                     content = @Content)})
     @PutMapping("/medicalRecord")
     public ResponseEntity<MedicalRecord> updatePerson(@RequestBody MedicalRecordDTO medicalRecord) {
-        logger.info("request an update for the person named {}", medicalRecord.firstName() + " " + medicalRecord.lastName());
+        logger.info("request an update for the medical record about the person named {}", medicalRecord.firstName() + " " + medicalRecord.lastName());
         try {
             medicalRecordService.updateMedicalRecord(medicalRecord);
             return ResponseEntity.status(HttpStatus.OK).build();

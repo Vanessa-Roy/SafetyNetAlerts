@@ -53,6 +53,76 @@ public class MedicalRecordRepositoryTest {
     }
 
     @Test
+    public void testCreateMedicalRecordWithCompleteBody() {
+        medicalRecordList = new ArrayList<>();
+        List<String> medications = new ArrayList<>();
+        medications.add("aznol:350mg");
+        medications.add("hydrapermazol:100mg");
+        List<String> allergies = new ArrayList<>();
+        allergies.add("nillacilan");
+
+        MedicalRecordDTO medicalRecordCreate = new MedicalRecordDTO(
+                "John",
+                "Boyd",
+                "03/06/1984",
+                medications,
+                allergies
+        );
+
+        when(safetyNetAlertsCatalog.getMedicalRecords()).thenReturn(medicalRecordList);
+
+        testingMedicalRecordRepository.createMedicalRecord(medicalRecordCreate);
+        String expectedResult = "John Boyd 03/06/1984 [aznol:350mg, hydrapermazol:100mg] [nillacilan]";
+
+        verify(safetyNetAlertsCatalog, Mockito.times(1)).getMedicalRecords();
+        assertEquals(1, testingMedicalRecordRepository.getMedicalRecordList().size());
+        assertEquals(expectedResult, testingMedicalRecordRepository.getMedicalRecordList().get(0).toString());
+    }
+
+    @Test
+    public void testCreateMedicalRecordWithDuplicate() {
+        List<String> medications = new ArrayList<>();
+        medications.add("aznol:350mg");
+        medications.add("hydrapermazol:100mg");
+        List<String> allergies = new ArrayList<>();
+        allergies.add("nillacilan");
+
+        MedicalRecordDTO medicalRecordCreate = new MedicalRecordDTO(
+                "John",
+                "Boyd",
+                "03/06/1984",
+                medications,
+                allergies
+        );
+
+        when(safetyNetAlertsCatalog.getMedicalRecords()).thenReturn(medicalRecordList);
+
+        testingMedicalRecordRepository.createMedicalRecord(medicalRecordCreate);
+        String expectedResult = "John Boyd 03/06/1984 [aznol:350mg, hydrapermazol:100mg] [nillacilan]";
+
+
+        assertEquals(2, testingMedicalRecordRepository.getMedicalRecordList().size());
+        assertEquals(expectedResult, testingMedicalRecordRepository.getMedicalRecordList().get(1).toString());
+        assertEquals(expectedResult, testingMedicalRecordRepository.getMedicalRecordList().get(0).toString());
+    }
+
+    @Test
+    public void testCreateMedicalRecordWithIncompleteBody() {
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            testingMedicalRecordRepository.createMedicalRecord(new MedicalRecordDTO(
+                    "firstNameUnknown",
+                    "lastNameUnknown",
+                    "03/06/1984",
+                    null,
+                    null
+            ));
+        });
+
+        verify(safetyNetAlertsCatalog, Mockito.never()).getPersons();
+    }
+
+    @Test
     public void testUpdateMedicalRecordWithCompleteBody() {
         List<String> medications = new ArrayList<>();
         medications.add("aznol:350mg");
@@ -63,7 +133,7 @@ public class MedicalRecordRepositoryTest {
         MedicalRecordDTO medicalRecordUpdate = new MedicalRecordDTO(
                 "John",
                 "Boyd",
-                "03/06/1984",
+                "03/06/1984Update",
                 medications,
                 allergies
         );
@@ -71,7 +141,7 @@ public class MedicalRecordRepositoryTest {
         when(safetyNetAlertsCatalog.getMedicalRecords()).thenReturn(medicalRecordList);
 
         testingMedicalRecordRepository.updateMedicalRecord(medicalRecordUpdate);
-        String expectedResult = "John Boyd 03/06/1984 [aznol:350mg, hydrapermazol:100mg] [nillacilan]";
+        String expectedResult = "John Boyd 03/06/1984Update [aznol:350mg, hydrapermazol:100mg] [nillacilan]";
 
         verify(safetyNetAlertsCatalog, Mockito.times(2)).getMedicalRecords();
         assertEquals(expectedResult, medicalRecordList.get(0).toString());

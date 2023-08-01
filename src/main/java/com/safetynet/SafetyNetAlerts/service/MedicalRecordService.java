@@ -68,4 +68,7 @@ public class MedicalRecordService {
         medicalRecordRepository.deleteMedicalRecord(person);
     }
 
+    public void createMedicalRecord(MedicalRecordDTO medicalRecord) {
+        medicalRecordRepository.createMedicalRecord(medicalRecord);
+    }
 }

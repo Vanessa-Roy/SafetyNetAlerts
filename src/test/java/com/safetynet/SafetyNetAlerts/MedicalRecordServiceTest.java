@@ -102,6 +102,27 @@ public class MedicalRecordServiceTest {
     }
 
     @Test
+    public void testCreateMedicalRecord() {
+        List<String> medications = new ArrayList<>();
+        medications.add("aznol:350mg");
+        medications.add("hydrapermazol:100mg");
+        List<String> allergies = new ArrayList<>();
+        allergies.add("nillacilan");
+
+        MedicalRecordDTO medicalRecordUpdate = new MedicalRecordDTO(
+                "firstNameTest",
+                "lastNameTest",
+                "03/06/1984",
+                medications,
+                allergies
+        );
+
+        testingMedicalRecordService.createMedicalRecord(medicalRecordUpdate);
+
+        verify(medicalRecordRepository, Mockito.times(1)).createMedicalRecord(medicalRecordUpdate);
+    }
+
+    @Test
     public void testUpdateMedicalRecord() {
         List<String> medications = new ArrayList<>();
         medications.add("aznol:350mg");

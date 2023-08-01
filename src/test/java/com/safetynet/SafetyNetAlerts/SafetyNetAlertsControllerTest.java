@@ -1,6 +1,7 @@
 package com.safetynet.SafetyNetAlerts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.safetynet.SafetyNetAlerts.dto.MedicalRecordDTO;
 import com.safetynet.SafetyNetAlerts.dto.PersonDTO;
 import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -266,5 +268,21 @@ public class SafetyNetAlertsControllerTest {
         mockMvc.perform(delete("/medicalRecord").contentType(MediaType.APPLICATION_JSON)
                         .content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testCreateMedicalRecordShouldPass() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        MedicalRecordDTO medicalRecord = new MedicalRecordDTO("firstNameTest", "lastNameTest", "15/15/2015", new ArrayList<>(), new ArrayList<>());
+        String json = mapper.writeValueAsString(medicalRecord);
+        mockMvc.perform(post("/medicalRecord").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void testCreateMedicalRecordWithoutBodyShouldFail() throws Exception {
+        mockMvc.perform(post("/medicalRecord").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 }

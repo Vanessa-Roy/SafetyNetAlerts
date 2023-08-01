@@ -56,4 +56,10 @@ public class MedicalRecordRepository {
         data.getMedicalRecords().remove(index);
         logger.info("The medical record about the person named {} has been deleted correctly", person.firstName() + " " + person.lastName());
     }
+
+    public void createMedicalRecord(MedicalRecordDTO medicalRecord) {
+        MedicalRecord medicalRecordCreate = objectMapper.convertValue(medicalRecord, MedicalRecord.class);
+        data.getMedicalRecords().add(medicalRecordCreate);
+        logger.info("The new medical record about the person named {} has been created correctly", medicalRecord.firstName() + " " + medicalRecord.lastName());
+    }
 }
