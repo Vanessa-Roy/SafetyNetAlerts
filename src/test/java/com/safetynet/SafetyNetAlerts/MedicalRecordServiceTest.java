@@ -1,6 +1,7 @@
 package com.safetynet.SafetyNetAlerts;
 
 import com.safetynet.SafetyNetAlerts.dto.MedicalRecordWithAgeDTO;
+import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
 import com.safetynet.SafetyNetAlerts.service.MedicalRecordService;
@@ -102,9 +103,14 @@ public class MedicalRecordServiceTest {
     @Test
     public void testDeleteMedicalRecord() {
 
-        testingMedicalRecordService.deleteMedicalRecord("firstName", "lastName");
+        PersonNameDTO personDelete = new PersonNameDTO(
+                "firstNameTest",
+                "lastNameTest"
+        );
 
-        verify(medicalRecordRepository, Mockito.times(1)).deleteMedicalRecord("firstName", "lastName");
+        testingMedicalRecordService.deleteMedicalRecord(personDelete);
+
+        verify(medicalRecordRepository, Mockito.times(1)).deleteMedicalRecord(personDelete);
     }
 
 }

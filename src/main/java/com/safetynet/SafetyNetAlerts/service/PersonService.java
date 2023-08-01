@@ -1,10 +1,7 @@
 package com.safetynet.SafetyNetAlerts.service;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
-import com.safetynet.SafetyNetAlerts.dto.ChildDTO;
-import com.safetynet.SafetyNetAlerts.dto.MedicalRecordWithAgeDTO;
-import com.safetynet.SafetyNetAlerts.dto.PersonWithInformationDTO;
-import com.safetynet.SafetyNetAlerts.dto.PersonWithoutNameDTO;
+import com.safetynet.SafetyNetAlerts.dto.*;
 import com.safetynet.SafetyNetAlerts.model.Person;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
 import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
@@ -122,11 +119,11 @@ public class PersonService {
         personRepository.createPerson(person);
     }
 
-    public void updatePerson(String firstName, String lastName, PersonWithoutNameDTO person) throws NoSuchElementException {
-        personRepository.updatePerson(firstName, lastName, person);
+    public void updatePerson(PersonDTO person) throws NoSuchElementException {
+        personRepository.updatePerson(person);
     }
 
-    public void deletePerson(String firstName, String lastName) throws NoSuchElementException {
-        personRepository.deletePerson(firstName, lastName);
+    public void deletePerson(PersonNameDTO person) throws NoSuchElementException {
+        personRepository.deletePerson(person);
     }
 }

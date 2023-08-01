@@ -184,7 +184,7 @@ public class SafetyNetAlertsController {
      * Get the list of families from a list of fireStations.
      *
      * @param stations a list of String represents the fireStation numbers we are looking for.
-     * @return a list of families from fireStations, obtained from fireStationService, duplicates are not allowed..
+     * @return a list of families from fireStations, obtained from fireStationService, duplicates are not allowed.
      */
     @Operation(summary = "Get the list of families from a list of fireStations")
     @ApiResponses(value = {
@@ -218,22 +218,18 @@ public class SafetyNetAlertsController {
             @ApiResponse(responseCode = "200", description = "The person has been updated correctly",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Person.class))}),
-            @ApiResponse(responseCode = "400", description = "the parameters firstName and lastName are missing or the body is incomplete",
+            @ApiResponse(responseCode = "400", description = "the body is incomplete",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "the person doesn't exist in our system",
                     content = @Content)})
     @PutMapping("/person")
-    public ResponseEntity<Person> UpdatePerson(
-            @RequestBody PersonWithoutNameDTO person,
-            @RequestParam
-            @Parameter(description = "firstName to search for", example = "John") String firstName,
-            @Parameter(description = "lastName to search for", example = "Boyd") String lastName) {
-        logger.info("request an update for the person named {}", firstName + " " + lastName);
+    public ResponseEntity<Person> updatePerson(@RequestBody PersonDTO person) {
+        logger.info("request an update for the person named {}", person.firstName() + " " + person.lastName());
         try {
-            personService.updatePerson(firstName, lastName, person);
+            personService.updatePerson(person);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (NoSuchElementException e) {
-            logger.error("the person named {} doesn't exist in our system", firstName + " " + lastName);
+            logger.error("the person named {} doesn't exist in our system", person.firstName() + " " + person.lastName());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
@@ -242,21 +238,18 @@ public class SafetyNetAlertsController {
             @ApiResponse(responseCode = "200", description = "The person has been deleted correctly",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Person.class))}),
-            @ApiResponse(responseCode = "400", description = "the parameters firstName and lastName are missing",
+            @ApiResponse(responseCode = "400", description = "the body is incomplete",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "the person doesn't exist in our system",
                     content = @Content)})
     @DeleteMapping("/person")
-    public ResponseEntity<Person> DeletePerson(
-            @RequestParam
-            @Parameter(description = "firstName to search for", example = "John") String firstName,
-            @Parameter(description = "lastName to search for", example = "Boyd") String lastName) {
-        logger.info("request a deletion for the person named {}", firstName + " " + lastName);
+    public ResponseEntity<Person> deletePerson(@RequestBody PersonNameDTO person) {
+        logger.info("request a deletion for the person named {}", person.firstName() + " " + person.lastName());
         try {
-            personService.deletePerson(firstName, lastName);
+            personService.deletePerson(person);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (NoSuchElementException e) {
-            logger.error("the person named {} doesn't exist in our system", firstName + " " + lastName);
+            logger.error("the person named {} doesn't exist in our system", person.firstName() + " " + person.lastName());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
@@ -265,21 +258,18 @@ public class SafetyNetAlertsController {
             @ApiResponse(responseCode = "200", description = "The medical record has been deleted correctly",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Person.class))}),
-            @ApiResponse(responseCode = "400", description = "the parameters firstName and lastName are missing",
+            @ApiResponse(responseCode = "400", description = "the body is incomplete",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "the medical record about this person doesn't exist in our system",
                     content = @Content)})
     @DeleteMapping("/medicalRecord")
-    public ResponseEntity<MedicalRecord> DeleteMedicalRecord(
-            @RequestParam
-            @Parameter(description = "firstName to search for", example = "John") String firstName,
-            @Parameter(description = "lastName to search for", example = "Boyd") String lastName) {
-        logger.info("request a deletion for the medical record about the person named {}", firstName + " " + lastName);
+    public ResponseEntity<MedicalRecord> deleteMedicalRecord(@RequestBody PersonNameDTO person) {
+        logger.info("request a deletion for the medical record about the person named {}", person.firstName() + " " + person.lastName());
         try {
-            medicalRecordService.deleteMedicalRecord(firstName, lastName);
+            medicalRecordService.deleteMedicalRecord(person);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (NoSuchElementException e) {
-            logger.error("the person named {} hasn't a medical record in our system", firstName + " " + lastName);
+            logger.error("the person named {} hasn't a medical record in our system", person.firstName() + " " + person.lastName());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }

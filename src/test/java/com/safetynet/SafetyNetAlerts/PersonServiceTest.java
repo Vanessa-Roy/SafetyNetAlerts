@@ -1,9 +1,6 @@
 package com.safetynet.SafetyNetAlerts;
 
-import com.safetynet.SafetyNetAlerts.dto.ChildDTO;
-import com.safetynet.SafetyNetAlerts.dto.MedicalRecordWithAgeDTO;
-import com.safetynet.SafetyNetAlerts.dto.PersonWithInformationDTO;
-import com.safetynet.SafetyNetAlerts.dto.PersonWithoutNameDTO;
+import com.safetynet.SafetyNetAlerts.dto.*;
 import com.safetynet.SafetyNetAlerts.model.Person;
 import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
 import com.safetynet.SafetyNetAlerts.service.MedicalRecordService;
@@ -307,7 +304,9 @@ public class PersonServiceTest {
     @Test
     public void testUpdatePerson() {
 
-        PersonWithoutNameDTO personUpdate = new PersonWithoutNameDTO(
+        PersonDTO personUpdate = new PersonDTO(
+                "firstNameUpdate",
+                "lastNameUpdate",
                 "addressTestUpdate",
                 "cityTestUpdate",
                 "zipTestUpdate",
@@ -315,17 +314,22 @@ public class PersonServiceTest {
                 "emailTestUpdate"
         );
 
-        testingPersonService.updatePerson("firstName", "lastName", personUpdate);
+        testingPersonService.updatePerson(personUpdate);
 
-        verify(personRepository, Mockito.times(1)).updatePerson("firstName", "lastName", personUpdate);
+        verify(personRepository, Mockito.times(1)).updatePerson(personUpdate);
     }
 
     @Test
     public void testDeletePerson() {
 
-        testingPersonService.deletePerson("firstName", "lastName");
+        PersonNameDTO personDelete = new PersonNameDTO(
+                "firstNameTest",
+                "lastNameTest"
+        );
 
-        verify(personRepository, Mockito.times(1)).deletePerson("firstName", "lastName");
+        testingPersonService.deletePerson(personDelete);
+
+        verify(personRepository, Mockito.times(1)).deletePerson(personDelete);
     }
 
 

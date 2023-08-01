@@ -1,8 +1,10 @@
 package com.safetynet.SafetyNetAlerts.repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import com.safetynet.SafetyNetAlerts.configuration.SafetyNetAlertsCatalog;
-import com.safetynet.SafetyNetAlerts.dto.PersonWithoutNameDTO;
+import com.safetynet.SafetyNetAlerts.dto.PersonDTO;
+import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
 import com.safetynet.SafetyNetAlerts.model.Person;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +22,8 @@ public class PersonRepository {
 
     private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @Autowired
     private SafetyNetAlertsCatalog data;
 
@@ -33,28 +37,24 @@ public class PersonRepository {
         logger.info("The new person {} has been created correctly", person.getFirstName() + " " + person.getLastName());
     }
 
-    public void updatePerson(String firstName, String lastName, PersonWithoutNameDTO person) throws NoSuchElementException {
+    public void updatePerson(PersonDTO person) throws NoSuchElementException {
         List<Person> personList = data.getPersons();
-        Person personUpdate = personList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
+        Person personUpdate = personList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.firstName()) && p.getLastName().equalsIgnoreCase(person.lastName()))
                 .findAny()
                 .orElseThrow();
         int index = personList.indexOf(personUpdate);
-        personUpdate.setAddress(person.address());
-        personUpdate.setCity(person.city());
-        personUpdate.setZip(person.zip());
-        personUpdate.setEmail(person.email());
-        personUpdate.setPhone(person.phone());
+        personUpdate = objectMapper.convertValue(person, Person.class);
         data.getPersons().set(index, personUpdate);
-        logger.info("The person named {} has been updated correctly", firstName + " " + lastName);
+        logger.info("The person named {} has been updated correctly", person.firstName() + " " + person.lastName());
     }
 
-    public void deletePerson(String firstName, String lastName) throws NoSuchElementException {
+    public void deletePerson(PersonNameDTO person) throws NoSuchElementException {
         List<Person> personList = data.getPersons();
-        Person personUpdate = personList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
+        Person personUpdate = personList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.firstName()) && p.getLastName().equalsIgnoreCase(person.lastName()))
                 .findAny()
                 .orElseThrow();
         int index = personList.indexOf(personUpdate);
         data.getPersons().remove(index);
-        logger.info("The person named {} has been deleted correctly", firstName + " " + lastName);
+        logger.info("The person named {} has been deleted correctly", person.firstName() + " " + person.lastName());
     }
 }

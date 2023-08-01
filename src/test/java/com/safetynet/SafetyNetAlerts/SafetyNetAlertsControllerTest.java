@@ -1,7 +1,8 @@
 package com.safetynet.SafetyNetAlerts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safetynet.SafetyNetAlerts.dto.PersonWithoutNameDTO;
+import com.safetynet.SafetyNetAlerts.dto.PersonDTO;
+import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
 import com.safetynet.SafetyNetAlerts.model.Person;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,70 +170,102 @@ public class SafetyNetAlertsControllerTest {
     @Test
     public void testUpdatePersonShouldPass() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        PersonWithoutNameDTO person = new PersonWithoutNameDTO("addressTest", "cityTest", "zipTest", "phoneTest", "emailTest");
+        PersonDTO person = new PersonDTO("John", "Boyd", "addressTestUpdate", "cityTestUpdate", "zipTestUpdate", "phoneTestUpdate", "emailTestUpdate");
         String json = mapper.writeValueAsString(person);
-        mockMvc.perform(put("/person?firstName=john&lastName=boyd").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
                         .content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testUpdatePersonWithoutParameterShouldFail() throws Exception {
+    public void testUpdatePersonWithoutBodyShouldFail() throws Exception {
         mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testUpdatePersonWithParameterIncorrectShouldFail() throws Exception {
+    public void testUpdatePersonWithPersonUnknownShouldFail() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        PersonWithoutNameDTO person = new PersonWithoutNameDTO("addressTest", "cityTest", "zipTest", "phoneTest", "emailTest");
+        PersonDTO person = new PersonDTO("firstNameUnknown", "lastNameUnknown", "addressTest", "cityTest", "zipTest", "phoneTest", "emailTest");
         String json = mapper.writeValueAsString(person);
-        mockMvc.perform(put("/person?firstName=notFound&lastName=notFound").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
                         .content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    public void testUpdatePersonWithBodyIncorrectShouldFail() throws Exception {
-        String json = "{\"city\":\"cityTest\",\"zip\":\"zipTest\",\"phone\":\"phoneTest\",\"email\":\"emailTest\"}";
-        mockMvc.perform(put("/person?firstName=john&lastName=boyd").contentType(MediaType.APPLICATION_JSON)
+    public void testUpdatePersonWithIncompleteBodyShouldFail() throws Exception {
+        String json = "{\"firstName\":\"John\",\"lastName\":\"Boyd\",\"address\":null,\"city\":\"cityTest\",\"zip\":\"zipTest\",\"phone\":\"phoneTest\",\"email\":\"emailTest\"}";
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
                         .content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     public void testDeletePersonShouldPass() throws Exception {
-        mockMvc.perform(delete("/person?firstName=john&lastName=boyd").contentType(MediaType.APPLICATION_JSON))
+        ObjectMapper mapper = new ObjectMapper();
+        PersonNameDTO person = new PersonNameDTO("John", "Boyd");
+        String json = mapper.writeValueAsString(person);
+        mockMvc.perform(delete("/person").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testDeletePersonWithoutParameterShouldFail() throws Exception {
+    public void testDeletePersonWithoutBodyShouldFail() throws Exception {
         mockMvc.perform(delete("/person").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testDeletePersonWithParameterIncorrectShouldFail() throws Exception {
-        mockMvc.perform(delete("/person?firstName=notFound&lastName=notFound").contentType(MediaType.APPLICATION_JSON))
+    public void testDeletePersonWithIncompleteBodyShouldFail() throws Exception {
+        String json = "{\"firstName:\"John\",\"lastName\":null}";
+        mockMvc.perform(delete("/person").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testDeletePersonWithPersonUnknownShouldFail() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        PersonNameDTO person = new PersonNameDTO("firstNameUnknown", "lastNameUnknown");
+        String json = mapper.writeValueAsString(person);
+        mockMvc.perform(delete("/person").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void testDeleteMedicalRecordShouldPass() throws Exception {
-        mockMvc.perform(delete("/medicalRecord?firstName=john&lastName=boyd").contentType(MediaType.APPLICATION_JSON))
+        ObjectMapper mapper = new ObjectMapper();
+        PersonNameDTO person = new PersonNameDTO("John", "Boyd");
+        String json = mapper.writeValueAsString(person);
+        mockMvc.perform(delete("/medicalRecord").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testDeleteMedicalRecordWithoutParameterShouldFail() throws Exception {
+    public void testDeleteMedicalRecordWithoutBodyShouldFail() throws Exception {
         mockMvc.perform(delete("/medicalRecord").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testDeleteMedicalRecordWithParameterIncorrectShouldFail() throws Exception {
-        mockMvc.perform(delete("/medicalRecord?firstName=notFound&lastName=notFound").contentType(MediaType.APPLICATION_JSON))
+    public void testDeleteMedicalRecordWithIncompleteBodyShouldFail() throws Exception {
+        String json = "{\"firstName:\"John\",\"lastName\":null}";
+        mockMvc.perform(delete("/medicalRecord").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testDeleteMedicalRecordWithPersonUnknownShouldFail() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        PersonNameDTO person = new PersonNameDTO("firstNameUnknown", "lastNameUnknown");
+        String json = mapper.writeValueAsString(person);
+        mockMvc.perform(delete("/medicalRecord").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 }

@@ -2,6 +2,7 @@ package com.safetynet.SafetyNetAlerts.service;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import com.safetynet.SafetyNetAlerts.dto.MedicalRecordWithAgeDTO;
+import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
 import org.apache.logging.log4j.LogManager;
@@ -58,8 +59,8 @@ public class MedicalRecordService {
         return new MedicalRecordWithAgeDTO(age, medications, allergies);
     }
 
-    public void deleteMedicalRecord(String firstName, String lastName) {
-        medicalRecordRepository.deleteMedicalRecord(firstName, lastName);
+    public void deleteMedicalRecord(PersonNameDTO person) {
+        medicalRecordRepository.deleteMedicalRecord(person);
     }
 
 }

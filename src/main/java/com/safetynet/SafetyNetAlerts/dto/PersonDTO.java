@@ -4,7 +4,11 @@ import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public record PersonWithoutNameDTO(
+public record PersonDTO(
+        String firstName,
+
+        String lastName,
+
         String address,
         String city,
         String zip,
@@ -13,8 +17,8 @@ public record PersonWithoutNameDTO(
 
     private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);
 
-    public PersonWithoutNameDTO {
-        if (address == null || zip == null || city == null || email == null || phone == null) {
+    public PersonDTO {
+        if (firstName == null || lastName == null || address == null || zip == null || city == null || email == null || phone == null) {
             logger.error("All the parameters are required");
             throw new IllegalArgumentException("the parameters cannot be null");
         }

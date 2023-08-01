@@ -2,6 +2,7 @@ package com.safetynet.SafetyNetAlerts.repository;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import com.safetynet.SafetyNetAlerts.configuration.SafetyNetAlertsCatalog;
+import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,13 +33,13 @@ public class MedicalRecordRepository {
         return data.getMedicalRecords();
     }
 
-    public void deleteMedicalRecord(String firstName, String lastName) throws NoSuchElementException {
+    public void deleteMedicalRecord(PersonNameDTO person) throws NoSuchElementException {
         List<MedicalRecord> medicalRecordList = data.getMedicalRecords();
-        MedicalRecord medicalRecordUpdate = medicalRecordList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
+        MedicalRecord medicalRecordUpdate = medicalRecordList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.firstName()) && p.getLastName().equalsIgnoreCase(person.lastName()))
                 .findAny()
                 .orElseThrow();
         int index = medicalRecordList.indexOf(medicalRecordUpdate);
         data.getMedicalRecords().remove(index);
-        logger.info("The medical record about the person named {} has been deleted correctly", firstName + " " + lastName);
+        logger.info("The medical record about the person named {} has been deleted correctly", person.firstName() + " " + person.lastName());
     }
 }

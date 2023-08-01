@@ -1,6 +1,7 @@
 package com.safetynet.SafetyNetAlerts;
 
 import com.safetynet.SafetyNetAlerts.configuration.SafetyNetAlertsCatalog;
+import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,11 +52,16 @@ public class MedicalRecordRepositoryTest {
     }
 
     @Test
-    public void testDeleteMedicalRecordWithAllParameters() {
+    public void testDeleteMedicalRecordWithCompleteBody() {
+
+        PersonNameDTO personDelete = new PersonNameDTO(
+                "John",
+                "Boyd"
+        );
 
         when(safetyNetAlertsCatalog.getMedicalRecords()).thenReturn(medicalRecordList);
 
-        testingMedicalRecordRepository.deleteMedicalRecord("John", "Boyd");
+        testingMedicalRecordRepository.deleteMedicalRecord(personDelete);
 
         verify(safetyNetAlertsCatalog, Mockito.times(2)).getMedicalRecords();
         assertEquals(0, medicalRecordList.size());
@@ -67,21 +73,23 @@ public class MedicalRecordRepositoryTest {
         when(safetyNetAlertsCatalog.getMedicalRecords()).thenReturn(medicalRecordList);
 
         assertThrows(NoSuchElementException.class, () -> {
-            testingMedicalRecordRepository.deleteMedicalRecord("personUnknown", "personUnknown");
+            testingMedicalRecordRepository.deleteMedicalRecord(new PersonNameDTO(
+                    "firstNameUnknown",
+                    "lastNameUnknown"));
         });
 
         verify(safetyNetAlertsCatalog, Mockito.times(1)).getMedicalRecords();
     }
 
     @Test
-    public void testDeleteMedicalRecordWithLastNameUnknown() {
+    public void testDeleteMedicalRecordWithIncompleteBody() {
 
-        when(safetyNetAlertsCatalog.getMedicalRecords()).thenReturn(medicalRecordList);
-
-        assertThrows(NoSuchElementException.class, () -> {
-            testingMedicalRecordRepository.deleteMedicalRecord("firstNameTest", "lastNameUnknown");
+        assertThrows(IllegalArgumentException.class, () -> {
+            testingMedicalRecordRepository.deleteMedicalRecord(new PersonNameDTO(
+                    "firstNameTest",
+                    null));
         });
 
-        verify(safetyNetAlertsCatalog, Mockito.times(1)).getMedicalRecords();
+        verify(safetyNetAlertsCatalog, Mockito.never()).getPersons();
     }
 }
