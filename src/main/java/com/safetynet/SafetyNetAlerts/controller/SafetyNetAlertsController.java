@@ -274,7 +274,7 @@ public class SafetyNetAlertsController {
             @ApiResponse(responseCode = "404", description = "the medical record about this person doesn't exist in our system",
                     content = @Content)})
     @PutMapping("/medicalRecord")
-    public ResponseEntity<MedicalRecord> updatePerson(@RequestBody MedicalRecordDTO medicalRecord) {
+    public ResponseEntity<MedicalRecord> updateMedicalRecord(@RequestBody MedicalRecordDTO medicalRecord) {
         logger.info("request an update for the medical record about the person named {}", medicalRecord.firstName() + " " + medicalRecord.lastName());
         try {
             medicalRecordService.updateMedicalRecord(medicalRecord);

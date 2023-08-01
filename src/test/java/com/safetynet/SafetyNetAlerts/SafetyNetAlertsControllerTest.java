@@ -285,4 +285,38 @@ public class SafetyNetAlertsControllerTest {
         mockMvc.perform(post("/medicalRecord").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    public void testUpdateMedicalRecordShouldPass() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        MedicalRecordDTO medicalRecord = new MedicalRecordDTO("John", "Boyd", "15/15/2015Update", new ArrayList<>(), new ArrayList<>());
+        String json = mapper.writeValueAsString(medicalRecord);
+        mockMvc.perform(put("/medicalRecord").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testUpdateMedicalRecordWithoutBodyShouldFail() throws Exception {
+        mockMvc.perform(put("/medicalRecord").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testUpdateMedicalRecordWithPersonUnknownShouldFail() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        MedicalRecordDTO medicalRecord = new MedicalRecordDTO("firstNameUnknown", "lastNameUnknown", "15/15/2015Update", new ArrayList<>(), new ArrayList<>());
+        String json = mapper.writeValueAsString(medicalRecord);
+        mockMvc.perform(put("/medicalRecord").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testUpdateMedicalRecordWithIncompleteBodyShouldFail() throws Exception {
+        String json = "{\"firstName\":\"John\",\"lastName\":\"Boyd\",\"birthdate\":null,\"medications\":null,\"allergies\":null}";
+        mockMvc.perform(put("/medicalRecord").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 }
