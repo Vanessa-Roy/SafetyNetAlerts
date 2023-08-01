@@ -1,6 +1,7 @@
 package com.safetynet.SafetyNetAlerts;
 
 import com.safetynet.SafetyNetAlerts.configuration.SafetyNetAlertsCatalog;
+import com.safetynet.SafetyNetAlerts.dto.MedicalRecordDTO;
 import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
 import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
@@ -49,6 +50,70 @@ public class MedicalRecordRepositoryTest {
         allergies.add("nillacilan");
         medicalRecord.setAllergies(allergies);
         medicalRecordList.add(medicalRecord);
+    }
+
+    @Test
+    public void testUpdateMedicalRecordWithCompleteBody() {
+        List<String> medications = new ArrayList<>();
+        medications.add("aznol:350mg");
+        medications.add("hydrapermazol:100mg");
+        List<String> allergies = new ArrayList<>();
+        allergies.add("nillacilan");
+
+        MedicalRecordDTO medicalRecordUpdate = new MedicalRecordDTO(
+                "John",
+                "Boyd",
+                "03/06/1984",
+                medications,
+                allergies
+        );
+
+        when(safetyNetAlertsCatalog.getMedicalRecords()).thenReturn(medicalRecordList);
+
+        testingMedicalRecordRepository.updateMedicalRecord(medicalRecordUpdate);
+        String expectedResult = "John Boyd 03/06/1984 [aznol:350mg, hydrapermazol:100mg] [nillacilan]";
+
+        verify(safetyNetAlertsCatalog, Mockito.times(2)).getMedicalRecords();
+        assertEquals(expectedResult, medicalRecordList.get(0).toString());
+    }
+
+    @Test
+    public void testUpdateMedicalRecordWithPersonUnknown() {
+        List<String> medications = new ArrayList<>();
+        medications.add("aznol:350mg");
+        medications.add("hydrapermazol:100mg");
+        List<String> allergies = new ArrayList<>();
+        allergies.add("nillacilan");
+
+        when(safetyNetAlertsCatalog.getMedicalRecords()).thenReturn(medicalRecordList);
+
+        assertThrows(NoSuchElementException.class, () -> {
+            testingMedicalRecordRepository.updateMedicalRecord(new MedicalRecordDTO(
+                    "firstNameUnknown",
+                    "lastNameUnknown",
+                    "03/06/1984",
+                    medications,
+                    allergies
+            ));
+        });
+
+        verify(safetyNetAlertsCatalog, Mockito.times(1)).getMedicalRecords();
+    }
+
+    @Test
+    public void testUpdateMedicalRecordWithIncompleteBody() {
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            testingMedicalRecordRepository.updateMedicalRecord(new MedicalRecordDTO(
+                    "firstNameUnknown",
+                    "lastNameUnknown",
+                    "03/06/1984",
+                    null,
+                    null
+            ));
+        });
+
+        verify(safetyNetAlertsCatalog, Mockito.never()).getPersons();
     }
 
     @Test

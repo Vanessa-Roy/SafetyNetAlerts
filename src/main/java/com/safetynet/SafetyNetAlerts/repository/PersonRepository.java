@@ -22,7 +22,7 @@ public class PersonRepository {
 
     private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private SafetyNetAlertsCatalog data;

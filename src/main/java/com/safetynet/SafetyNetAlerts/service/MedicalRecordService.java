@@ -1,6 +1,7 @@
 package com.safetynet.SafetyNetAlerts.service;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
+import com.safetynet.SafetyNetAlerts.dto.MedicalRecordDTO;
 import com.safetynet.SafetyNetAlerts.dto.MedicalRecordWithAgeDTO;
 import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
@@ -57,6 +58,10 @@ public class MedicalRecordService {
                 .orElse(null);
         logger.debug("the person named {} is taking the following medications {}", firstName + " " + lastName, medications);
         return new MedicalRecordWithAgeDTO(age, medications, allergies);
+    }
+
+    public void updateMedicalRecord(MedicalRecordDTO medicalRecord) {
+        medicalRecordRepository.updateMedicalRecord(medicalRecord);
     }
 
     public void deleteMedicalRecord(PersonNameDTO person) {

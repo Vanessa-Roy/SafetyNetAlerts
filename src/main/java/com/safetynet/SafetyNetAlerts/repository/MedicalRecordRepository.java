@@ -1,7 +1,9 @@
 package com.safetynet.SafetyNetAlerts.repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import com.safetynet.SafetyNetAlerts.configuration.SafetyNetAlertsCatalog;
+import com.safetynet.SafetyNetAlerts.dto.MedicalRecordDTO;
 import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +22,7 @@ public class MedicalRecordRepository {
 
     private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private SafetyNetAlertsCatalog data;
 
@@ -33,12 +36,23 @@ public class MedicalRecordRepository {
         return data.getMedicalRecords();
     }
 
-    public void deleteMedicalRecord(PersonNameDTO person) throws NoSuchElementException {
+    public void updateMedicalRecord(MedicalRecordDTO medicalRecord) throws NoSuchElementException {
         List<MedicalRecord> medicalRecordList = data.getMedicalRecords();
-        MedicalRecord medicalRecordUpdate = medicalRecordList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.firstName()) && p.getLastName().equalsIgnoreCase(person.lastName()))
+        MedicalRecord medicalRecordUpdate = medicalRecordList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(medicalRecord.firstName()) && p.getLastName().equalsIgnoreCase(medicalRecord.lastName()))
                 .findAny()
                 .orElseThrow();
         int index = medicalRecordList.indexOf(medicalRecordUpdate);
+        medicalRecordUpdate = objectMapper.convertValue(medicalRecord, MedicalRecord.class);
+        data.getMedicalRecords().set(index, medicalRecordUpdate);
+        logger.info("The medical record about the person named {} has been updated correctly", medicalRecord.firstName() + " " + medicalRecord.lastName());
+    }
+
+    public void deleteMedicalRecord(PersonNameDTO person) throws NoSuchElementException {
+        List<MedicalRecord> medicalRecordList = data.getMedicalRecords();
+        MedicalRecord medicalRecordDelete = medicalRecordList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.firstName()) && p.getLastName().equalsIgnoreCase(person.lastName()))
+                .findAny()
+                .orElseThrow();
+        int index = medicalRecordList.indexOf(medicalRecordDelete);
         data.getMedicalRecords().remove(index);
         logger.info("The medical record about the person named {} has been deleted correctly", person.firstName() + " " + person.lastName());
     }

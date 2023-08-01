@@ -19,4 +19,9 @@ public class MedicalRecord {
     private List<String> medications = new ArrayList<>();
     private List<String> allergies = new ArrayList<>();
 
+    @Override
+    public final String toString() {
+        return firstName + " " + lastName + " " + birthdate + " " + medications + " " + allergies;
+    }
+
 }

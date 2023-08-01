@@ -255,6 +255,26 @@ public class SafetyNetAlertsController {
     }
 
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The medical record has been updated correctly",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MedicalRecord.class))}),
+            @ApiResponse(responseCode = "400", description = "the body is incomplete",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "the medical record about this person doesn't exist in our system",
+                    content = @Content)})
+    @PutMapping("/medicalRecord")
+    public ResponseEntity<MedicalRecord> updatePerson(@RequestBody MedicalRecordDTO medicalRecord) {
+        logger.info("request an update for the person named {}", medicalRecord.firstName() + " " + medicalRecord.lastName());
+        try {
+            medicalRecordService.updateMedicalRecord(medicalRecord);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (NoSuchElementException e) {
+            logger.error("the person named {} hasn't a medical record in our system", medicalRecord.firstName() + " " + medicalRecord.lastName());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The medical record has been deleted correctly",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Person.class))}),

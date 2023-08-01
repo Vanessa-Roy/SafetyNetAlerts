@@ -1,5 +1,6 @@
 package com.safetynet.SafetyNetAlerts;
 
+import com.safetynet.SafetyNetAlerts.dto.MedicalRecordDTO;
 import com.safetynet.SafetyNetAlerts.dto.MedicalRecordWithAgeDTO;
 import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
@@ -98,6 +99,27 @@ public class MedicalRecordServiceTest {
         MedicalRecordWithAgeDTO expectedResult = new MedicalRecordWithAgeDTO(0, null, null);
 
         assertEquals(expectedResult, result);
+    }
+
+    @Test
+    public void testUpdateMedicalRecord() {
+        List<String> medications = new ArrayList<>();
+        medications.add("aznol:350mg");
+        medications.add("hydrapermazol:100mg");
+        List<String> allergies = new ArrayList<>();
+        allergies.add("nillacilan");
+
+        MedicalRecordDTO medicalRecordUpdate = new MedicalRecordDTO(
+                "firstNameTest",
+                "lastNameTest",
+                "03/06/1984",
+                medications,
+                allergies
+        );
+
+        testingMedicalRecordService.updateMedicalRecord(medicalRecordUpdate);
+
+        verify(medicalRecordRepository, Mockito.times(1)).updateMedicalRecord(medicalRecordUpdate);
     }
 
     @Test
