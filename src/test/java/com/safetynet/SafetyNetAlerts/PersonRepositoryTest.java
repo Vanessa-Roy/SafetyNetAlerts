@@ -1,6 +1,5 @@
 package com.safetynet.SafetyNetAlerts;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.SafetyNetAlerts.configuration.SafetyNetAlertsCatalog;
 import com.safetynet.SafetyNetAlerts.dto.PersonDTO;
 import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
@@ -33,8 +32,6 @@ public class PersonRepositoryTest {
     private static SafetyNetAlertsCatalog safetyNetAlertsCatalog;
 
     private Person person;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     public void setUpPerTest() {

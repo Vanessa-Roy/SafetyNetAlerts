@@ -16,6 +16,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Centralize every methods relatives to the medical records.
@@ -61,11 +62,11 @@ public class MedicalRecordService {
         return new MedicalRecordWithAgeDTO(age, medications, allergies);
     }
 
-    public void updateMedicalRecord(MedicalRecordDTO medicalRecord) {
+    public void updateMedicalRecord(MedicalRecordDTO medicalRecord) throws NoSuchElementException {
         medicalRecordRepository.updateMedicalRecord(medicalRecord);
     }
 
-    public void deleteMedicalRecord(PersonNameDTO person) {
+    public void deleteMedicalRecord(PersonNameDTO person) throws NoSuchElementException {
         medicalRecordRepository.deleteMedicalRecord(person);
     }
 

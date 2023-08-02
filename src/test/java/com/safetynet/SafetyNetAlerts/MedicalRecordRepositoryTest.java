@@ -31,8 +31,6 @@ public class MedicalRecordRepositoryTest {
     @Mock
     private static SafetyNetAlertsCatalog safetyNetAlertsCatalog;
 
-    private MedicalRecord medicalRecord;
-
     private List<MedicalRecord> medicalRecordList;
 
     @BeforeEach
@@ -101,15 +99,15 @@ public class MedicalRecordRepositoryTest {
 
         assertThrows(IllegalArgumentException.class, () -> {
             testingMedicalRecordRepository.createMedicalRecord(new MedicalRecordDTO(
-                    "firstNameUnknown",
-                    "lastNameUnknown",
+                    "John",
+                    "Boyd",
                     "03/06/1984",
                     null,
                     null
             ));
         });
 
-        verify(safetyNetAlertsCatalog, Mockito.never()).getPersons();
+        verify(safetyNetAlertsCatalog, Mockito.never()).getMedicalRecords();
     }
 
     @Test
@@ -167,7 +165,7 @@ public class MedicalRecordRepositoryTest {
             ));
         });
 
-        verify(safetyNetAlertsCatalog, Mockito.never()).getPersons();
+        verify(safetyNetAlertsCatalog, Mockito.never()).getMedicalRecords();
     }
 
     @Test
@@ -209,6 +207,6 @@ public class MedicalRecordRepositoryTest {
                     null));
         });
 
-        verify(safetyNetAlertsCatalog, Mockito.never()).getPersons();
+        verify(safetyNetAlertsCatalog, Mockito.never()).getMedicalRecords();
     }
 }

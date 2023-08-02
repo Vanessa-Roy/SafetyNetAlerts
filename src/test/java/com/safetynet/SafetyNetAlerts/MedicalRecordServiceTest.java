@@ -102,7 +102,7 @@ public class MedicalRecordServiceTest {
         List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
         List<String> allergies = new ArrayList<>(List.of("nillacilan"));
 
-        MedicalRecordDTO medicalRecordUpdate = new MedicalRecordDTO(
+        MedicalRecordDTO medicalRecordCreate = new MedicalRecordDTO(
                 "firstNameTest",
                 "lastNameTest",
                 "03/06/1984",
@@ -110,9 +110,9 @@ public class MedicalRecordServiceTest {
                 allergies
         );
 
-        testingMedicalRecordService.createMedicalRecord(medicalRecordUpdate);
+        testingMedicalRecordService.createMedicalRecord(medicalRecordCreate);
 
-        verify(medicalRecordRepository, Mockito.times(1)).createMedicalRecord(medicalRecordUpdate);
+        verify(medicalRecordRepository, Mockito.times(1)).createMedicalRecord(medicalRecordCreate);
     }
 
     @Test
@@ -136,14 +136,14 @@ public class MedicalRecordServiceTest {
     @Test
     public void testDeleteMedicalRecord() {
 
-        PersonNameDTO personDelete = new PersonNameDTO(
+        PersonNameDTO medicalRecordDelete = new PersonNameDTO(
                 "firstNameTest",
                 "lastNameTest"
         );
 
-        testingMedicalRecordService.deleteMedicalRecord(personDelete);
+        testingMedicalRecordService.deleteMedicalRecord(medicalRecordDelete);
 
-        verify(medicalRecordRepository, Mockito.times(1)).deleteMedicalRecord(personDelete);
+        verify(medicalRecordRepository, Mockito.times(1)).deleteMedicalRecord(medicalRecordDelete);
     }
 
 }

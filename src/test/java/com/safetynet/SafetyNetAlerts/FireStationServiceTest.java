@@ -380,5 +380,44 @@ public class FireStationServiceTest {
         assertEquals(0, result.size());
     }
 
+    @Test
+    public void testCreateFirestation() {
+
+        FireStationDTO fireStationCreate = new FireStationDTO(
+                "addressTest",
+                "0"
+        );
+
+        testingFireStationService.createFirestation(fireStationCreate);
+
+        verify(fireStationRepository, Mockito.times(1)).createFirestation(fireStationCreate);
+    }
+
+    @Test
+    public void testUpdateMedicalRecord() {
+
+        FireStationDTO fireStationUpdate = new FireStationDTO(
+                "addressTest",
+                "Update"
+        );
+
+        testingFireStationService.updateFirestation(fireStationUpdate);
+
+        verify(fireStationRepository, Mockito.times(1)).updateFirestation(fireStationUpdate);
+    }
+
+    @Test
+    public void testDeleteFirestation() {
+
+        FireStationDTO fireStationDelete = new FireStationDTO(
+                "addressTest",
+                ""
+        );
+
+        testingFireStationService.deleteFirestation(fireStationDelete);
+
+        verify(fireStationRepository, Mockito.times(1)).deleteFirestation(fireStationDelete);
+    }
+
 
 }

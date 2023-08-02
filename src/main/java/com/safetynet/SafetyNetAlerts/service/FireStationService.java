@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Centralize every methods relatives to the fireStations.
@@ -185,5 +186,17 @@ public class FireStationService {
             families.add(familyDTO);
         }
         return families;
+    }
+
+    public void createFirestation(FireStationDTO fireStation) {
+        fireStationRepository.createFirestation(fireStation);
+    }
+
+    public void updateFirestation(FireStationDTO fireStation) throws NoSuchElementException {
+        fireStationRepository.updateFirestation(fireStation);
+    }
+
+    public void deleteFirestation(FireStationDTO fireStation) throws NoSuchElementException {
+        fireStationRepository.deleteFirestation(fireStation);
     }
 }

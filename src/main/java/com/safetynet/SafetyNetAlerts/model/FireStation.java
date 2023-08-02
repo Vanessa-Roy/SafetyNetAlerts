@@ -13,4 +13,9 @@ public class FireStation {
     private String address;
     private String station;
 
+    @Override
+    public final String toString() {
+        return address + " " + station;
+    }
+
 }

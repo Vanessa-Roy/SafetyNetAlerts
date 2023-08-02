@@ -2,6 +2,7 @@ package com.safetynet.SafetyNetAlerts.controller;
 
 import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import com.safetynet.SafetyNetAlerts.dto.*;
+import com.safetynet.SafetyNetAlerts.model.FireStation;
 import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
 import com.safetynet.SafetyNetAlerts.model.Person;
 import com.safetynet.SafetyNetAlerts.service.FireStationService;
@@ -288,7 +289,7 @@ public class SafetyNetAlertsController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The medical record has been deleted correctly",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Person.class))}),
+                            schema = @Schema(implementation = MedicalRecord.class))}),
             @ApiResponse(responseCode = "400", description = "the body is incomplete",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "the medical record about this person doesn't exist in our system",
@@ -301,6 +302,58 @@ public class SafetyNetAlertsController {
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (NoSuchElementException e) {
             logger.error("the person named {} hasn't a medical record in our system", person.firstName() + " " + person.lastName());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "The new mapping fireStation/address has been created correctly",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = FireStation.class))})})
+    @PostMapping("/firestation")
+    public ResponseEntity<FireStation> createFirestation(@RequestBody FireStationDTO fireStation) {
+        logger.info("creating for the mapping firestation/address about the following address \"{}\" has been posted", fireStation.address());
+        fireStationService.createFirestation(fireStation);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The mapping fireStation/address has been updated correctly",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = FireStation.class))}),
+            @ApiResponse(responseCode = "400", description = "the body is incomplete",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "the address about this mapping doesn't exist in our system",
+                    content = @Content)})
+    @PutMapping("/firestation")
+    public ResponseEntity<FireStation> updateFirestation(@RequestBody FireStationDTO fireStation) {
+        logger.info("request an update for the mapping firestation/address about the following address \"{}\"", fireStation.address());
+        try {
+            fireStationService.updateFirestation(fireStation);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (NoSuchElementException e) {
+            logger.error("the following address \"{}\" about this mapping doesn't exist in our system", fireStation.address());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The mapping fireStation/address has been deleted correctly",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = FireStation.class))}),
+            @ApiResponse(responseCode = "400", description = "the body is incomplete",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "the address about this mapping doesn't exist in our system",
+                    content = @Content)})
+    @DeleteMapping("/firestation")
+    public ResponseEntity<FireStation> deleteFirestation(@RequestBody FireStationDTO fireStation) {
+        logger.info("request a deletion for the mapping firestation/address about the following address \"{}\"", fireStation.address());
+        try {
+            fireStationService.deleteFirestation(fireStation);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (NoSuchElementException e) {
+            logger.error("the following address \"{}\" about this mapping doesn't exist in our system", fireStation.address());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }

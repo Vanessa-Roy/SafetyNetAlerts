@@ -38,7 +38,7 @@ public class MedicalRecordRepository {
 
     public void updateMedicalRecord(MedicalRecordDTO medicalRecord) throws NoSuchElementException {
         List<MedicalRecord> medicalRecordList = data.getMedicalRecords();
-        MedicalRecord medicalRecordUpdate = medicalRecordList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(medicalRecord.firstName()) && p.getLastName().equalsIgnoreCase(medicalRecord.lastName()))
+        MedicalRecord medicalRecordUpdate = medicalRecordList.stream().filter(m -> m.getFirstName().equalsIgnoreCase(medicalRecord.firstName()) && m.getLastName().equalsIgnoreCase(medicalRecord.lastName()))
                 .findAny()
                 .orElseThrow();
         int index = medicalRecordList.indexOf(medicalRecordUpdate);
@@ -49,7 +49,7 @@ public class MedicalRecordRepository {
 
     public void deleteMedicalRecord(PersonNameDTO person) throws NoSuchElementException {
         List<MedicalRecord> medicalRecordList = data.getMedicalRecords();
-        MedicalRecord medicalRecordDelete = medicalRecordList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.firstName()) && p.getLastName().equalsIgnoreCase(person.lastName()))
+        MedicalRecord medicalRecordDelete = medicalRecordList.stream().filter(m -> m.getFirstName().equalsIgnoreCase(person.firstName()) && m.getLastName().equalsIgnoreCase(person.lastName()))
                 .findAny()
                 .orElseThrow();
         int index = medicalRecordList.indexOf(medicalRecordDelete);
