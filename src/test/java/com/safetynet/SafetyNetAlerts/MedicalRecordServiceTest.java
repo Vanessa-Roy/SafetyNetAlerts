@@ -39,18 +39,14 @@ public class MedicalRecordServiceTest {
     @BeforeEach
     public void setUpPertest() {
         MedicalRecord medicalRecord = new MedicalRecord();
-        medicalRecords = new ArrayList<>();
         medicalRecord.setFirstName("John");
         medicalRecord.setLastName("Boyd");
         medicalRecord.setBirthdate("03/06/1984");
-        List<String> medications = new ArrayList<>();
-        medications.add("aznol:350mg");
-        medications.add("hydrapermazol:100mg");
+        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
         medicalRecord.setMedications(medications);
-        List<String> allergies = new ArrayList<>();
-        allergies.add("nillacilan");
+        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
         medicalRecord.setAllergies(allergies);
-        medicalRecords.add(medicalRecord);
+        medicalRecords = new ArrayList<>(List.of(medicalRecord));
         medicalRecordWithAgeDTO = new MedicalRecordWithAgeDTO(39, medications, allergies);
     }
 
@@ -85,7 +81,7 @@ public class MedicalRecordServiceTest {
         when(medicalRecordRepository.getMedicalRecordList()).thenReturn(medicalRecords);
 
         MedicalRecordWithAgeDTO result = testingMedicalRecordService.getMedicalRecordFromName("unknowFirstName", "unknowLastName");
-        MedicalRecordWithAgeDTO expectedResult = new MedicalRecordWithAgeDTO(0, null, null);
+        MedicalRecordWithAgeDTO expectedResult = new MedicalRecordWithAgeDTO(0, new ArrayList<>(), new ArrayList<>());
 
         assertEquals(expectedResult, result);
     }
@@ -96,18 +92,15 @@ public class MedicalRecordServiceTest {
 
         MedicalRecordWithAgeDTO result = testingMedicalRecordService.getMedicalRecordFromName("john", "unknowLastName");
 
-        MedicalRecordWithAgeDTO expectedResult = new MedicalRecordWithAgeDTO(0, null, null);
+        MedicalRecordWithAgeDTO expectedResult = new MedicalRecordWithAgeDTO(0, new ArrayList<>(), new ArrayList<>());
 
         assertEquals(expectedResult, result);
     }
 
     @Test
     public void testCreateMedicalRecord() {
-        List<String> medications = new ArrayList<>();
-        medications.add("aznol:350mg");
-        medications.add("hydrapermazol:100mg");
-        List<String> allergies = new ArrayList<>();
-        allergies.add("nillacilan");
+        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
+        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
 
         MedicalRecordDTO medicalRecordUpdate = new MedicalRecordDTO(
                 "firstNameTest",
@@ -124,11 +117,8 @@ public class MedicalRecordServiceTest {
 
     @Test
     public void testUpdateMedicalRecord() {
-        List<String> medications = new ArrayList<>();
-        medications.add("aznol:350mg");
-        medications.add("hydrapermazol:100mg");
-        List<String> allergies = new ArrayList<>();
-        allergies.add("nillacilan");
+        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
+        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
 
         MedicalRecordDTO medicalRecordUpdate = new MedicalRecordDTO(
                 "firstNameTest",

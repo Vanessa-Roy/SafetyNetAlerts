@@ -37,29 +37,22 @@ public class MedicalRecordRepositoryTest {
 
     @BeforeEach
     public void setUpPerTest() {
-        medicalRecordList = new ArrayList<>();
         MedicalRecord medicalRecord = new MedicalRecord();
         medicalRecord.setFirstName("John");
         medicalRecord.setLastName("Boyd");
         medicalRecord.setBirthdate("03/06/1984");
-        List<String> medications = new ArrayList<>();
-        medications.add("aznol:350mg");
-        medications.add("hydrapermazol:100mg");
+        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
         medicalRecord.setMedications(medications);
-        List<String> allergies = new ArrayList<>();
-        allergies.add("nillacilan");
+        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
         medicalRecord.setAllergies(allergies);
-        medicalRecordList.add(medicalRecord);
+        medicalRecordList = new ArrayList<>(List.of(medicalRecord));
     }
 
     @Test
     public void testCreateMedicalRecordWithCompleteBody() {
         medicalRecordList = new ArrayList<>();
-        List<String> medications = new ArrayList<>();
-        medications.add("aznol:350mg");
-        medications.add("hydrapermazol:100mg");
-        List<String> allergies = new ArrayList<>();
-        allergies.add("nillacilan");
+        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
+        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
 
         MedicalRecordDTO medicalRecordCreate = new MedicalRecordDTO(
                 "John",
@@ -81,11 +74,8 @@ public class MedicalRecordRepositoryTest {
 
     @Test
     public void testCreateMedicalRecordWithDuplicate() {
-        List<String> medications = new ArrayList<>();
-        medications.add("aznol:350mg");
-        medications.add("hydrapermazol:100mg");
-        List<String> allergies = new ArrayList<>();
-        allergies.add("nillacilan");
+        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
+        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
 
         MedicalRecordDTO medicalRecordCreate = new MedicalRecordDTO(
                 "John",
@@ -124,11 +114,8 @@ public class MedicalRecordRepositoryTest {
 
     @Test
     public void testUpdateMedicalRecordWithCompleteBody() {
-        List<String> medications = new ArrayList<>();
-        medications.add("aznol:350mg");
-        medications.add("hydrapermazol:100mg");
-        List<String> allergies = new ArrayList<>();
-        allergies.add("nillacilan");
+        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
+        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
 
         MedicalRecordDTO medicalRecordUpdate = new MedicalRecordDTO(
                 "John",
@@ -149,11 +136,8 @@ public class MedicalRecordRepositoryTest {
 
     @Test
     public void testUpdateMedicalRecordWithPersonUnknown() {
-        List<String> medications = new ArrayList<>();
-        medications.add("aznol:350mg");
-        medications.add("hydrapermazol:100mg");
-        List<String> allergies = new ArrayList<>();
-        allergies.add("nillacilan");
+        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
+        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
 
         when(safetyNetAlertsCatalog.getMedicalRecords()).thenReturn(medicalRecordList);
 

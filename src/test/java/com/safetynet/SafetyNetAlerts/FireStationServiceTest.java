@@ -45,12 +45,10 @@ public class FireStationServiceTest {
     @BeforeEach
     public void setUpPertest() {
         FireStation fireStation = new FireStation();
-        fireStations = new ArrayList<>();
         fireStation.setStation("3");
         fireStation.setAddress("1509 Culver St");
-        fireStations.add(fireStation);
+        fireStations = new ArrayList<>(List.of(fireStation));
         Person person = new Person();
-        persons = new ArrayList<>();
         person.setFirstName("John");
         person.setLastName("Boyd");
         person.setAddress("1509 Culver St");
@@ -58,12 +56,9 @@ public class FireStationServiceTest {
         person.setZip("97451");
         person.setPhone("841-874-6512");
         person.setEmail("jaboyd@email.com");
-        persons.add(person);
-        List<String> medications = new ArrayList<>();
-        medications.add("aznol:350mg");
-        medications.add("hydrapermazol:100mg");
-        List<String> allergies = new ArrayList<>();
-        allergies.add("nillacilan");
+        persons = new ArrayList<>(List.of(person));
+        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
+        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
         medicalRecordWithAgeDTO = new MedicalRecordWithAgeDTO(39, medications, allergies);
     }
 
@@ -73,8 +68,7 @@ public class FireStationServiceTest {
         when(personRepository.getPersonList()).thenReturn(persons);
 
         List<String> result = testingFireStationService.getPhonesFromStation("3");
-        List<String> expectedResult = new ArrayList<>();
-        expectedResult.add(persons.get(0).getPhone());
+        List<String> expectedResult = new ArrayList<>(List.of(persons.get(0).getPhone()));
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
         verify(personRepository, Mockito.times(1)).getPersonList();
@@ -98,8 +92,7 @@ public class FireStationServiceTest {
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
 
         List<String> result = testingFireStationService.getAddressFromStation("3");
-        List<String> expectedResult = new ArrayList<>();
-        expectedResult.add(persons.get(0).getAddress());
+        List<String> expectedResult = new ArrayList<>(List.of(persons.get(0).getAddress()));
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
         assertEquals(expectedResult, result);
@@ -124,8 +117,7 @@ public class FireStationServiceTest {
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
 
         List<String> result = testingFireStationService.getAddressFromStation("3");
-        List<String> expectedResult = new ArrayList<>();
-        expectedResult.add(persons.get(0).getAddress());
+        List<String> expectedResult = new ArrayList<>(List.of(persons.get(0).getAddress()));
 
         verify(fireStationRepository, Mockito.times(1)).getFireStationList();
         assertEquals(expectedResult, result);
@@ -173,8 +165,7 @@ public class FireStationServiceTest {
                 persons.get(0).getZip(),
                 persons.get(0).getCity(),
                 persons.get(0).getPhone());
-        List<PersonWithoutEmailDTO> personsWithoutEmail = new ArrayList<>();
-        personsWithoutEmail.add(personWithoutEmailDTO);
+        List<PersonWithoutEmailDTO> personsWithoutEmail = new ArrayList<>(List.of(personWithoutEmailDTO));
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
         when(personRepository.getPersonList()).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordAdult);
@@ -198,8 +189,7 @@ public class FireStationServiceTest {
                 persons.get(0).getZip(),
                 persons.get(0).getCity(),
                 persons.get(0).getPhone());
-        List<PersonWithoutEmailDTO> personsWithoutEmail = new ArrayList<>();
-        personsWithoutEmail.add(personWithoutEmailDTO);
+        List<PersonWithoutEmailDTO> personsWithoutEmail = new ArrayList<>(List.of(personWithoutEmailDTO));
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
         when(personRepository.getPersonList()).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordChild);
@@ -236,9 +226,7 @@ public class FireStationServiceTest {
                 persons.get(1).getZip(),
                 persons.get(1).getCity(),
                 persons.get(1).getPhone());
-        List<PersonWithoutEmailDTO> personsWithoutEmail = new ArrayList<>();
-        personsWithoutEmail.add(personWithoutEmailDTO);
-        personsWithoutEmail.add(personWithoutEmailDTO2);
+        List<PersonWithoutEmailDTO> personsWithoutEmail = new ArrayList<>(List.of(personWithoutEmailDTO, personWithoutEmailDTO2));
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
         when(personRepository.getPersonList()).thenReturn(persons);
         when(medicalRecordService.getMedicalRecordFromName("Tenley", "Boyd")).thenReturn(medicalRecordChild);
@@ -326,8 +314,7 @@ public class FireStationServiceTest {
 
     @Test
     public void testGetFamiliesFromStationsWithOneStation() {
-        List<String> stations = new ArrayList<>();
-        stations.add("3");
+        List<String> stations = new ArrayList<>(List.of("3"));
         List<PersonWithMedicalRecordDTO> personsWithMedicalRecord = new ArrayList<>();
         personsWithMedicalRecord.add(new PersonWithMedicalRecordDTO(
                 persons.get(0).getLastName(),
@@ -351,9 +338,7 @@ public class FireStationServiceTest {
 
     @Test
     public void testGetFamiliesFromStationsWithTwoStations() {
-        List<String> stations = new ArrayList<>();
-        stations.add("3");
-        stations.add("2");
+        List<String> stations = new ArrayList<>(List.of("3", "2"));
         FireStation fireStation = new FireStation();
         fireStation.setStation("2");
         fireStation.setAddress("29 15th St");
@@ -384,8 +369,7 @@ public class FireStationServiceTest {
 
     @Test
     public void testGetFamiliesFromStationUnknown() {
-        List<String> stations = new ArrayList<>();
-        stations.add("unknownStation");
+        List<String> stations = new ArrayList<>(List.of("unknownStation"));
         when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
 
         List<FamilyDTO> result = testingFireStationService.getFamiliesFromStations(stations);

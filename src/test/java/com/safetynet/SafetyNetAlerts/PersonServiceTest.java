@@ -39,7 +39,6 @@ public class PersonServiceTest {
     @BeforeEach
     public void setUpPertest() {
         Person person = new Person();
-        persons = new ArrayList<>();
         person.setFirstName("John");
         person.setLastName("Boyd");
         person.setAddress("1509 Culver St");
@@ -47,12 +46,9 @@ public class PersonServiceTest {
         person.setZip("97451");
         person.setPhone("841-874-6512");
         person.setEmail("jaboyd@email.com");
-        persons.add(person);
-        List<String> medications = new ArrayList<>();
-        medications.add("aznol:350mg");
-        medications.add("hydrapermazol:100mg");
-        List<String> allergies = new ArrayList<>();
-        allergies.add("nillacilan");
+        persons = new ArrayList<>(List.of(person));
+        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
+        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
         medicalRecordWithAgeDTO = new MedicalRecordWithAgeDTO(39, medications, allergies);
     }
 
@@ -63,8 +59,7 @@ public class PersonServiceTest {
         when(personRepository.getPersonList()).thenReturn(persons);
 
         List<String> result = testingPersonService.getEmailsFromCity("culver");
-        List<String> expectedResult = new ArrayList<>();
-        expectedResult.add(persons.get(0).getEmail());
+        List<String> expectedResult = new ArrayList<>(List.of(persons.get(0).getEmail()));
 
         verify(personRepository, Mockito.times(1)).getPersonList();
         assertEquals(expectedResult, result);
@@ -77,8 +72,7 @@ public class PersonServiceTest {
         when(personRepository.getPersonList()).thenReturn(persons);
 
         List<String> result = testingPersonService.getEmailsFromCity("CULVER");
-        List<String> expectedResult = new ArrayList<>();
-        expectedResult.add(persons.get(0).getEmail());
+        List<String> expectedResult = new ArrayList<>(List.of(persons.get(0).getEmail()));
 
         verify(personRepository, Mockito.times(1)).getPersonList();
         assertEquals(expectedResult, result);
@@ -94,8 +88,7 @@ public class PersonServiceTest {
         when(personRepository.getPersonList()).thenReturn(persons);
 
         List<String> result = testingPersonService.getEmailsFromCity("CULVER");
-        List<String> expectedResult = new ArrayList<>();
-        expectedResult.add(persons.get(0).getEmail());
+        List<String> expectedResult = new ArrayList<>(List.of(persons.get(0).getEmail()));
 
         verify(personRepository, Mockito.times(1)).getPersonList();
         assertEquals(expectedResult, result);
@@ -135,8 +128,13 @@ public class PersonServiceTest {
         when(medicalRecordService.getMedicalRecordFromName("John", "Boyd")).thenReturn(medicalRecordWithAgeDTO);
 
         List<ChildDTO> result = testingPersonService.getChildrenFromAddress("1509 CULVER ST");
-        List<ChildDTO> expectedResult = new ArrayList<>();
-        expectedResult.add(new ChildDTO(persons.get(0).getFirstName(), persons.get(0).getLastName(), 6, new ArrayList<>()));
+        List<ChildDTO> expectedResult = new ArrayList<>(List.of(
+                new ChildDTO(
+                        persons.get(0).getFirstName(),
+                        persons.get(0).getLastName(),
+                        6,
+                        new ArrayList<>()))
+        );
 
         verify(personRepository, Mockito.times(1)).getPersonList();
         verify(medicalRecordService, Mockito.times(1)).getMedicalRecordFromName("John", "Boyd");

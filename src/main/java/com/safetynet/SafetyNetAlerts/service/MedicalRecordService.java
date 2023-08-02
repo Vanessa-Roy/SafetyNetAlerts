@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,12 +51,12 @@ public class MedicalRecordService {
         List<String> allergies = medicalRecordsFromName.stream()
                 .map(MedicalRecord::getAllergies)
                 .findAny()
-                .orElse(null);
+                .orElse(new ArrayList<>());
         logger.debug("the person named {} is allergic to {}", firstName + " " + lastName, allergies);
         List<String> medications = medicalRecordsFromName.stream()
                 .map(MedicalRecord::getMedications)
                 .findAny()
-                .orElse(null);
+                .orElse(new ArrayList<>());
         logger.debug("the person named {} is taking the following medications {}", firstName + " " + lastName, medications);
         return new MedicalRecordWithAgeDTO(age, medications, allergies);
     }
