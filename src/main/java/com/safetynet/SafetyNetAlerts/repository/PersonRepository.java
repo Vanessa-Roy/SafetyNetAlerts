@@ -27,17 +27,33 @@ public class PersonRepository {
     @Autowired
     private SafetyNetAlertsCatalog data;
 
+    /**
+     * Get all the persons from the JSON source.
+     *
+     * @return a list of all persons, obtained from JSON source, duplicates are possible
+     */
     public List<Person> getPersonList() {
         logger.debug("get the list of persons");
         return data.getPersons();
     }
 
+    /**
+     * Create a new person.
+     *
+     * @param person a record PersonDTO that represents the person we want to create.
+     */
     public void createPerson(PersonDTO person) {
         Person personCreate = objectMapper.convertValue(person, Person.class);
         data.getPersons().add(personCreate);
         logger.info("The new person {} has been created correctly", person.firstName() + " " + person.lastName());
     }
 
+    /**
+     * Update an existing person.
+     *
+     * @param person a record PersonDTO that represents the person we want to update.
+     * @throws NoSuchElementException if the person doesn't exist
+     */
     public void updatePerson(PersonDTO person) throws NoSuchElementException {
         List<Person> personList = data.getPersons();
         Person personUpdate = personList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.firstName()) && p.getLastName().equalsIgnoreCase(person.lastName()))
@@ -49,6 +65,12 @@ public class PersonRepository {
         logger.info("The person named {} has been updated correctly", person.firstName() + " " + person.lastName());
     }
 
+    /**
+     * Delete an existing person.
+     *
+     * @param person a record PersonNameDTO that represents the person we want to delete.
+     * @throws NoSuchElementException if the person doesn't exist
+     */
     public void deletePerson(PersonNameDTO person) throws NoSuchElementException {
         List<Person> personList = data.getPersons();
         Person personDelete = personList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.firstName()) && p.getLastName().equalsIgnoreCase(person.lastName()))

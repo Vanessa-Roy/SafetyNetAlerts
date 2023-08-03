@@ -36,12 +36,23 @@ public class FireStationRepository {
         return data.getFireStations();
     }
 
+    /**
+     * Create a new mapping fireStation/address.
+     *
+     * @param fireStation a record FireStationDTO that represents the mapping fireStation/address we want to create.
+     */
     public void createFirestation(FireStationDTO fireStation) {
         FireStation fireStationCreate = objectMapper.convertValue(fireStation, FireStation.class);
         data.getFireStations().add(fireStationCreate);
         logger.info("The new mapping firestation/address about the following address \"{}\" has been created correctly", fireStation.address());
     }
 
+    /**
+     * Update an existing mapping fireStation/address.
+     *
+     * @param fireStation a record FireStationDTO that represents the mapping fireStation/address we want to update.
+     * @throws NoSuchElementException if the address of the mapping doesn't exist
+     */
     public void updateFirestation(FireStationDTO fireStation) throws NoSuchElementException {
         List<FireStation> fireStationList = data.getFireStations();
         FireStation fireStationUpdate = fireStationList.stream().filter(f -> f.getAddress().equalsIgnoreCase(fireStation.address()))
@@ -53,6 +64,12 @@ public class FireStationRepository {
         logger.info("The mapping firestation/address about the following address \"{}\" has been updated correctly", fireStation.address());
     }
 
+    /**
+     * Delete an existing mapping fireStation/address.
+     *
+     * @param fireStation a record FireStationDTO that represents the mapping fireStation/address we want to delete.
+     * @throws NoSuchElementException if the address of the mapping doesn't exist
+     */
     public void deleteFirestation(FireStationDTO fireStation) {
         List<FireStation> fireStationList = data.getFireStations();
         FireStation fireStationUpdate = fireStationList.stream().filter(f -> f.getAddress().equalsIgnoreCase(fireStation.address()))

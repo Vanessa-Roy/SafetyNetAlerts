@@ -372,4 +372,38 @@ public class SafetyNetAlertsControllerTest {
                         .content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    public void testDeleteFirestationShouldPass() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        FireStationDTO fireStation = new FireStationDTO("1509 Culver St", "3");
+        String json = mapper.writeValueAsString(fireStation);
+        mockMvc.perform(delete("/firestation").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDeleteFirestationWithoutBodyShouldFail() throws Exception {
+        mockMvc.perform(delete("/firestation").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testDeleteFirestationWithIncompleteBodyShouldFail() throws Exception {
+        String json = "{\"address:\"1509 Culver St\",\"station\":null}";
+        mockMvc.perform(delete("/firestation").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testDeleteFirestationWithAddressUnknownShouldFail() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        FireStationDTO fireStation = new FireStationDTO("addressUnknown", "");
+        String json = mapper.writeValueAsString(fireStation);
+        mockMvc.perform(delete("/firestation").contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 }

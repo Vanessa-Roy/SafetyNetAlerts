@@ -22,7 +22,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-
 public class FireStationRepositoryTest {
 
 
@@ -64,12 +63,9 @@ public class FireStationRepositoryTest {
     @Test
     public void testCreateFirestationWithIncompleteBody() {
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            testingFireStationRepository.createFirestation(new FireStationDTO(
-                    "addressTest",
-                    null
-            ));
-        });
+        assertThrows(IllegalArgumentException.class, () -> testingFireStationRepository.createFirestation(
+                new FireStationDTO("addressTest", null)
+        ));
 
         verify(safetyNetAlertsCatalog, Mockito.never()).getFireStations();
     }
@@ -94,12 +90,9 @@ public class FireStationRepositoryTest {
     @Test
     public void testUpdateFirestationWithIncompleteBody() {
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            testingFireStationRepository.updateFirestation(new FireStationDTO(
-                    "addressTest",
-                    null
-            ));
-        });
+        assertThrows(IllegalArgumentException.class, () -> testingFireStationRepository.updateFirestation(
+                new FireStationDTO("addressTest", null)
+        ));
 
         verify(safetyNetAlertsCatalog, Mockito.never()).getFireStations();
     }
@@ -109,12 +102,9 @@ public class FireStationRepositoryTest {
 
         when(safetyNetAlertsCatalog.getFireStations()).thenReturn(fireStationList);
 
-        assertThrows(NoSuchElementException.class, () -> {
-            testingFireStationRepository.updateFirestation(new FireStationDTO(
-                    "addressUnknown",
-                    "Update"
-            ));
-        });
+        assertThrows(NoSuchElementException.class, () -> testingFireStationRepository.updateFirestation(
+                new FireStationDTO("addressUnknown", "Update")
+        ));
 
         verify(safetyNetAlertsCatalog, Mockito.times(1)).getFireStations();
     }
@@ -140,11 +130,9 @@ public class FireStationRepositoryTest {
 
         when(safetyNetAlertsCatalog.getFireStations()).thenReturn(fireStationList);
 
-        assertThrows(NoSuchElementException.class, () -> {
-            testingFireStationRepository.deleteFirestation(new FireStationDTO(
-                    "addressUnknown",
-                    ""));
-        });
+        assertThrows(NoSuchElementException.class, () -> testingFireStationRepository.deleteFirestation(
+                new FireStationDTO("addressUnknown", "")
+        ));
 
         verify(safetyNetAlertsCatalog, Mockito.times(1)).getFireStations();
     }
@@ -152,11 +140,9 @@ public class FireStationRepositoryTest {
     @Test
     public void testDeleteFirestationWithIncompleteBody() {
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            testingFireStationRepository.deleteFirestation(new FireStationDTO(
-                    "addressUnknown",
-                    null));
-        });
+        assertThrows(IllegalArgumentException.class, () -> testingFireStationRepository.deleteFirestation(
+                new FireStationDTO("addressUnknown", null)
+        ));
 
         verify(safetyNetAlertsCatalog, Mockito.never()).getFireStations();
     }

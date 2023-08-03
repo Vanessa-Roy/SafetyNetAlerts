@@ -62,15 +62,32 @@ public class MedicalRecordService {
         return new MedicalRecordWithAgeDTO(age, medications, allergies);
     }
 
+    /**
+     * Call a medicalRecordRepository's method in attempt to create a new medical record.
+     *
+     * @param medicalRecord a record medicalRecordDTO that represents the medical record we want to create.
+     */
+    public void createMedicalRecord(MedicalRecordDTO medicalRecord) {
+        medicalRecordRepository.createMedicalRecord(medicalRecord);
+    }
+
+    /**
+     * Call a medicalRecordRepository's method in attempt to update an existing medical record.
+     *
+     * @param medicalRecord a record MedicalRecordDTO that represents the medical record we want to update.
+     * @throws NoSuchElementException if the medical record doesn't exist
+     */
     public void updateMedicalRecord(MedicalRecordDTO medicalRecord) throws NoSuchElementException {
         medicalRecordRepository.updateMedicalRecord(medicalRecord);
     }
 
+    /**
+     * Call a medicalRecordRepository's method in attempt to delete an existing medical record.
+     *
+     * @param person a record PersonNameDTO that represents the person we want to delete the medical record.
+     * @throws NoSuchElementException if the medical record doesn't exist
+     */
     public void deleteMedicalRecord(PersonNameDTO person) throws NoSuchElementException {
         medicalRecordRepository.deleteMedicalRecord(person);
-    }
-
-    public void createMedicalRecord(MedicalRecordDTO medicalRecord) {
-        medicalRecordRepository.createMedicalRecord(medicalRecord);
     }
 }

@@ -63,17 +63,17 @@ public class PersonRepositoryTest {
     @Test
     public void testCreatePersonWithIncompleteBody() {
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            testingPersonRepository.createPerson(new PersonDTO(
-                    "firstNameTest",
-                    "lastNameTest",
-                    "addressTest",
-                    "cityTest",
-                    "zipTest",
-                    "phoneTest",
-                    null)
-            );
-        });
+        assertThrows(IllegalArgumentException.class, () -> testingPersonRepository.createPerson(
+                new PersonDTO(
+                        "firstNameTest",
+                        "lastNameTest",
+                        "addressTest",
+                        "cityTest",
+                        "zipTest",
+                        "phoneTest",
+                        null
+                )
+        ));
 
         verify(safetyNetAlertsCatalog, Mockito.never()).getPersons();
     }
@@ -128,17 +128,17 @@ public class PersonRepositoryTest {
     @Test
     public void testUpdatePersonWithIncompleteBody() {
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            testingPersonRepository.updatePerson(new PersonDTO(
-                    "firstNameUpdate",
-                    "lastNameUpdate",
-                    "addressTestUpdate",
-                    "cityTestUpdate",
-                    "zipTestUpdate",
-                    "phoneTestUpdate",
-                    null)
-            );
-        });
+        assertThrows(IllegalArgumentException.class, () -> testingPersonRepository.updatePerson(
+                new PersonDTO(
+                        "firstNameUpdate",
+                        "lastNameUpdate",
+                        "addressTestUpdate",
+                        "cityTestUpdate",
+                        "zipTestUpdate",
+                        "phoneTestUpdate",
+                        null
+                )
+        ));
 
         verify(safetyNetAlertsCatalog, Mockito.never()).getPersons();
     }
@@ -149,17 +149,17 @@ public class PersonRepositoryTest {
 
         when(safetyNetAlertsCatalog.getPersons()).thenReturn(persons);
 
-        assertThrows(NoSuchElementException.class, () -> {
-            testingPersonRepository.updatePerson(new PersonDTO(
-                    "firstNameUnknown",
-                    "lastNameUnknown",
-                    "addressTestUpdate",
-                    "cityTestUpdate",
-                    "zipTestUpdate",
-                    "phoneTestUpdate",
-                    "emailTestUpdate")
-            );
-        });
+        assertThrows(NoSuchElementException.class, () -> testingPersonRepository.updatePerson(
+                new PersonDTO(
+                        "firstNameUnknown",
+                        "lastNameUnknown",
+                        "addressTestUpdate",
+                        "cityTestUpdate",
+                        "zipTestUpdate",
+                        "phoneTestUpdate",
+                        "emailTestUpdate"
+                )
+        ));
 
         verify(safetyNetAlertsCatalog, Mockito.times(1)).getPersons();
     }
@@ -170,17 +170,16 @@ public class PersonRepositoryTest {
 
         when(safetyNetAlertsCatalog.getPersons()).thenReturn(persons);
 
-        assertThrows(NoSuchElementException.class, () -> {
-            testingPersonRepository.updatePerson(new PersonDTO(
-                    "firstNameTest",
-                    "lastNameUnknown",
-                    "addressTestUpdate",
-                    "cityTestUpdate",
-                    "zipTestUpdate",
-                    "phoneTestUpdate",
-                    "emailTestUpdate")
-            );
-        });
+        assertThrows(NoSuchElementException.class, () -> testingPersonRepository.updatePerson(new PersonDTO(
+                        "firstNameTest",
+                        "lastNameUnknown",
+                        "addressTestUpdate",
+                        "cityTestUpdate",
+                        "zipTestUpdate",
+                        "phoneTestUpdate",
+                        "emailTestUpdate"
+                )
+        ));
 
         verify(safetyNetAlertsCatalog, Mockito.times(1)).getPersons();
     }
@@ -205,12 +204,12 @@ public class PersonRepositoryTest {
     @Test
     public void testDeletePersonWithIncompleteBody() {
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            testingPersonRepository.deletePerson(new PersonNameDTO(
-                    "firstNameTest",
-                    null)
-            );
-        });
+        assertThrows(IllegalArgumentException.class, () -> testingPersonRepository.deletePerson(
+                new PersonNameDTO(
+                        null,
+                        "lastNameTest"
+                )
+        ));
 
         verify(safetyNetAlertsCatalog, Mockito.never()).getPersons();
     }
@@ -221,9 +220,9 @@ public class PersonRepositoryTest {
 
         when(safetyNetAlertsCatalog.getPersons()).thenReturn(persons);
 
-        assertThrows(NoSuchElementException.class, () -> {
-            testingPersonRepository.deletePerson(new PersonNameDTO("firstNameUnknown", "lastNameUnknown"));
-        });
+        assertThrows(NoSuchElementException.class, () -> testingPersonRepository.deletePerson(
+                new PersonNameDTO("firstNameUnknown", "lastNameUnknown")
+        ));
 
         verify(safetyNetAlertsCatalog, Mockito.times(1)).getPersons();
     }
@@ -234,9 +233,9 @@ public class PersonRepositoryTest {
 
         when(safetyNetAlertsCatalog.getPersons()).thenReturn(persons);
 
-        assertThrows(NoSuchElementException.class, () -> {
-            testingPersonRepository.deletePerson(new PersonNameDTO("firstNameTest", "lastNameUnknown"));
-        });
+        assertThrows(NoSuchElementException.class, () -> testingPersonRepository.deletePerson(
+                new PersonNameDTO("firstNameTest", "lastNameUnknown")
+        ));
 
         verify(safetyNetAlertsCatalog, Mockito.times(1)).getPersons();
     }

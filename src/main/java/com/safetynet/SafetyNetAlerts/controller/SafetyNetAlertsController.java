@@ -189,11 +189,9 @@ public class SafetyNetAlertsController {
      */
     @Operation(summary = "Get the list of families from a list of fireStations")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found the list of families from the list of fireStation",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = FamilyDTO.class))}),
-            @ApiResponse(responseCode = "400", description = "the parameter stations is missing",
-                    content = @Content)})
+            @ApiResponse(responseCode = "200", description = "Found the list of families from the list of fireStation"),
+            @ApiResponse(responseCode = "400", description = "the parameter stations is missing")
+    })
     @GetMapping("/flood/stations")
     public List<FamilyDTO> getFamiliesFromStations(
             @Parameter(description = "list of fireStation numbers to search for", example = "1,2")
@@ -204,10 +202,11 @@ public class SafetyNetAlertsController {
         return result;
     }
 
+    @Operation(summary = "Create a new person")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "The new person has been created correctly",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Person.class))})})
+            @ApiResponse(responseCode = "201", description = "The new person has been created correctly"),
+            @ApiResponse(responseCode = "400", description = "the body is incomplete")
+    })
     @PostMapping("/person")
     public ResponseEntity<Person> createPerson(@RequestBody PersonDTO person) {
         logger.info("creating a new person {} has been posted", person.firstName() + " " + person.lastName());
@@ -215,14 +214,12 @@ public class SafetyNetAlertsController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Operation(summary = "Update an existing person")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "The person has been updated correctly",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Person.class))}),
-            @ApiResponse(responseCode = "400", description = "the body is incomplete",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "the person doesn't exist in our system",
-                    content = @Content)})
+            @ApiResponse(responseCode = "200", description = "The person has been updated correctly"),
+            @ApiResponse(responseCode = "400", description = "the body is incomplete"),
+            @ApiResponse(responseCode = "404", description = "the person doesn't exist in our system")
+    })
     @PutMapping("/person")
     public ResponseEntity<Person> updatePerson(@RequestBody PersonDTO person) {
         logger.info("request an update for the person named {}", person.firstName() + " " + person.lastName());
@@ -235,14 +232,12 @@ public class SafetyNetAlertsController {
         }
     }
 
+    @Operation(summary = "Delete an existing person")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "The person has been deleted correctly",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Person.class))}),
-            @ApiResponse(responseCode = "400", description = "the body is incomplete",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "the person doesn't exist in our system",
-                    content = @Content)})
+            @ApiResponse(responseCode = "200", description = "The person has been deleted correctly"),
+            @ApiResponse(responseCode = "400", description = "the body is incomplete"),
+            @ApiResponse(responseCode = "404", description = "the person doesn't exist in our system")
+    })
     @DeleteMapping("/person")
     public ResponseEntity<Person> deletePerson(@RequestBody PersonNameDTO person) {
         logger.info("request a deletion for the person named {}", person.firstName() + " " + person.lastName());
@@ -255,10 +250,11 @@ public class SafetyNetAlertsController {
         }
     }
 
+    @Operation(summary = "Create a medical record")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "The new medical record has been created correctly",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MedicalRecord.class))})})
+            @ApiResponse(responseCode = "201", description = "The new medical record has been created correctly"),
+            @ApiResponse(responseCode = "400", description = "the body is incomplete")
+    })
     @PostMapping("/medicalRecord")
     public ResponseEntity<MedicalRecord> createMedicalRecord(@RequestBody MedicalRecordDTO medicalRecord) {
         logger.info("creating for the medical record about the person named {} has been posted", medicalRecord.firstName() + " " + medicalRecord.lastName());
@@ -266,14 +262,12 @@ public class SafetyNetAlertsController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Operation(summary = "Update an existing medical record")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "The medical record has been updated correctly",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MedicalRecord.class))}),
-            @ApiResponse(responseCode = "400", description = "the body is incomplete",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "the medical record about this person doesn't exist in our system",
-                    content = @Content)})
+            @ApiResponse(responseCode = "200", description = "The medical record has been updated correctly"),
+            @ApiResponse(responseCode = "400", description = "the body is incomplete"),
+            @ApiResponse(responseCode = "404", description = "the medical record about this person doesn't exist in our system")
+    })
     @PutMapping("/medicalRecord")
     public ResponseEntity<MedicalRecord> updateMedicalRecord(@RequestBody MedicalRecordDTO medicalRecord) {
         logger.info("request an update for the medical record about the person named {}", medicalRecord.firstName() + " " + medicalRecord.lastName());
@@ -286,14 +280,12 @@ public class SafetyNetAlertsController {
         }
     }
 
+    @Operation(summary = "Delete an existing medical record")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "The medical record has been deleted correctly",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MedicalRecord.class))}),
-            @ApiResponse(responseCode = "400", description = "the body is incomplete",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "the medical record about this person doesn't exist in our system",
-                    content = @Content)})
+            @ApiResponse(responseCode = "200", description = "The medical record has been deleted correctly"),
+            @ApiResponse(responseCode = "400", description = "the body is incomplete"),
+            @ApiResponse(responseCode = "404", description = "the medical record about this person doesn't exist in our system")
+    })
     @DeleteMapping("/medicalRecord")
     public ResponseEntity<MedicalRecord> deleteMedicalRecord(@RequestBody PersonNameDTO person) {
         logger.info("request a deletion for the medical record about the person named {}", person.firstName() + " " + person.lastName());
@@ -306,11 +298,11 @@ public class SafetyNetAlertsController {
         }
     }
 
-
+    @Operation(summary = "Create a mapping fireStation/address")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "The new mapping fireStation/address has been created correctly",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = FireStation.class))})})
+            @ApiResponse(responseCode = "201", description = "The new mapping fireStation/address has been created correctly"),
+            @ApiResponse(responseCode = "400", description = "the body is incomplete")
+    })
     @PostMapping("/firestation")
     public ResponseEntity<FireStation> createFirestation(@RequestBody FireStationDTO fireStation) {
         logger.info("creating for the mapping firestation/address about the following address \"{}\" has been posted", fireStation.address());
@@ -318,14 +310,12 @@ public class SafetyNetAlertsController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Operation(summary = "Update a mapping fireStation/address")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "The mapping fireStation/address has been updated correctly",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = FireStation.class))}),
-            @ApiResponse(responseCode = "400", description = "the body is incomplete",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "the address about this mapping doesn't exist in our system",
-                    content = @Content)})
+            @ApiResponse(responseCode = "200", description = "The mapping fireStation/address has been updated correctly"),
+            @ApiResponse(responseCode = "400", description = "the body is incomplete"),
+            @ApiResponse(responseCode = "404", description = "the address about this mapping doesn't exist in our system")
+    })
     @PutMapping("/firestation")
     public ResponseEntity<FireStation> updateFirestation(@RequestBody FireStationDTO fireStation) {
         logger.info("request an update for the mapping firestation/address about the following address \"{}\"", fireStation.address());
@@ -338,14 +328,12 @@ public class SafetyNetAlertsController {
         }
     }
 
+    @Operation(summary = "Delete a mapping fireStation/address")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "The mapping fireStation/address has been deleted correctly",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = FireStation.class))}),
-            @ApiResponse(responseCode = "400", description = "the body is incomplete",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "the address about this mapping doesn't exist in our system",
-                    content = @Content)})
+            @ApiResponse(responseCode = "200", description = "The mapping fireStation/address has been deleted correctly"),
+            @ApiResponse(responseCode = "400", description = "the body is incomplete"),
+            @ApiResponse(responseCode = "404", description = "the address about this mapping doesn't exist in our system")
+    })
     @DeleteMapping("/firestation")
     public ResponseEntity<FireStation> deleteFirestation(@RequestBody FireStationDTO fireStation) {
         logger.info("request a deletion for the mapping firestation/address about the following address \"{}\"", fireStation.address());

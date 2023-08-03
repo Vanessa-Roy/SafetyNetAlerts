@@ -115,14 +115,31 @@ public class PersonService {
         return personsWithInformation;
     }
 
+    /**
+     * Call a personRepository's method in attempt to create a new person.
+     *
+     * @param person a record PersonDTO that represents the person we want to create.
+     */
     public void createPerson(PersonDTO person) {
         personRepository.createPerson(person);
     }
 
+    /**
+     * Call a personRepository's method in attempt to update an existing person.
+     *
+     * @param person a record PersonDTO that represents the person we want to update.
+     * @throws NoSuchElementException if the person doesn't exist
+     */
     public void updatePerson(PersonDTO person) throws NoSuchElementException {
         personRepository.updatePerson(person);
     }
 
+    /**
+     * Call a personRepository's method in attempt to delete an existing person.
+     *
+     * @param person a record PersonNameDTO that represents the person we want to delete.
+     * @throws NoSuchElementException if the person doesn't exist
+     */
     public void deletePerson(PersonNameDTO person) throws NoSuchElementException {
         personRepository.deletePerson(person);
     }

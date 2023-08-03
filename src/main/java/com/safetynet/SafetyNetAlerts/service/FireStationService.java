@@ -188,14 +188,32 @@ public class FireStationService {
         return families;
     }
 
+    /**
+     * Call a fireStationRepository's method in attempt to create a new mapping fireStation/address.
+     *
+     * @param fireStation a record FireStationDTO that represents the mapping fireStation/address we want to create.
+     */
     public void createFirestation(FireStationDTO fireStation) {
+
         fireStationRepository.createFirestation(fireStation);
     }
 
+    /**
+     * Call a fireStationRepository's method in attempt to update an existing mapping fireStation/address.
+     *
+     * @param fireStation a record FireStationDTO that represents the mapping fireStation/address we want to update.
+     * @throws NoSuchElementException if the address of the mapping doesn't exist
+     */
     public void updateFirestation(FireStationDTO fireStation) throws NoSuchElementException {
         fireStationRepository.updateFirestation(fireStation);
     }
 
+    /**
+     * Call a fireStationRepository's method in attempt to delete an existing mapping fireStation/address.
+     *
+     * @param fireStation a record FireStationDTO that represents the mapping fireStation/address we want to delete.
+     * @throws NoSuchElementException if the address of the mapping doesn't exist
+     */
     public void deleteFirestation(FireStationDTO fireStation) throws NoSuchElementException {
         fireStationRepository.deleteFirestation(fireStation);
     }

@@ -18,9 +18,15 @@ public class Person {
     private String phone;
     private String email;
 
+    /**
+     * This constructor allows to instantiate a person without all parameters.
+     */
     public Person() {
     }
 
+    /**
+     * This constructor prevents to instantiate a person without all parameters.
+     */
     public Person(String firstName, String lastName, String address, String city, String zip, String phone, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,6 +37,11 @@ public class Person {
         this.email = email;
     }
 
+    /**
+     * This override method will be used into tests to assert expected result.
+     *
+     * @return every attribute about a person as a String.
+     */
     @Override
     public final String toString() {
         return firstName + " " + lastName + " " + address + " " + city + " " + zip + " " + phone + " " + email;

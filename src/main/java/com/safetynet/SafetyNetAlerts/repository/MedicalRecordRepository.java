@@ -36,6 +36,23 @@ public class MedicalRecordRepository {
         return data.getMedicalRecords();
     }
 
+    /**
+     * Create a new medical record.
+     *
+     * @param medicalRecord a record medicalRecordDTO that represents the medical record we want to create.
+     */
+    public void createMedicalRecord(MedicalRecordDTO medicalRecord) {
+        MedicalRecord medicalRecordCreate = objectMapper.convertValue(medicalRecord, MedicalRecord.class);
+        data.getMedicalRecords().add(medicalRecordCreate);
+        logger.info("The new medical record about the person named {} has been created correctly", medicalRecord.firstName() + " " + medicalRecord.lastName());
+    }
+
+    /**
+     * Update an existing medical record.
+     *
+     * @param medicalRecord a record MedicalRecordDTO that represents the medical record we want to update.
+     * @throws NoSuchElementException if the medical record doesn't exist
+     */
     public void updateMedicalRecord(MedicalRecordDTO medicalRecord) throws NoSuchElementException {
         List<MedicalRecord> medicalRecordList = data.getMedicalRecords();
         MedicalRecord medicalRecordUpdate = medicalRecordList.stream().filter(m -> m.getFirstName().equalsIgnoreCase(medicalRecord.firstName()) && m.getLastName().equalsIgnoreCase(medicalRecord.lastName()))
@@ -47,6 +64,12 @@ public class MedicalRecordRepository {
         logger.info("The medical record about the person named {} has been updated correctly", medicalRecord.firstName() + " " + medicalRecord.lastName());
     }
 
+    /**
+     * Delete an existing medical record.
+     *
+     * @param person a record PersonNameDTO that represents the person we want to delete the medical record.
+     * @throws NoSuchElementException if the medical record doesn't exist
+     */
     public void deleteMedicalRecord(PersonNameDTO person) throws NoSuchElementException {
         List<MedicalRecord> medicalRecordList = data.getMedicalRecords();
         MedicalRecord medicalRecordDelete = medicalRecordList.stream().filter(m -> m.getFirstName().equalsIgnoreCase(person.firstName()) && m.getLastName().equalsIgnoreCase(person.lastName()))
@@ -57,9 +80,5 @@ public class MedicalRecordRepository {
         logger.info("The medical record about the person named {} has been deleted correctly", person.firstName() + " " + person.lastName());
     }
 
-    public void createMedicalRecord(MedicalRecordDTO medicalRecord) {
-        MedicalRecord medicalRecordCreate = objectMapper.convertValue(medicalRecord, MedicalRecord.class);
-        data.getMedicalRecords().add(medicalRecordCreate);
-        logger.info("The new medical record about the person named {} has been created correctly", medicalRecord.firstName() + " " + medicalRecord.lastName());
-    }
+
 }
