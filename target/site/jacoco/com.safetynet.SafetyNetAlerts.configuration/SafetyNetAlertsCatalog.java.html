@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SafetyNetAlertsCatalog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SafetyNetAlerts</a> &gt; <a href="index.source.html" class="el_package">com.safetynet.SafetyNetAlerts.configuration</a> &gt; <span class="el_source">SafetyNetAlertsCatalog.java</span></div><h1>SafetyNetAlertsCatalog.java</h1><pre class="source lang-java linenums">package com.safetynet.SafetyNetAlerts.configuration;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
+import com.safetynet.SafetyNetAlerts.model.FireStation;
+import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
+import com.safetynet.SafetyNetAlerts.model.Person;
+import lombok.Getter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
+import java.io.IOException;
+import java.util.List;
+
+/**
+ * Set Up for the SafetyNet Alerts Application
+ */
+@Getter
+@Configuration
+public class SafetyNetAlertsCatalog {
+
+<span class="fc" id="L28">    private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);</span>
+
+<span class="fc" id="L30">    private final List&lt;Person&gt; persons;</span>
+<span class="fc" id="L31">    private final List&lt;FireStation&gt; fireStations;</span>
+<span class="fc" id="L32">    private final List&lt;MedicalRecord&gt; medicalRecords;</span>
+<span class="pc" id="L33">    private final ObjectMapper objectMapper = new ObjectMapper();</span>
+
+    /**
+     * This constructor calls all the SafetyNetAlertsCatalog's methods to set up the different lists.
+     */
+<span class="fc" id="L38">    public SafetyNetAlertsCatalog() {</span>
+<span class="fc" id="L39">        JsonNode dataJson = readFile();</span>
+<span class="fc" id="L40">        persons = getPersonList(dataJson);</span>
+<span class="fc" id="L41">        fireStations = getFireStationList(dataJson);</span>
+<span class="fc" id="L42">        medicalRecords = getMedicalRecordList(dataJson);</span>
+<span class="fc" id="L43">        logger.debug(&quot;the constructor SafetyNetAlertsCatalog succeeded&quot;);</span>
+<span class="fc" id="L44">    }</span>
+
+    /**
+     * Read a file from the JSON source.
+     *
+     * @return a JSON object in attempt to be used by several methods.
+     */
+    private JsonNode readFile() {
+<span class="fc" id="L52">        final String RESOURCE_NAME = &quot;data.json&quot;;</span>
+<span class="fc" id="L53">        Resource data = new ClassPathResource(RESOURCE_NAME);</span>
+<span class="fc" id="L54">        ObjectMapper objectMapper = new ObjectMapper();</span>
+        JsonNode jsonNode;
+        try {
+<span class="fc" id="L57">            jsonNode = objectMapper.readTree(data.getFile());</span>
+<span class="nc" id="L58">        } catch (IOException e) {</span>
+<span class="nc" id="L59">            logger.error(&quot;the copy of the data file failed&quot;, e);</span>
+<span class="nc" id="L60">            throw new RuntimeException(e);</span>
+<span class="fc" id="L61">        }</span>
+<span class="fc" id="L62">        logger.debug(&quot;copy the data file&quot;);</span>
+<span class="fc" id="L63">        return jsonNode;</span>
+    }
+
+    /**
+     * Get all the persons from the JSON source.
+     *
+     * @return a list of all persons, obtained from JSON source, duplicates are possible
+     */
+    private List&lt;Person&gt; getPersonList(JsonNode dataJson) {
+<span class="fc" id="L72">        String jsonString = dataJson.get(&quot;persons&quot;).toString();</span>
+        try {
+<span class="fc" id="L74">            logger.debug(&quot;create a list of persons&quot;);</span>
+<span class="fc" id="L75">            return objectMapper.readValue(jsonString, new TypeReference&lt;&gt;() {</span>
+            });
+<span class="nc" id="L77">        } catch (JsonProcessingException e) {</span>
+<span class="nc" id="L78">            logger.error(&quot;the create of persons list failed&quot;, e);</span>
+<span class="nc" id="L79">            throw new RuntimeException(e);</span>
+        }
+    }
+
+    /**
+     * Get all the fire stations from the JSON source.
+     *
+     * @return a list of all fire stations, obtained from JSON source, duplicates are possible
+     */
+    private List&lt;FireStation&gt; getFireStationList(JsonNode dataJson) {
+<span class="fc" id="L89">        String jsonString = dataJson.get(&quot;firestations&quot;).toString();</span>
+<span class="fc" id="L90">        logger.debug(&quot;create a list of fire stations&quot;);</span>
+        try {
+<span class="fc" id="L92">            return objectMapper.readValue(jsonString, new TypeReference&lt;&gt;() {</span>
+            });
+<span class="nc" id="L94">        } catch (JsonProcessingException e) {</span>
+<span class="nc" id="L95">            logger.error(&quot;the create of fire stations list failed&quot;, e);</span>
+<span class="nc" id="L96">            throw new RuntimeException(e);</span>
+        }
+    }
+
+    /**
+     * Get all the medical records from the JSON source.
+     *
+     * @return a list of all medical records, obtained from JSON source, duplicates are possible
+     */
+    private List&lt;MedicalRecord&gt; getMedicalRecordList(JsonNode dataJson) {
+<span class="fc" id="L106">        String jsonString = dataJson.get(&quot;medicalrecords&quot;).toString();</span>
+<span class="fc" id="L107">        logger.debug(&quot;create a list of medical records&quot;);</span>
+        try {
+<span class="fc" id="L109">            return objectMapper.readValue(jsonString, new TypeReference&lt;&gt;() {</span>
+            });
+<span class="nc" id="L111">        } catch (JsonProcessingException e) {</span>
+<span class="nc" id="L112">            logger.error(&quot;the create of medical records list failed&quot;, e);</span>
+<span class="nc" id="L113">            throw new RuntimeException(e);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

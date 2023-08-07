@@ -1,0 +1,14 @@
+com\safetynet\SafetyNetAlerts\SafetyNetAlertsApplication.class
+com\safetynet\SafetyNetAlerts\repository\FireStationRepository.class
+com\safetynet\SafetyNetAlerts\configuration\SafetyNetAlertsCatalog.class
+com\safetynet\SafetyNetAlerts\service\FireStationService.class
+com\safetynet\SafetyNetAlerts\repository\PersonRepository.class
+com\safetynet\SafetyNetAlerts\configuration\SafetyNetAlertsCatalog$2.class
+com\safetynet\SafetyNetAlerts\repository\MedicalRecordRepository.class
+com\safetynet\SafetyNetAlerts\controller\SafetyNetAlertsController.class
+com\safetynet\SafetyNetAlerts\configuration\SafetyNetAlertsCatalog$3.class
+com\safetynet\SafetyNetAlerts\service\PersonService.class
+com\safetynet\SafetyNetAlerts\model\FireStation.class
+com\safetynet\SafetyNetAlerts\configuration\SafetyNetAlertsCatalog$1.class
+com\safetynet\SafetyNetAlerts\model\Person.class
+com\safetynet\SafetyNetAlerts\model\MedicalRecord.class

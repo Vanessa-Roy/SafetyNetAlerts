@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PersonRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SafetyNetAlerts</a> &gt; <a href="index.source.html" class="el_package">com.safetynet.SafetyNetAlerts.repository</a> &gt; <span class="el_source">PersonRepository.java</span></div><h1>PersonRepository.java</h1><pre class="source lang-java linenums">package com.safetynet.SafetyNetAlerts.repository;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
+import com.safetynet.SafetyNetAlerts.configuration.SafetyNetAlertsCatalog;
+import com.safetynet.SafetyNetAlerts.dto.PersonDTO;
+import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
+import com.safetynet.SafetyNetAlerts.model.Person;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+
+/**
+ * Load and save data relatives to the persons from SafetynetAlertsCatalog.
+ */
+@Repository
+<span class="fc" id="L21">public class PersonRepository {</span>
+
+<span class="fc" id="L23">    private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);</span>
+
+<span class="fc" id="L25">    private final ObjectMapper objectMapper = new ObjectMapper();</span>
+
+    @Autowired
+    private SafetyNetAlertsCatalog data;
+
+    /**
+     * Get all the persons from the JSON source.
+     *
+     * @return a list of all persons, obtained from JSON source, duplicates are possible
+     */
+    public List&lt;Person&gt; getPersonList() {
+<span class="fc" id="L36">        logger.debug(&quot;get the list of persons&quot;);</span>
+<span class="fc" id="L37">        return data.getPersons();</span>
+    }
+
+    /**
+     * Create a new person.
+     *
+     * @param person a record PersonDTO that represents the person we want to create.
+     */
+    public void createPerson(PersonDTO person) {
+<span class="fc" id="L46">        Person personCreate = objectMapper.convertValue(person, Person.class);</span>
+<span class="fc" id="L47">        data.getPersons().add(personCreate);</span>
+<span class="fc" id="L48">        logger.info(&quot;The new person {} has been created correctly&quot;, person.firstName() + &quot; &quot; + person.lastName());</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Update an existing person.
+     *
+     * @param person a record PersonDTO that represents the person we want to update.
+     * @throws NoSuchElementException if the person doesn't exist
+     */
+    public void updatePerson(PersonDTO person) throws NoSuchElementException {
+<span class="fc" id="L58">        List&lt;Person&gt; personList = data.getPersons();</span>
+<span class="fc bfc" id="L59" title="All 4 branches covered.">        Person personUpdate = personList.stream().filter(p -&gt; p.getFirstName().equalsIgnoreCase(person.firstName()) &amp;&amp; p.getLastName().equalsIgnoreCase(person.lastName()))</span>
+<span class="fc" id="L60">                .findAny()</span>
+<span class="fc" id="L61">                .orElseThrow();</span>
+<span class="fc" id="L62">        int index = personList.indexOf(personUpdate);</span>
+<span class="fc" id="L63">        personUpdate = objectMapper.convertValue(person, Person.class);</span>
+<span class="fc" id="L64">        data.getPersons().set(index, personUpdate);</span>
+<span class="fc" id="L65">        logger.info(&quot;The person named {} has been updated correctly&quot;, person.firstName() + &quot; &quot; + person.lastName());</span>
+<span class="fc" id="L66">    }</span>
+
+    /**
+     * Delete an existing person.
+     *
+     * @param person a record PersonNameDTO that represents the person we want to delete.
+     * @throws NoSuchElementException if the person doesn't exist
+     */
+    public void deletePerson(PersonNameDTO person) throws NoSuchElementException {
+<span class="fc" id="L75">        List&lt;Person&gt; personList = data.getPersons();</span>
+<span class="fc bfc" id="L76" title="All 4 branches covered.">        Person personDelete = personList.stream().filter(p -&gt; p.getFirstName().equalsIgnoreCase(person.firstName()) &amp;&amp; p.getLastName().equalsIgnoreCase(person.lastName()))</span>
+<span class="fc" id="L77">                .findAny()</span>
+<span class="fc" id="L78">                .orElseThrow();</span>
+<span class="fc" id="L79">        int index = personList.indexOf(personDelete);</span>
+<span class="fc" id="L80">        data.getPersons().remove(index);</span>
+<span class="fc" id="L81">        logger.info(&quot;The person named {} has been deleted correctly&quot;, person.firstName() + &quot; &quot; + person.lastName());</span>
+<span class="fc" id="L82">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

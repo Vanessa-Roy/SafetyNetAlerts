@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FireStationService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SafetyNetAlerts</a> &gt; <a href="index.source.html" class="el_package">com.safetynet.SafetyNetAlerts.service</a> &gt; <span class="el_source">FireStationService.java</span></div><h1>FireStationService.java</h1><pre class="source lang-java linenums">package com.safetynet.SafetyNetAlerts.service;
+
+import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
+import com.safetynet.SafetyNetAlerts.dto.*;
+import com.safetynet.SafetyNetAlerts.model.FireStation;
+import com.safetynet.SafetyNetAlerts.model.Person;
+import com.safetynet.SafetyNetAlerts.repository.FireStationRepository;
+import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+/**
+ * Centralize every methods relatives to the fireStations.
+ */
+@Service
+<span class="fc" id="L22">public class FireStationService {</span>
+
+<span class="fc" id="L24">    private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);</span>
+    @Autowired
+    private FireStationRepository fireStationRepository;
+    @Autowired
+    private PersonRepository personRepository;
+    @Autowired
+    private MedicalRecordService medicalRecordService;
+    @Autowired
+    private PersonService personService;
+
+
+    /**
+     * Get all the addresses from a fireStation.
+     *
+     * @param station a String represents the fireStation to search for
+     * @return a list of all addresses from the station, obtained from fireStationRepository, duplicates are not allowed
+     */
+    public List&lt;String&gt; getAddressFromStation(String station) {
+<span class="fc" id="L42">        List&lt;FireStation&gt; fireStations = fireStationRepository.getFireStationList();</span>
+<span class="fc" id="L43">        List&lt;String&gt; addressFromStation = fireStations.stream()</span>
+<span class="fc" id="L44">                .filter(f -&gt; f.getStation().equals(station))</span>
+<span class="fc" id="L45">                .map(FireStation::getAddress)</span>
+<span class="fc" id="L46">                .distinct()</span>
+<span class="fc" id="L47">                .toList();</span>
+<span class="fc" id="L48">        logger.debug(&quot;get the list of addresses that are covered by the fireStation number {}&quot;, station);</span>
+<span class="fc" id="L49">        return addressFromStation;</span>
+    }
+
+    /**
+     * Get the number of fireStation from an address.
+     *
+     * @param address a String represents the address to search for
+     * @return the number of fireStation from the address, obtained from fireStationRepository
+     */
+    public String getStationsFromAddress(String address) {
+<span class="fc" id="L59">        List&lt;FireStation&gt; fireStations = fireStationRepository.getFireStationList();</span>
+<span class="fc" id="L60">        String stationFromAddress = fireStations.stream()</span>
+<span class="fc" id="L61">                .filter(f -&gt; f.getAddress().equalsIgnoreCase(address))</span>
+<span class="fc" id="L62">                .map(FireStation::getStation)</span>
+<span class="fc" id="L63">                .findAny()</span>
+<span class="fc" id="L64">                .orElse(null);</span>
+<span class="fc" id="L65">        logger.debug(&quot;get the fireStation number that covers {}&quot;, address);</span>
+<span class="fc" id="L66">        return stationFromAddress;</span>
+    }
+
+    /**
+     * Get all the phones from a fireStation.
+     *
+     * @param fireStation a String represents the fireStation to search for
+     * @return a list of all phones from the persons living nearby the fireStation, obtained from personRepository, duplicates are not allowed
+     */
+    public List&lt;String&gt; getPhonesFromStation(String fireStation) {
+<span class="fc" id="L76">        List&lt;String&gt; addressFromStation = getAddressFromStation(fireStation);</span>
+<span class="fc" id="L77">        List&lt;Person&gt; persons = personRepository.getPersonList();</span>
+<span class="fc" id="L78">        return persons.stream()</span>
+<span class="fc" id="L79">                .filter(p -&gt; addressFromStation.contains(p.getAddress()))</span>
+<span class="fc" id="L80">                .map(Person::getPhone)</span>
+<span class="fc" id="L81">                .distinct()</span>
+<span class="fc" id="L82">                .toList();</span>
+    }
+
+    /**
+     * Get all the persons from a fireStation and a counter of children and adults.
+     *
+     * @param stationNumber a String represents the fireStation to search for
+     * @return a list of all the persons living nearby the fireStation, obtained from personRepository, duplicates are possible
+     */
+    public PersonsWithCounterChildAdultDTO getPersonsWithCounterFromStation(String stationNumber) {
+<span class="fc" id="L92">        int childrenCounter = 0;</span>
+<span class="fc" id="L93">        int adultCounter = 0;</span>
+<span class="fc" id="L94">        List&lt;String&gt; addressFromStation = getAddressFromStation(stationNumber);</span>
+<span class="fc" id="L95">        List&lt;Person&gt; persons = personRepository.getPersonList();</span>
+<span class="fc" id="L96">        List&lt;Person&gt; personsFromStation = persons.stream()</span>
+<span class="fc" id="L97">                .filter(p -&gt; addressFromStation.contains(p.getAddress()))</span>
+<span class="fc" id="L98">                .toList();</span>
+<span class="fc" id="L99">        List&lt;PersonWithoutEmailDTO&gt; personsWithoutEmailFromStation = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        for (Person person : personsFromStation) {</span>
+<span class="fc" id="L101">            PersonWithoutEmailDTO personWithoutEmailDTO = new PersonWithoutEmailDTO(</span>
+<span class="fc" id="L102">                    person.getFirstName(),</span>
+<span class="fc" id="L103">                    person.getLastName(),</span>
+<span class="fc" id="L104">                    person.getAddress(),</span>
+<span class="fc" id="L105">                    person.getZip(),</span>
+<span class="fc" id="L106">                    person.getCity(),</span>
+<span class="fc" id="L107">                    person.getPhone()</span>
+            );
+<span class="fc" id="L109">            personsWithoutEmailFromStation.add(personWithoutEmailDTO);</span>
+<span class="fc" id="L110">        }</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        for (Person person : personsFromStation) {</span>
+<span class="fc" id="L112">            int age = medicalRecordService.getMedicalRecordFromName(person.getFirstName(), person.getLastName()).age();</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">            if (age &lt;= 18) {</span>
+<span class="fc" id="L114">                childrenCounter++;</span>
+            } else {
+<span class="fc" id="L116">                adultCounter++;</span>
+            }
+<span class="fc" id="L118">        }</span>
+<span class="fc" id="L119">        return new PersonsWithCounterChildAdultDTO(</span>
+                adultCounter,
+                childrenCounter,
+                personsWithoutEmailFromStation
+        );
+    }
+
+    /**
+     * Get all the persons from an address and the number of the fireStation.
+     *
+     * @param address a String represents the address to search for
+     * @return a list of all the persons living at the address with their information, obtained from personRepository, duplicates are possible
+     */
+    public PersonsWithFireStationDTO getPersonsWithFireStationFromAddress(String address) {
+<span class="fc" id="L133">        String fireStation = getStationsFromAddress(address);</span>
+<span class="fc" id="L134">        List&lt;Person&gt; personsFromAddress = personService.getPersonsFromAddress(address);</span>
+<span class="fc" id="L135">        List&lt;PersonWithMedicalRecordDTO&gt; personsFromAddressWithMedicalRecord = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        for (Person person : personsFromAddress) {</span>
+<span class="fc" id="L137">            MedicalRecordWithAgeDTO medicalRecord = medicalRecordService.getMedicalRecordFromName(</span>
+<span class="fc" id="L138">                    person.getFirstName(),</span>
+<span class="fc" id="L139">                    person.getLastName()</span>
+            );
+<span class="fc" id="L141">            PersonWithMedicalRecordDTO personWithMedicalRecordDTO = new PersonWithMedicalRecordDTO(</span>
+<span class="fc" id="L142">                    person.getLastName(),</span>
+<span class="fc" id="L143">                    person.getPhone(),</span>
+<span class="fc" id="L144">                    medicalRecord.age(),</span>
+<span class="fc" id="L145">                    medicalRecord.medications(),</span>
+<span class="fc" id="L146">                    medicalRecord.allergies()</span>
+            );
+<span class="fc" id="L148">            personsFromAddressWithMedicalRecord.add(personWithMedicalRecordDTO);</span>
+<span class="fc" id="L149">        }</span>
+<span class="fc" id="L150">        return new PersonsWithFireStationDTO(</span>
+                fireStation,
+                personsFromAddressWithMedicalRecord
+        );
+    }
+
+    /**
+     * Get all the families from the address covered by the list of stations.
+     *
+     * @param stations a list of String represents the stations to search for
+     * @return a list of all the families living nearby the station with their information, obtained from personRepository, duplicates are possible
+     */
+    public List&lt;FamilyDTO&gt; getFamiliesFromStations(List&lt;String&gt; stations) {
+<span class="fc" id="L163">        List&lt;FamilyDTO&gt; families = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L164">        List&lt;String&gt; addressFromStations = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        for (String station : stations) {</span>
+<span class="fc" id="L166">            addressFromStations.addAll(getAddressFromStation(station));</span>
+<span class="fc" id="L167">        }</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        for (String address : addressFromStations) {</span>
+<span class="fc" id="L169">            List&lt;Person&gt; personsFromAddress = personService.getPersonsFromAddress(address);</span>
+<span class="fc" id="L170">            List&lt;PersonWithMedicalRecordDTO&gt; personsFromAddressWithMedicalRecord = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">            for (Person personFromAddress : personsFromAddress) {</span>
+<span class="fc" id="L172">                MedicalRecordWithAgeDTO medicalRecord = medicalRecordService.getMedicalRecordFromName(</span>
+<span class="fc" id="L173">                        personFromAddress.getFirstName(),</span>
+<span class="fc" id="L174">                        personFromAddress.getLastName()</span>
+                );
+<span class="fc" id="L176">                PersonWithMedicalRecordDTO personWithMedicalRecordDTO = new PersonWithMedicalRecordDTO(</span>
+<span class="fc" id="L177">                        personFromAddress.getLastName(),</span>
+<span class="fc" id="L178">                        personFromAddress.getPhone(),</span>
+<span class="fc" id="L179">                        medicalRecord.age(),</span>
+<span class="fc" id="L180">                        medicalRecord.medications(),</span>
+<span class="fc" id="L181">                        medicalRecord.allergies()</span>
+                );
+<span class="fc" id="L183">                personsFromAddressWithMedicalRecord.add(personWithMedicalRecordDTO);</span>
+<span class="fc" id="L184">            }</span>
+<span class="fc" id="L185">            FamilyDTO familyDTO = new FamilyDTO(address, personsFromAddressWithMedicalRecord);</span>
+<span class="fc" id="L186">            families.add(familyDTO);</span>
+<span class="fc" id="L187">        }</span>
+<span class="fc" id="L188">        return families;</span>
+    }
+
+    /**
+     * Call a fireStationRepository's method in attempt to create a new mapping fireStation/address.
+     *
+     * @param fireStation a record FireStationDTO that represents the mapping fireStation/address we want to create.
+     */
+    public void createFirestation(FireStationDTO fireStation) {
+
+<span class="fc" id="L198">        fireStationRepository.createFirestation(fireStation);</span>
+<span class="fc" id="L199">    }</span>
+
+    /**
+     * Call a fireStationRepository's method in attempt to update an existing mapping fireStation/address.
+     *
+     * @param fireStation a record FireStationDTO that represents the mapping fireStation/address we want to update.
+     * @throws NoSuchElementException if the address of the mapping doesn't exist
+     */
+    public void updateFirestation(FireStationDTO fireStation) throws NoSuchElementException {
+<span class="fc" id="L208">        fireStationRepository.updateFirestation(fireStation);</span>
+<span class="fc" id="L209">    }</span>
+
+    /**
+     * Call a fireStationRepository's method in attempt to delete an existing mapping fireStation/address.
+     *
+     * @param fireStation a record FireStationDTO that represents the mapping fireStation/address we want to delete.
+     * @throws NoSuchElementException if the address of the mapping doesn't exist
+     */
+    public void deleteFirestation(FireStationDTO fireStation) throws NoSuchElementException {
+<span class="fc" id="L218">        fireStationRepository.deleteFirestation(fireStation);</span>
+<span class="fc" id="L219">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

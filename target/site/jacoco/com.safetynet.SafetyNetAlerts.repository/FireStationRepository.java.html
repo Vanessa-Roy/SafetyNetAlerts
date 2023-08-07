@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FireStationRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SafetyNetAlerts</a> &gt; <a href="index.source.html" class="el_package">com.safetynet.SafetyNetAlerts.repository</a> &gt; <span class="el_source">FireStationRepository.java</span></div><h1>FireStationRepository.java</h1><pre class="source lang-java linenums">package com.safetynet.SafetyNetAlerts.repository;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
+import com.safetynet.SafetyNetAlerts.configuration.SafetyNetAlertsCatalog;
+import com.safetynet.SafetyNetAlerts.dto.FireStationDTO;
+import com.safetynet.SafetyNetAlerts.model.FireStation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+
+/**
+ * Load and save data relatives to the fire stations from SafetynetAlertsCatalog.
+ */
+@Repository
+<span class="fc" id="L20">public class FireStationRepository {</span>
+
+<span class="fc" id="L22">    private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);</span>
+
+<span class="fc" id="L24">    private final ObjectMapper objectMapper = new ObjectMapper();</span>
+
+    @Autowired
+    private SafetyNetAlertsCatalog data;
+
+    /**
+     * Get all the fire stations from the JSON source.
+     *
+     * @return a list of all fire stations, obtained from JSON source, duplicates are possible
+     */
+    public List&lt;FireStation&gt; getFireStationList() {
+<span class="fc" id="L35">        logger.debug(&quot;get the list of fireStations&quot;);</span>
+<span class="fc" id="L36">        return data.getFireStations();</span>
+    }
+
+    /**
+     * Create a new mapping fireStation/address.
+     *
+     * @param fireStation a record FireStationDTO that represents the mapping fireStation/address we want to create.
+     */
+    public void createFirestation(FireStationDTO fireStation) {
+<span class="fc" id="L45">        FireStation fireStationCreate = objectMapper.convertValue(fireStation, FireStation.class);</span>
+<span class="fc" id="L46">        data.getFireStations().add(fireStationCreate);</span>
+<span class="fc" id="L47">        logger.info(&quot;The new mapping firestation/address about the following address \&quot;{}\&quot; has been created correctly&quot;, fireStation.address());</span>
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * Update an existing mapping fireStation/address.
+     *
+     * @param fireStation a record FireStationDTO that represents the mapping fireStation/address we want to update.
+     * @throws NoSuchElementException if the address of the mapping doesn't exist
+     */
+    public void updateFirestation(FireStationDTO fireStation) throws NoSuchElementException {
+<span class="fc" id="L57">        List&lt;FireStation&gt; fireStationList = data.getFireStations();</span>
+<span class="fc" id="L58">        FireStation fireStationUpdate = fireStationList.stream().filter(f -&gt; f.getAddress().equalsIgnoreCase(fireStation.address()))</span>
+<span class="fc" id="L59">                .findAny()</span>
+<span class="fc" id="L60">                .orElseThrow();</span>
+<span class="fc" id="L61">        int index = fireStationList.indexOf(fireStationUpdate);</span>
+<span class="fc" id="L62">        fireStationUpdate = objectMapper.convertValue(fireStation, FireStation.class);</span>
+<span class="fc" id="L63">        data.getFireStations().set(index, fireStationUpdate);</span>
+<span class="fc" id="L64">        logger.info(&quot;The mapping firestation/address about the following address \&quot;{}\&quot; has been updated correctly&quot;, fireStation.address());</span>
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Delete an existing mapping fireStation/address.
+     *
+     * @param fireStation a record FireStationDTO that represents the mapping fireStation/address we want to delete.
+     * @throws NoSuchElementException if the address of the mapping doesn't exist
+     */
+    public void deleteFirestation(FireStationDTO fireStation) {
+<span class="fc" id="L74">        List&lt;FireStation&gt; fireStationList = data.getFireStations();</span>
+<span class="fc" id="L75">        FireStation fireStationUpdate = fireStationList.stream().filter(f -&gt; f.getAddress().equalsIgnoreCase(fireStation.address()))</span>
+<span class="fc" id="L76">                .findAny()</span>
+<span class="fc" id="L77">                .orElseThrow();</span>
+<span class="fc" id="L78">        int index = fireStationList.indexOf(fireStationUpdate);</span>
+<span class="fc" id="L79">        data.getFireStations().remove(index);</span>
+<span class="fc" id="L80">        logger.info(&quot;The mapping firestation/address about the following address \&quot;{}\&quot; has been deleted correctly&quot;, fireStation.address());</span>
+<span class="fc" id="L81">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

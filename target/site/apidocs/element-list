@@ -1,0 +1,7 @@
+com.safetynet.SafetyNetAlerts
+com.safetynet.SafetyNetAlerts.configuration
+com.safetynet.SafetyNetAlerts.controller
+com.safetynet.SafetyNetAlerts.dto
+com.safetynet.SafetyNetAlerts.model
+com.safetynet.SafetyNetAlerts.repository
+com.safetynet.SafetyNetAlerts.service

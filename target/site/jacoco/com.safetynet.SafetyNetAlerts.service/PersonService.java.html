@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PersonService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SafetyNetAlerts</a> &gt; <a href="index.source.html" class="el_package">com.safetynet.SafetyNetAlerts.service</a> &gt; <span class="el_source">PersonService.java</span></div><h1>PersonService.java</h1><pre class="source lang-java linenums">package com.safetynet.SafetyNetAlerts.service;
+
+import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
+import com.safetynet.SafetyNetAlerts.dto.*;
+import com.safetynet.SafetyNetAlerts.model.Person;
+import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
+import com.safetynet.SafetyNetAlerts.repository.PersonRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+/**
+ * Centralize every methods relatives to the persons.
+ */
+@Service
+<span class="fc" id="L21">public class PersonService {</span>
+
+<span class="fc" id="L23">    private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);</span>
+
+    @Autowired
+    private PersonRepository personRepository;
+
+    @Autowired
+    private MedicalRecordRepository medicalRecordRepository;
+
+    @Autowired
+    private MedicalRecordService medicalRecordService;
+
+    /**
+     * Get all the emails from a city.
+     *
+     * @param city a String represents the city to search for
+     * @return a list of all emails from the city, obtained from personRepository, duplicates are not allowed
+     */
+    public List&lt;String&gt; getEmailsFromCity(String city) {
+<span class="fc" id="L41">        List&lt;Person&gt; persons = personRepository.getPersonList();</span>
+<span class="fc" id="L42">        return persons.stream()</span>
+<span class="fc" id="L43">                .filter(p -&gt; p.getCity().equalsIgnoreCase(city))</span>
+<span class="fc" id="L44">                .map(Person::getEmail)</span>
+<span class="fc" id="L45">                .distinct()</span>
+<span class="fc" id="L46">                .toList();</span>
+    }
+
+    /**
+     * Get all the persons from an address.
+     *
+     * @param address a String represents the address to search for
+     * @return a list of all persons from the address, obtained from personRepository, duplicates are allowed
+     */
+    public List&lt;Person&gt; getPersonsFromAddress(String address) {
+<span class="fc" id="L56">        List&lt;Person&gt; persons = personRepository.getPersonList();</span>
+<span class="fc" id="L57">        List&lt;Person&gt; personsFromAddress = persons.stream()</span>
+<span class="fc" id="L58">                .filter(p -&gt; p.getAddress().equalsIgnoreCase(address))</span>
+<span class="fc" id="L59">                .toList();</span>
+<span class="fc" id="L60">        logger.debug(&quot;get the list of persons living at {}&quot;, address);</span>
+<span class="fc" id="L61">        return personsFromAddress;</span>
+    }
+
+    /**
+     * Get all the children from an address.
+     *
+     * @param address a String represents the address to search for
+     * @return a list of all children from the address, obtained from personRepository, duplicates are allowed
+     */
+    public List&lt;ChildDTO&gt; getChildrenFromAddress(String address) {
+<span class="fc" id="L71">        List&lt;Person&gt; personsFromAddress = getPersonsFromAddress(address);</span>
+<span class="fc" id="L72">        List&lt;ChildDTO&gt; childrenFromAddress = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        for (Person person : personsFromAddress) {</span>
+<span class="fc" id="L74">            int age = medicalRecordService.getMedicalRecordFromName(person.getFirstName(), person.getLastName()).age();</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">            if (age &lt;= 18) {</span>
+<span class="fc" id="L76">                List&lt;Person&gt; family = new ArrayList&lt;&gt;(personsFromAddress);</span>
+<span class="fc" id="L77">                family.remove(person);</span>
+<span class="fc" id="L78">                ChildDTO child = new ChildDTO(</span>
+<span class="fc" id="L79">                        person.getFirstName(),</span>
+<span class="fc" id="L80">                        person.getLastName(),</span>
+                        age,
+                        family
+                );
+<span class="fc" id="L84">                childrenFromAddress.add(child);</span>
+            }
+<span class="fc" id="L86">        }</span>
+<span class="fc" id="L87">        return childrenFromAddress;</span>
+    }
+
+    /**
+     * Get the information from a name.
+     *
+     * @param firstName a String represents the firstName of the person to search for
+     * @param lastName  a String represents the lastName of the person to search for
+     * @return a list of all the information from a person, obtained from personRepository, duplicates are possible
+     */
+    public List&lt;PersonWithInformationDTO&gt; getInformationFromName(String firstName, String lastName) {
+<span class="fc" id="L98">        List&lt;Person&gt; persons = personRepository.getPersonList();</span>
+<span class="fc" id="L99">        List&lt;Person&gt; personsFromName = persons.stream()</span>
+<span class="fc bfc" id="L100" title="All 4 branches covered.">                .filter(p -&gt; p.getFirstName().equalsIgnoreCase(firstName) &amp;&amp; p.getLastName().equalsIgnoreCase(lastName))</span>
+<span class="fc" id="L101">                .toList();</span>
+<span class="fc" id="L102">        List&lt;PersonWithInformationDTO&gt; personsWithInformation = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        for (Person person : personsFromName) {</span>
+<span class="fc" id="L104">            MedicalRecordWithAgeDTO medicalRecord = medicalRecordService.getMedicalRecordFromName(firstName, lastName);</span>
+<span class="fc" id="L105">            PersonWithInformationDTO personWithInformationDTO = new PersonWithInformationDTO(</span>
+<span class="fc" id="L106">                    person.getLastName(),</span>
+<span class="fc" id="L107">                    (person.getAddress() + &quot; &quot; + person.getZip() + &quot; &quot; + person.getCity()),</span>
+<span class="fc" id="L108">                    medicalRecord.age(),</span>
+<span class="fc" id="L109">                    person.getEmail(),</span>
+<span class="fc" id="L110">                    medicalRecord.medications(),</span>
+<span class="fc" id="L111">                    medicalRecord.allergies()</span>
+            );
+<span class="fc" id="L113">            personsWithInformation.add(personWithInformationDTO);</span>
+<span class="fc" id="L114">        }</span>
+<span class="fc" id="L115">        return personsWithInformation;</span>
+    }
+
+    /**
+     * Call a personRepository's method in attempt to create a new person.
+     *
+     * @param person a record PersonDTO that represents the person we want to create.
+     */
+    public void createPerson(PersonDTO person) {
+<span class="fc" id="L124">        personRepository.createPerson(person);</span>
+<span class="fc" id="L125">    }</span>
+
+    /**
+     * Call a personRepository's method in attempt to update an existing person.
+     *
+     * @param person a record PersonDTO that represents the person we want to update.
+     * @throws NoSuchElementException if the person doesn't exist
+     */
+    public void updatePerson(PersonDTO person) throws NoSuchElementException {
+<span class="fc" id="L134">        personRepository.updatePerson(person);</span>
+<span class="fc" id="L135">    }</span>
+
+    /**
+     * Call a personRepository's method in attempt to delete an existing person.
+     *
+     * @param person a record PersonNameDTO that represents the person we want to delete.
+     * @throws NoSuchElementException if the person doesn't exist
+     */
+    public void deletePerson(PersonNameDTO person) throws NoSuchElementException {
+<span class="fc" id="L144">        personRepository.deletePerson(person);</span>
+<span class="fc" id="L145">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

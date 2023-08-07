@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MedicalRecord.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SafetyNetAlerts</a> &gt; <a href="index.source.html" class="el_package">com.safetynet.SafetyNetAlerts.model</a> &gt; <span class="el_source">MedicalRecord.java</span></div><h1>MedicalRecord.java</h1><pre class="source lang-java linenums">package com.safetynet.SafetyNetAlerts.model;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Represent a medical record
+ */
+@Getter
+<span class="fc" id="L13">@Setter</span>
+<span class="fc" id="L14">public class MedicalRecord {</span>
+
+<span class="fc" id="L16">    private String firstName;</span>
+<span class="fc" id="L17">    private String lastName;</span>
+<span class="fc" id="L18">    private String birthdate;</span>
+<span class="fc" id="L19">    private List&lt;String&gt; medications = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L20">    private List&lt;String&gt; allergies = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * This override method will be used into tests to assert expected result.
+     *
+     * @return every attribute about a medical record as a String.
+     */
+    @Override
+    public final String toString() {
+<span class="fc" id="L29">        return firstName + &quot; &quot; + lastName + &quot; &quot; + birthdate + &quot; &quot; + medications + &quot; &quot; + allergies;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

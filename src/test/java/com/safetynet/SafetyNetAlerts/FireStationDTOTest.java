@@ -10,7 +10,7 @@ public class FireStationDTOTest {
 
     @Test
     public void testFireStationDTOAllAttributesNotNull() {
-        assertInstanceOf(FireStationDTO.class, new FireStationDTO("adressTest", "stationTest"));
+        assertInstanceOf(FireStationDTO.class, new FireStationDTO("addressTest", "stationTest"));
     }
 
     @Test
@@ -25,7 +25,7 @@ public class FireStationDTOTest {
 
     @Test
     public void testFireStationDTOWithAttributeStationAsNull() {
-        assertThrows(IllegalArgumentException.class, () -> new FireStationDTO("adressTest", null));
+        assertThrows(IllegalArgumentException.class, () -> new FireStationDTO("addressTest", null));
     }
 
 }

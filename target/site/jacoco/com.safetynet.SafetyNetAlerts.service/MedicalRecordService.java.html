@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MedicalRecordService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SafetyNetAlerts</a> &gt; <a href="index.source.html" class="el_package">com.safetynet.SafetyNetAlerts.service</a> &gt; <span class="el_source">MedicalRecordService.java</span></div><h1>MedicalRecordService.java</h1><pre class="source lang-java linenums">package com.safetynet.SafetyNetAlerts.service;
+
+import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
+import com.safetynet.SafetyNetAlerts.dto.MedicalRecordDTO;
+import com.safetynet.SafetyNetAlerts.dto.MedicalRecordWithAgeDTO;
+import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
+import com.safetynet.SafetyNetAlerts.model.MedicalRecord;
+import com.safetynet.SafetyNetAlerts.repository.MedicalRecordRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+/**
+ * Centralize every methods relatives to the medical records.
+ */
+
+@Service
+<span class="fc" id="L26">public class MedicalRecordService {</span>
+
+<span class="fc" id="L28">    private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);</span>
+
+    @Autowired
+    private MedicalRecordRepository medicalRecordRepository;
+
+    /**
+     * Get the medical record from a person.
+     *
+     * @param firstName a String represents the firstname to search for
+     * @param lastName  a String represents the lastname to search for
+     * @return the person's age, medications and allergies obtained from medicalRepository
+     */
+    public MedicalRecordWithAgeDTO getMedicalRecordFromName(String firstName, String lastName) {
+<span class="fc" id="L41">        List&lt;MedicalRecord&gt; medicalRecords = medicalRecordRepository.getMedicalRecordList();</span>
+<span class="fc" id="L42">        List&lt;MedicalRecord&gt; medicalRecordsFromName = medicalRecords.stream()</span>
+<span class="fc bfc" id="L43" title="All 4 branches covered.">                .filter(m -&gt; m.getFirstName().equalsIgnoreCase(firstName) &amp;&amp; m.getLastName().equalsIgnoreCase(lastName))</span>
+<span class="fc" id="L44">                .toList();</span>
+<span class="fc" id="L45">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;MM/dd/yyyy&quot;);</span>
+<span class="fc" id="L46">        String birthdate = medicalRecordsFromName.stream()</span>
+<span class="fc" id="L47">                .map(MedicalRecord::getBirthdate)</span>
+<span class="fc" id="L48">                .findAny()</span>
+<span class="fc" id="L49">                .orElse(LocalDate.now().format(formatter));</span>
+<span class="fc" id="L50">        int age = Period.between(LocalDate.parse(birthdate, formatter), LocalDate.now()).getYears();</span>
+<span class="fc" id="L51">        logger.debug(&quot;the person named {} is {} years old&quot;, firstName + &quot; &quot; + lastName, age);</span>
+<span class="fc" id="L52">        List&lt;String&gt; allergies = medicalRecordsFromName.stream()</span>
+<span class="fc" id="L53">                .map(MedicalRecord::getAllergies)</span>
+<span class="fc" id="L54">                .findAny()</span>
+<span class="fc" id="L55">                .orElse(new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L56">        logger.debug(&quot;the person named {} is allergic to {}&quot;, firstName + &quot; &quot; + lastName, allergies);</span>
+<span class="fc" id="L57">        List&lt;String&gt; medications = medicalRecordsFromName.stream()</span>
+<span class="fc" id="L58">                .map(MedicalRecord::getMedications)</span>
+<span class="fc" id="L59">                .findAny()</span>
+<span class="fc" id="L60">                .orElse(new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L61">        logger.debug(&quot;the person named {} is taking the following medications {}&quot;, firstName + &quot; &quot; + lastName, medications);</span>
+<span class="fc" id="L62">        return new MedicalRecordWithAgeDTO(age, medications, allergies);</span>
+    }
+
+    /**
+     * Call a medicalRecordRepository's method in attempt to create a new medical record.
+     *
+     * @param medicalRecord a record medicalRecordDTO that represents the medical record we want to create.
+     */
+    public void createMedicalRecord(MedicalRecordDTO medicalRecord) {
+<span class="fc" id="L71">        medicalRecordRepository.createMedicalRecord(medicalRecord);</span>
+<span class="fc" id="L72">    }</span>
+
+    /**
+     * Call a medicalRecordRepository's method in attempt to update an existing medical record.
+     *
+     * @param medicalRecord a record MedicalRecordDTO that represents the medical record we want to update.
+     * @throws NoSuchElementException if the medical record doesn't exist
+     */
+    public void updateMedicalRecord(MedicalRecordDTO medicalRecord) throws NoSuchElementException {
+<span class="fc" id="L81">        medicalRecordRepository.updateMedicalRecord(medicalRecord);</span>
+<span class="fc" id="L82">    }</span>
+
+    /**
+     * Call a medicalRecordRepository's method in attempt to delete an existing medical record.
+     *
+     * @param person a record PersonNameDTO that represents the person we want to delete the medical record.
+     * @throws NoSuchElementException if the medical record doesn't exist
+     */
+    public void deleteMedicalRecord(PersonNameDTO person) throws NoSuchElementException {
+<span class="fc" id="L91">        medicalRecordRepository.deleteMedicalRecord(person);</span>
+<span class="fc" id="L92">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

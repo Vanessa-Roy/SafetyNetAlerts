@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.safetynet.SafetyNetAlerts.FireStationRepositoryTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.833 s - in com.safetynet.SafetyNetAlerts.FireStationRepositoryTest

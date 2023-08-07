@@ -1,0 +1,94 @@
+{
+  "adultsCounter": 8,
+  "childrenCounter": 3,
+  "persons": [
+    {
+      "firstName": "John",
+      "lastName": "Boyd",
+      "address": "1509 Culver St",
+      "zip": "97451",
+      "city": "Culver",
+      "phone": "841-874-6512"
+    },
+    {
+      "firstName": "Jacob",
+      "lastName": "Boyd",
+      "address": "1509 Culver St",
+      "zip": "97451",
+      "city": "Culver",
+      "phone": "841-874-6513"
+    },
+    {
+      "firstName": "Tenley",
+      "lastName": "Boyd",
+      "address": "1509 Culver St",
+      "zip": "97451",
+      "city": "Culver",
+      "phone": "841-874-6512"
+    },
+    {
+      "firstName": "Roger",
+      "lastName": "Boyd",
+      "address": "1509 Culver St",
+      "zip": "97451",
+      "city": "Culver",
+      "phone": "841-874-6512"
+    },
+    {
+      "firstName": "Felicia",
+      "lastName": "Boyd",
+      "address": "1509 Culver St",
+      "zip": "97451",
+      "city": "Culver",
+      "phone": "841-874-6544"
+    },
+    {
+      "firstName": "Tessa",
+      "lastName": "Carman",
+      "address": "834 Binoc Ave",
+      "zip": "97451",
+      "city": "Culver",
+      "phone": "841-874-6512"
+    },
+    {
+      "firstName": "Foster",
+      "lastName": "Shepard",
+      "address": "748 Townings Dr",
+      "zip": "97451",
+      "city": "Culver",
+      "phone": "841-874-6544"
+    },
+    {
+      "firstName": "Tony",
+      "lastName": "Cooper",
+      "address": "112 Steppes Pl",
+      "zip": "97451",
+      "city": "Culver",
+      "phone": "841-874-6874"
+    },
+    {
+      "firstName": "Ron",
+      "lastName": "Peters",
+      "address": "112 Steppes Pl",
+      "zip": "97451",
+      "city": "Culver",
+      "phone": "841-874-8888"
+    },
+    {
+      "firstName": "Allison",
+      "lastName": "Boyd",
+      "address": "112 Steppes Pl",
+      "zip": "97451",
+      "city": "Culver",
+      "phone": "841-874-9888"
+    },
+    {
+      "firstName": "Clive",
+      "lastName": "Ferguson",
+      "address": "748 Townings Dr",
+      "zip": "97451",
+      "city": "Culver",
+      "phone": "841-874-6741"
+    }
+  ]
+}
