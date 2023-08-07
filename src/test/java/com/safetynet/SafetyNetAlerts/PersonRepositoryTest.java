@@ -31,12 +31,14 @@ public class PersonRepositoryTest {
     @Mock
     private static SafetyNetAlertsCatalog safetyNetAlertsCatalog;
 
-    private Person person;
+    private List<Person> persons;
 
     @BeforeEach
     public void setUpPerTest() {
-        person = new Person("firstNameTest", "lastNameTest", "addressTest", "cityTest", "zipTest", "phoneTest", "emailTest");
+        Person person = new Person("firstNameTest", "lastNameTest", "addressTest", "cityTest", "zipTest", "phoneTest", "emailTest");
+        persons = new ArrayList<>(List.of(person));
     }
+
 
     @Test
     public void testCreatePersonWithCompleteBody() {
@@ -80,7 +82,6 @@ public class PersonRepositoryTest {
 
     @Test
     public void testCreatePersonWithDuplicate() {
-        List<Person> persons = new ArrayList<>(List.of(person));
 
         PersonDTO personCreate = new PersonDTO(
                 "firstNameTest",
@@ -104,7 +105,6 @@ public class PersonRepositoryTest {
 
     @Test
     public void testUpdatePersonWithCompleteBody() {
-        List<Person> persons = new ArrayList<>(List.of(person));
 
         PersonDTO personUpdate = new PersonDTO(
                 "firstNameTest",
@@ -145,7 +145,6 @@ public class PersonRepositoryTest {
 
     @Test
     public void testUpdatePersonWithPersonUnknown() {
-        List<Person> persons = new ArrayList<>(List.of(person));
 
         when(safetyNetAlertsCatalog.getPersons()).thenReturn(persons);
 
@@ -166,7 +165,6 @@ public class PersonRepositoryTest {
 
     @Test
     public void testUpdatePersonWithLastNameUnknown() {
-        List<Person> persons = new ArrayList<>(List.of(person));
 
         when(safetyNetAlertsCatalog.getPersons()).thenReturn(persons);
 
@@ -186,7 +184,6 @@ public class PersonRepositoryTest {
 
     @Test
     public void testDeletePersonWithCompleteBody() {
-        List<Person> persons = new ArrayList<>(List.of(person));
 
         PersonNameDTO personDelete = new PersonNameDTO(
                 "firstNameTest",
@@ -216,7 +213,6 @@ public class PersonRepositoryTest {
 
     @Test
     public void testDeletePersonWithPersonUnknown() {
-        List<Person> persons = new ArrayList<>(List.of(person));
 
         when(safetyNetAlertsCatalog.getPersons()).thenReturn(persons);
 
@@ -229,7 +225,6 @@ public class PersonRepositoryTest {
 
     @Test
     public void testDeletePersonWithLastNameUnknown() {
-        List<Person> persons = new ArrayList<>(List.of(person));
 
         when(safetyNetAlertsCatalog.getPersons()).thenReturn(persons);
 

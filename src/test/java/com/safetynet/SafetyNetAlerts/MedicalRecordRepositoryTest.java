@@ -33,15 +33,19 @@ public class MedicalRecordRepositoryTest {
 
     private List<MedicalRecord> medicalRecordList;
 
+    private List<String> medications;
+
+    private List<String> allergies;
+
     @BeforeEach
     public void setUpPerTest() {
         MedicalRecord medicalRecord = new MedicalRecord();
         medicalRecord.setFirstName("John");
         medicalRecord.setLastName("Boyd");
         medicalRecord.setBirthdate("03/06/1984");
-        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
+        medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
         medicalRecord.setMedications(medications);
-        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
+        allergies = new ArrayList<>(List.of("nillacilan"));
         medicalRecord.setAllergies(allergies);
         medicalRecordList = new ArrayList<>(List.of(medicalRecord));
     }
@@ -49,8 +53,6 @@ public class MedicalRecordRepositoryTest {
     @Test
     public void testCreateMedicalRecordWithCompleteBody() {
         medicalRecordList = new ArrayList<>();
-        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
-        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
 
         MedicalRecordDTO medicalRecordCreate = new MedicalRecordDTO(
                 "John",
@@ -72,8 +74,6 @@ public class MedicalRecordRepositoryTest {
 
     @Test
     public void testCreateMedicalRecordWithDuplicate() {
-        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
-        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
 
         MedicalRecordDTO medicalRecordCreate = new MedicalRecordDTO(
                 "John",
@@ -111,13 +111,11 @@ public class MedicalRecordRepositoryTest {
 
     @Test
     public void testUpdateMedicalRecordWithCompleteBody() {
-        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
-        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
 
         MedicalRecordDTO medicalRecordUpdate = new MedicalRecordDTO(
                 "John",
                 "Boyd",
-                "03/06/1984Update",
+                "03/06/1985",
                 medications,
                 allergies
         );
@@ -125,7 +123,7 @@ public class MedicalRecordRepositoryTest {
         when(safetyNetAlertsCatalog.getMedicalRecords()).thenReturn(medicalRecordList);
 
         testingMedicalRecordRepository.updateMedicalRecord(medicalRecordUpdate);
-        String expectedResult = "John Boyd 03/06/1984Update [aznol:350mg, hydrapermazol:100mg] [nillacilan]";
+        String expectedResult = "John Boyd 03/06/1985 [aznol:350mg, hydrapermazol:100mg] [nillacilan]";
 
         verify(safetyNetAlertsCatalog, Mockito.times(2)).getMedicalRecords();
         assertEquals(expectedResult, medicalRecordList.get(0).toString());
@@ -133,8 +131,6 @@ public class MedicalRecordRepositoryTest {
 
     @Test
     public void testUpdateMedicalRecordWithPersonUnknown() {
-        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
-        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
 
         when(safetyNetAlertsCatalog.getMedicalRecords()).thenReturn(medicalRecordList);
 
@@ -153,8 +149,6 @@ public class MedicalRecordRepositoryTest {
 
     @Test
     public void testUpdateMedicalRecordWithLastNameUnknown() {
-        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
-        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
 
         when(safetyNetAlertsCatalog.getMedicalRecords()).thenReturn(medicalRecordList);
 

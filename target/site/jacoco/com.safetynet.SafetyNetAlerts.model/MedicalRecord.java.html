@@ -15,9 +15,10 @@ import java.util.List;
 
 <span class="fc" id="L16">    private String firstName;</span>
 <span class="fc" id="L17">    private String lastName;</span>
-<span class="fc" id="L18">    private String birthdate;</span>
-<span class="fc" id="L19">    private List&lt;String&gt; medications = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L20">    private List&lt;String&gt; allergies = new ArrayList&lt;&gt;();</span>
+    //@param birthdate the format must be MM/dd/yyyy
+<span class="fc" id="L19">    private String birthdate;</span>
+<span class="fc" id="L20">    private List&lt;String&gt; medications = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L21">    private List&lt;String&gt; allergies = new ArrayList&lt;&gt;();</span>
 
     /**
      * This override method will be used into tests to assert expected result.
@@ -26,7 +27,7 @@ import java.util.List;
      */
     @Override
     public final String toString() {
-<span class="fc" id="L29">        return firstName + &quot; &quot; + lastName + &quot; &quot; + birthdate + &quot; &quot; + medications + &quot; &quot; + allergies;</span>
+<span class="fc" id="L30">        return firstName + &quot; &quot; + lastName + &quot; &quot; + birthdate + &quot; &quot; + medications + &quot; &quot; + allergies;</span>
     }
 
 }

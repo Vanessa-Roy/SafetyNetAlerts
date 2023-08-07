@@ -33,6 +33,10 @@ public class MedicalRecordServiceTest {
     private static List<MedicalRecord> medicalRecords;
 
     private static MedicalRecordWithAgeDTO medicalRecordWithAgeDTO;
+
+    private List<String> medications;
+
+    private List<String> allergies;
     @Mock
     private static MedicalRecordRepository medicalRecordRepository;
 
@@ -42,9 +46,9 @@ public class MedicalRecordServiceTest {
         medicalRecord.setFirstName("John");
         medicalRecord.setLastName("Boyd");
         medicalRecord.setBirthdate("03/06/1984");
-        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
+        medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
         medicalRecord.setMedications(medications);
-        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
+        allergies = new ArrayList<>(List.of("nillacilan"));
         medicalRecord.setAllergies(allergies);
         medicalRecords = new ArrayList<>(List.of(medicalRecord));
         medicalRecordWithAgeDTO = new MedicalRecordWithAgeDTO(39, medications, allergies);
@@ -99,8 +103,6 @@ public class MedicalRecordServiceTest {
 
     @Test
     public void testCreateMedicalRecord() {
-        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
-        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
 
         MedicalRecordDTO medicalRecordCreate = new MedicalRecordDTO(
                 "firstNameTest",
@@ -117,8 +119,6 @@ public class MedicalRecordServiceTest {
 
     @Test
     public void testUpdateMedicalRecord() {
-        List<String> medications = new ArrayList<>(List.of("aznol:350mg", "hydrapermazol:100mg"));
-        List<String> allergies = new ArrayList<>(List.of("nillacilan"));
 
         MedicalRecordDTO medicalRecordUpdate = new MedicalRecordDTO(
                 "firstNameTest",

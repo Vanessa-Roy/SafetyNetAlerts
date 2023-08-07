@@ -15,6 +15,7 @@ public class MedicalRecord {
 
     private String firstName;
     private String lastName;
+    //@param birthdate the format must be MM/dd/yyyy
     private String birthdate;
     private List<String> medications = new ArrayList<>();
     private List<String> allergies = new ArrayList<>();

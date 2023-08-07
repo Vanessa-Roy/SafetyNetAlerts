@@ -3,6 +3,7 @@ package com.safetynet.SafetyNetAlerts;
 import com.safetynet.SafetyNetAlerts.dto.MedicalRecordDTO;
 import org.junit.jupiter.api.Test;
 
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class MedicalRecordDTOTest {
         assertInstanceOf(MedicalRecordDTO.class, new MedicalRecordDTO(
                         "firstNameTest",
                         "lastNameTest",
-                        "birthdateTest",
+                        "01/12/2015",
                         medications,
                         allergies
                 )
@@ -46,7 +47,7 @@ public class MedicalRecordDTOTest {
         assertThrows(IllegalArgumentException.class, () -> new MedicalRecordDTO(
                 null,
                 "lastNameTest",
-                "birthdateTest",
+                "01/12/2015",
                 medications,
                 allergies
         ));
@@ -58,7 +59,7 @@ public class MedicalRecordDTOTest {
         assertThrows(IllegalArgumentException.class, () -> new MedicalRecordDTO(
                 "firstNameTest",
                 null,
-                "birthdateTest",
+                "01/12/2015",
                 medications,
                 allergies
         ));
@@ -82,7 +83,7 @@ public class MedicalRecordDTOTest {
         assertThrows(IllegalArgumentException.class, () -> new MedicalRecordDTO(
                 "firstNameTest",
                 "lastNameTest",
-                "birthdateTest",
+                "01/12/2015",
                 null,
                 allergies
         ));
@@ -94,10 +95,23 @@ public class MedicalRecordDTOTest {
         assertThrows(IllegalArgumentException.class, () -> new MedicalRecordDTO(
                 "firstNameTest",
                 "lastNameTest",
-                "birthdateTest",
+                "01/12/2015",
                 medications,
                 null
         ));
+    }
+
+    @Test
+    public void testMedicalRecordDTOBirthdateWrongFormat() {
+
+        assertThrows(DateTimeParseException.class, () -> new MedicalRecordDTO(
+                        "firstNameTest",
+                        "lastNameTest",
+                        "15/12/2015",
+                        medications,
+                        allergies
+                )
+        );
     }
 
 }

@@ -4,6 +4,9 @@ import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 /**
@@ -12,19 +15,27 @@ import java.util.List;
 public record MedicalRecordDTO(
         String firstName,
         String lastName,
+        //@param birthdate the format must be MM/dd/yyyy
         String birthdate,
         List&lt;String&gt; medications,
         List&lt;String&gt; allergies) {
-<span class="fc" id="L18">    private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);</span>
+<span class="fc" id="L22">    private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);</span>
 
     /**
-     * This constructor prevents to instantiate a MedicalRecordDTO with a null attribute.
+     * This constructor prevents to instantiate a MedicalRecordDTO with a null attribute or a wrong birthdate format.
      */
-<span class="fc" id="L23">    public MedicalRecordDTO {</span>
-<span class="fc bfc" id="L24" title="All 10 branches covered.">        if (firstName == null || lastName == null || birthdate == null || medications == null || allergies == null) {</span>
-<span class="fc" id="L25">            logger.error(&quot;All the parameters are required&quot;);</span>
-<span class="fc" id="L26">            throw new IllegalArgumentException(&quot;the parameters cannot be null&quot;);</span>
+<span class="fc" id="L27">    public MedicalRecordDTO {</span>
+<span class="fc bfc" id="L28" title="All 10 branches covered.">        if (firstName == null || lastName == null || birthdate == null || medications == null || allergies == null) {</span>
+<span class="fc" id="L29">            logger.error(&quot;All the parameters are required&quot;);</span>
+<span class="fc" id="L30">            throw new IllegalArgumentException(&quot;the parameters cannot be null&quot;);</span>
         }
-<span class="fc" id="L28">    }</span>
+<span class="fc" id="L32">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;MM/dd/yyyy&quot;);</span>
+        try {
+<span class="fc" id="L34">            LocalDate.parse(birthdate, formatter);</span>
+<span class="fc" id="L35">        } catch (DateTimeParseException e) {</span>
+<span class="fc" id="L36">            logger.error(&quot;the format of birthdate must be MM/dd/yyyy&quot;);</span>
+<span class="fc" id="L37">            throw new DateTimeParseException(&quot;the format of birthdate must be MM/dd/yyyy&quot;, birthdate, e.getErrorIndex());</span>
+<span class="fc" id="L38">        }</span>
+<span class="fc" id="L39">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
