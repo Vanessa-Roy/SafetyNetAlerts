@@ -1,70 +1,49 @@
 package com.safetynet.SafetyNetAlerts.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * Represent a person
+ */
+@Getter
+@Setter
 public class Person {
 
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String city;
+    private String zip;
+    private String phone;
     private String email;
-    public String getEmail() {
-        return email;
+
+    /**
+     * This constructor allows to instantiate a person without all parameters.
+     */
+    public Person() {
     }
-    public void setEmail(String email) {
+
+    /**
+     * This constructor prevents to instantiate a person without all parameters.
+     */
+    public Person(String firstName, String lastName, String address, String city, String zip, String phone, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.zip = zip;
+        this.phone = phone;
         this.email = email;
     }
 
-    private String firstName;
-    public String getFirstName() {
-        return firstName;
+    /**
+     * This override method will be used into tests to assert expected result.
+     *
+     * @return every attribute about a person as a String.
+     */
+    @Override
+    public final String toString() {
+        return firstName + " " + lastName + " " + address + " " + city + " " + zip + " " + phone + " " + email;
     }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    private String lastName;
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    private String address;
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    private String city;
-
-    public String getZip() {
-        return zip;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    private String zip;
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    private String phone;
 }

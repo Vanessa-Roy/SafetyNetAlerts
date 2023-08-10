@@ -1,25 +1,26 @@
 package com.safetynet.SafetyNetAlerts.model;
 
-public 	class FireStation {
+import lombok.Getter;
+import lombok.Setter;
 
-    public String getStation() {
-        return station;
-    }
-
-    public void setStation(String station) {
-        this.station = station;
-    }
-
-    private String station;
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
+/**
+ * Represent a mapping fireStation/address
+ */
+@Getter
+@Setter
+public class FireStation {
 
     private String address;
+    private String station;
+
+    /**
+     * This override method will be used into tests to assert expected result.
+     *
+     * @return every attribute about a mapping fireStation/address as a String.
+     */
+    @Override
+    public final String toString() {
+        return address + " " + station;
+    }
 
 }

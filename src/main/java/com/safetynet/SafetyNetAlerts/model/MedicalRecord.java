@@ -1,57 +1,33 @@
 package com.safetynet.SafetyNetAlerts.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represent a medical record
+ */
+@Getter
+@Setter
 public class MedicalRecord {
 
     private String firstName;
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
     private String lastName;
-
-
-    public String getBirthdate() {
-        return birthdate;
-    }
-
-    public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
-    }
-
+    //@param birthdate the format must be MM/dd/yyyy
     private String birthdate;
-
-    public List<String> getMedications() {
-        return medications;
-    }
-
-    public void setMedications(String medication) {
-        medications.add(medication);
-    }
-
     private List<String> medications = new ArrayList<>();
-
-
-    public List<String> getAllergies() {
-        return allergies;
-    }
-
-    public void setAllergies(String allergy) {
-        allergies.add(allergy);
-    }
-
     private List<String> allergies = new ArrayList<>();
+
+    /**
+     * This override method will be used into tests to assert expected result.
+     *
+     * @return every attribute about a medical record as a String.
+     */
+    @Override
+    public final String toString() {
+        return firstName + " " + lastName + " " + birthdate + " " + medications + " " + allergies;
+    }
+
 }

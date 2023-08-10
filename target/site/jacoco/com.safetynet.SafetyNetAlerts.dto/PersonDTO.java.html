@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PersonDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SafetyNetAlerts</a> &gt; <a href="index.source.html" class="el_package">com.safetynet.SafetyNetAlerts.dto</a> &gt; <span class="el_source">PersonDTO.java</span></div><h1>PersonDTO.java</h1><pre class="source lang-java linenums">package com.safetynet.SafetyNetAlerts.dto;
+
+import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+/**
+ * Represent a person using to create or update a real one.
+ */
+public record PersonDTO(
+        String firstName,
+        String lastName,
+        String address,
+        String city,
+        String zip,
+        String phone,
+        String email) {
+
+<span class="fc" id="L19">    private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);</span>
+
+    /**
+     * This constructor prevents to instantiate a PersonDTO with a null attribute.
+     */
+<span class="fc" id="L24">    public PersonDTO {</span>
+<span class="fc bfc" id="L25" title="All 14 branches covered.">        if (firstName == null || lastName == null || address == null || zip == null || city == null || email == null || phone == null) {</span>
+<span class="fc" id="L26">            logger.error(&quot;All the parameters are required&quot;);</span>
+<span class="fc" id="L27">            throw new IllegalArgumentException(&quot;the parameters cannot be null&quot;);</span>
+        }
+<span class="fc" id="L29">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

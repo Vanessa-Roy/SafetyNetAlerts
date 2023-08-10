@@ -1,44 +1,83 @@
 package com.safetynet.SafetyNetAlerts.repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.safetynet.SafetyNetAlerts.SafetyNetAlertsApplication;
+import com.safetynet.SafetyNetAlerts.configuration.SafetyNetAlertsCatalog;
+import com.safetynet.SafetyNetAlerts.dto.PersonDTO;
+import com.safetynet.SafetyNetAlerts.dto.PersonNameDTO;
 import com.safetynet.SafetyNetAlerts.model.Person;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+/**
+ * Load and save data relatives to the persons from SafetynetAlertsCatalog.
+ */
 @Repository
 public class PersonRepository {
 
-    public List<Person> findAll() throws IOException {
+    private static final Logger logger = LogManager.getLogger(SafetyNetAlertsApplication.class);
 
-        final String MyJSON = "C:/Users/indov/git/SafetyNetAlerts/SafetyNetAlerts/src/main/resources/data.json";
-        Path filePath = Path.of(MyJSON);
-        String jsonString = Files.readString(filePath);
-        JSONObject json = new JSONObject(jsonString);
-        JSONArray jsonPersonsArray = json.getJSONArray("persons");
-        List<Person> persons = new ArrayList<>();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-        for(int y=0; y<jsonPersonsArray.length(); y++) {
-            JSONObject jsonPerson = jsonPersonsArray.getJSONObject(y);
-            Person person = new Person();
-            person.setFirstName(jsonPerson.getString("firstName"));
-            person.setLastName(jsonPerson.getString("lastName"));
-            person.setAddress(jsonPerson.getString("address"));
-            person.setCity(jsonPerson.getString("city"));
-            person.setZip(jsonPerson.getString("zip"));
-            person.setPhone(jsonPerson.getString("phone"));
-            person.setEmail(jsonPerson.getString("email"));
-            persons.add(person);
-        }
-        return persons;
+    @Autowired
+    private SafetyNetAlertsCatalog data;
+
+    /**
+     * Get all the persons from the JSON source.
+     *
+     * @return a list of all persons, obtained from JSON source, duplicates are possible
+     */
+    public List<Person> getPersonList() {
+        logger.debug("get the list of persons");
+        return data.getPersons();
     }
 
-    //faire tu qui lit bien le fichier
+    /**
+     * Create a new person.
+     *
+     * @param person a record PersonDTO that represents the person we want to create.
+     */
+    public void createPerson(PersonDTO person) {
+        Person personCreate = objectMapper.convertValue(person, Person.class);
+        data.getPersons().add(personCreate);
+        logger.info("The new person {} has been created correctly", person.firstName() + " " + person.lastName());
+    }
 
-    //faire tu qui filtre le fichier sur les personnes
+    /**
+     * Update an existing person.
+     *
+     * @param person a record PersonDTO that represents the person we want to update.
+     * @throws NoSuchElementException if the person doesn't exist
+     */
+    public void updatePerson(PersonDTO person) throws NoSuchElementException {
+        List<Person> personList = data.getPersons();
+        Person personUpdate = personList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.firstName()) && p.getLastName().equalsIgnoreCase(person.lastName()))
+                .findAny()
+                .orElseThrow();
+        int index = personList.indexOf(personUpdate);
+        personUpdate = objectMapper.convertValue(person, Person.class);
+        data.getPersons().set(index, personUpdate);
+        logger.info("The person named {} has been updated correctly", person.firstName() + " " + person.lastName());
+    }
+
+    /**
+     * Delete an existing person.
+     *
+     * @param person a record PersonNameDTO that represents the person we want to delete.
+     * @throws NoSuchElementException if the person doesn't exist
+     */
+    public void deletePerson(PersonNameDTO person) throws NoSuchElementException {
+        List<Person> personList = data.getPersons();
+        Person personDelete = personList.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.firstName()) && p.getLastName().equalsIgnoreCase(person.lastName()))
+                .findAny()
+                .orElseThrow();
+        int index = personList.indexOf(personDelete);
+        data.getPersons().remove(index);
+        logger.info("The person named {} has been deleted correctly", person.firstName() + " " + person.lastName());
+    }
 }

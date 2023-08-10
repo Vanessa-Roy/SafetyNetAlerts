@@ -1,0 +1,28 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.configuration,SafetyNetAlertsCatalog.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.configuration,SafetyNetAlertsCatalog.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.configuration,SafetyNetAlertsCatalog.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.configuration,SafetyNetAlertsCatalog,43,118,0,0,12,28,1,9,1,9
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts,SafetyNetAlertsApplication,8,7,0,0,3,2,1,2,1,2
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.model,FireStation,0,23,0,0,0,5,0,6,0,6
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.model,MedicalRecord,0,60,0,0,0,8,0,12,0,12
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.model,Person,0,92,0,0,0,20,0,17,0,17
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.service,FireStationService,0,339,0,14,0,96,0,22,0,15
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.service,PersonService,0,193,0,10,0,50,0,17,0,12
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.service,MedicalRecordService,0,120,0,4,0,30,0,9,0,7
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,PersonWithMedicalRecordDTO,0,18,0,0,0,1,0,1,0,1
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,PersonWithoutEmailDTO,0,21,0,0,0,1,0,1,0,1
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,PersonNameDTO,0,25,0,4,0,6,0,4,0,2
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,MedicalRecordDTO,0,60,0,10,0,12,0,7,0,2
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,FireStationDTO,0,25,0,4,0,6,0,4,0,2
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,PersonsWithCounterChildAdultDTO,0,12,0,0,0,1,0,1,0,1
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,PersonsWithFireStationDTO,0,9,0,0,0,1,0,1,0,1
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,FamilyDTO,0,9,0,0,0,1,0,1,0,1
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,PersonDTO,0,50,0,14,0,6,0,9,0,2
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,MedicalRecordWithAgeDTO,0,12,0,0,0,1,0,1,0,1
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,ChildDTO,0,15,0,0,0,1,0,1,0,1
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,PersonWithInformationDTO,0,21,0,0,0,1,0,1,0,1
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.controller,SafetyNetAlertsController,0,353,0,0,0,75,0,18,0,18
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.repository,MedicalRecordRepository,0,145,0,8,0,26,0,12,0,8
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.repository,PersonRepository,0,145,0,8,0,26,0,12,0,8
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.repository,FireStationRepository,0,116,0,0,0,26,0,8,0,8
