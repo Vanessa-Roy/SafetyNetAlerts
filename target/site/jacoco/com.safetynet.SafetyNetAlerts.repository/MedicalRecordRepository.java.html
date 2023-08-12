@@ -72,7 +72,7 @@ import java.util.NoSuchElementException;
      */
     public void deleteMedicalRecord(PersonNameDTO person) throws NoSuchElementException {
 <span class="fc" id="L74">        List&lt;MedicalRecord&gt; medicalRecordList = data.getMedicalRecords();</span>
-<span class="fc bfc" id="L75" title="All 4 branches covered.">        MedicalRecord medicalRecordDelete = medicalRecordList.stream().filter(m -&gt; m.getFirstName().equalsIgnoreCase(person.firstName()) &amp;&amp; m.getLastName().equalsIgnoreCase(person.lastName()))</span>
+<span class="pc bpc" id="L75" title="1 of 4 branches missed.">        MedicalRecord medicalRecordDelete = medicalRecordList.stream().filter(m -&gt; m.getFirstName().equalsIgnoreCase(person.firstName()) &amp;&amp; m.getLastName().equalsIgnoreCase(person.lastName()))</span>
 <span class="fc" id="L76">                .findAny()</span>
 <span class="fc" id="L77">                .orElseThrow();</span>
 <span class="fc" id="L78">        int index = medicalRecordList.indexOf(medicalRecordDelete);</span>

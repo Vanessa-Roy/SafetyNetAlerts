@@ -172,9 +172,8 @@ public class SafetyNetAlertsController {
                     content = @Content)})
     @GetMapping("/personInfo")
     public List<PersonWithInformationDTO> getInformationFromName(
-            @RequestParam
-            @Parameter(description = "firstName to search for", example = "John") String firstName,
-            @Parameter(description = "lastName to search for", example = "Boyd") String lastName) {
+            @Parameter(description = "firstName to search for", example = "John") @RequestParam String firstName,
+            @Parameter(description = "lastName to search for", example = "Boyd") @RequestParam String lastName) {
         logger.info("request the information about the persons named {} {}", firstName, lastName);
         List<PersonWithInformationDTO> result = personService.getInformationFromName(firstName, lastName);
         logger.info("response with the information about {} person(s) named {} {}", result.size(), firstName, lastName);

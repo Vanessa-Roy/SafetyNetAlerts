@@ -1,2 +1,11 @@
+com\safetynet\SafetyNetAlerts\FireStationDTOTest.class
+com\safetynet\SafetyNetAlerts\FireStationServiceTest.class
+com\safetynet\SafetyNetAlerts\MedicalRecordServiceTest.class
+com\safetynet\SafetyNetAlerts\MedicalRecordDTOTest.class
+com\safetynet\SafetyNetAlerts\PersonRepositoryTest.class
 com\safetynet\SafetyNetAlerts\SafetyNetAlertsApplicationTests.class
+com\safetynet\SafetyNetAlerts\PersonDTOTest.class
+com\safetynet\SafetyNetAlerts\MedicalRecordRepositoryTest.class
+com\safetynet\SafetyNetAlerts\SafetyNetAlertsControllerTest.class
+com\safetynet\SafetyNetAlerts\FireStationRepositoryTest.class
 com\safetynet\SafetyNetAlerts\PersonServiceTest.class

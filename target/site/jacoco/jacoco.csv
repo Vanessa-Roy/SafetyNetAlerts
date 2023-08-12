@@ -23,6 +23,6 @@ SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,MedicalRecordWithAgeDTO,0,12,0
 SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,ChildDTO,0,15,0,0,0,1,0,1,0,1
 SafetyNetAlerts,com.safetynet.SafetyNetAlerts.dto,PersonWithInformationDTO,0,21,0,0,0,1,0,1,0,1
 SafetyNetAlerts,com.safetynet.SafetyNetAlerts.controller,SafetyNetAlertsController,0,353,0,0,0,75,0,18,0,18
-SafetyNetAlerts,com.safetynet.SafetyNetAlerts.repository,MedicalRecordRepository,0,145,0,8,0,26,0,12,0,8
+SafetyNetAlerts,com.safetynet.SafetyNetAlerts.repository,MedicalRecordRepository,0,145,1,7,0,26,1,11,0,8
 SafetyNetAlerts,com.safetynet.SafetyNetAlerts.repository,PersonRepository,0,145,0,8,0,26,0,12,0,8
 SafetyNetAlerts,com.safetynet.SafetyNetAlerts.repository,FireStationRepository,0,116,0,0,0,26,0,8,0,8
